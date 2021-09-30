@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export default function Button({ children, ...props }) {
+export default function Button({ ...props }) {
   return (
     <StyledButton {...props}>
       {props.icon && props.icon}
@@ -15,6 +15,8 @@ Button.propTypes = {
   children: PropTypes.any.isRequired,
   onClick: PropTypes.func,
   color: PropTypes.string,
+  icon: PropTypes.string,
+  label: PropTypes.string,
 };
 
 Button.defaultProps = {

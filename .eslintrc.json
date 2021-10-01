@@ -1,67 +1,20 @@
 {
-  "extends": "react-app",
   "env": {
     "browser": true,
-    "es6": true,
-    "node": true,
-    "jest": true
+    "es2021": true
   },
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["react-app", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": "latest",
+    "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "plugins": ["react", "prettier"],
   "rules": {
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "semi": ["error"],
-    "quotes": ["error", "single"],
-    "object-curly-spacing": ["error", "always"],
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "auto"
-      }
-    ],
-    "key-spacing": [
-      "error",
-      {
-        "beforeColon": false,
-        "afterColon": true,
-        "mode": "strict"
-      }
-    ],
-    "comma-spacing": [
-      "error",
-      {
-        "before": false,
-        "after": true
-      }
-    ],
-    "no-unused-vars": 1,
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false
-      }
-    ],
-    "no-trailing-spaces": [
-      "error",
-      {
-        "skipBlankLines": true,
-        "ignoreComments": true
-      }
-    ],
-    "space-before-function-paren": ["error", "never"]
+    "react/react-in-jsx-scope": 0,
+    "no-nested-ternary": 0,
+    "no-console": 1
   }
 }

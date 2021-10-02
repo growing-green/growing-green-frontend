@@ -1,40 +1,58 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { buttons, buttonSizes, buttonColors } from '../assets/styles/theme';
 
 export default function Button({ ...props }) {
   return (
     <StyledButton {...props}>
-      {props.icon && props.icon}
+      {props.icon && <props.icon size="24" />}
       {props.label}
     </StyledButton>
   );
 }
 
 Button.propTypes = {
-  children: PropTypes.any.isRequired,
   onClick: PropTypes.func,
   color: PropTypes.string,
   icon: PropTypes.string,
-  label: PropTypes.string,
+  size: PropTypes.string,
+  label: PropTypes.string.isRequired,
 };
 
 Button.defaultProps = {
   type: 'button',
+  size: 'large',
+  color: 'white',
 };
 
 const StyledButton = styled.button`
-  width: ${({ width }) => width || '130px'};
-  height: ${({ height }) => height || '20px'};
-  padding: 15px 20px;
-  font-size: ${({ fontSize }) => fontSize || '15px'};
-  line-height: ${({ fontSize }) => fontSize || '13px'};
-  font-weight: ${({ fontWeight }) => fontWeight || '500'};
-  text-align: center;
+  all: unset;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   cursor: pointer;
-  border-radius: ${({ borderRadius }) => borderRadius || '20px'};
-  background-color: ${({ bgColor, theme }) => bgColor || theme.gray};
-  transition-property: scale, translateY;
-  transition: scale 300ms ease-in;
-  color: ${({ color, theme }) => color || theme.black};
+  box-shadow: ${({ variant, color }) =>
+    variant === 'outline'
+      ? `-5px 5px 0px 0px ${buttonColors[color].shadow}`
+      : 'none'};
+  border-style: solid;
+  border-width: ${({ variant }) => buttons[variant].borderWidth};
+  border-color: ${({ color }) => buttonColors[color].border};
+  width: ${({ size }) => buttonSizes[size].width};
+  height: ${({ size }) => buttonSizes[size].height};
+  padding: ${({ size }) => buttonSizes[size].padding};
+  font-size: ${({ size }) => buttonSizes[size].fontSize};
+  line-height: ${({ size }) => buttonSizes[size].lineHeight};
+  font-weight: ${({ size }) => buttonSizes[size].fontWeight};
+  background-color: ${({ color }) => buttonColors[color].background};
+  color: ${({ color }) => buttonColors[color].text};
+  border-radius: ${({ variant, size }) =>
+    variant === 'rounded' && buttonSizes[size].height};
+
+  &:hover {
+    box-shadow: none;
+    ${({ variant }) =>
+      variant === 'outline' ? `transform: translate(-5px)` : 'none'};
+  }
 `;

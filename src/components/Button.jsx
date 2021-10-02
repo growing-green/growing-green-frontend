@@ -15,7 +15,7 @@ export default function Button({ ...props }) {
 Button.propTypes = {
   onClick: PropTypes.func,
   color: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.func,
   size: PropTypes.string,
   label: PropTypes.string.isRequired,
 };
@@ -50,7 +50,7 @@ const StyledButton = styled.button`
   border-radius: ${({ variant, size }) =>
     variant === 'rounded' && buttonSizes[size].height};
 
-  &:hover {
+  &:active {
     box-shadow: none;
     ${({ variant }) =>
       variant === 'outline' ? `transform: translate(-5px)` : 'none'};

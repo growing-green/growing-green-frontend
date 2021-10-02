@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from './assets/styles/theme';
+import '../src/configs/firebase-config';
 
 function App() {
   return (

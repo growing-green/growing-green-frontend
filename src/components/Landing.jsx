@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { FcGoogle } from 'react-icons/fc';
+
 import DesciptionText from './DescrptionText';
 import Button from './Button';
-
-import styled, { keyframes } from 'styled-components';
-import { FcGoogle } from 'react-icons/fc';
 
 import PlantShelfImage from '../assets/images/furniture/plant_shelf.png';
 import movingPlant1Image from '../assets/images/plants/moving_plant1.png';
@@ -13,8 +14,26 @@ import movingPlant4Image from '../assets/images/plants/moving_plant4.png';
 import movingPlant5Image from '../assets/images/plants/moving_plant5.png';
 import movingPlant6Image from '../assets/images/plants/moving_plant6.png';
 import cusorImage from '../assets/images/furniture/watering_can_cursor.png';
+import styled, { keyframes } from 'styled-components';
 
 export default function Landing() {
+  const [isLogin, setIsLogin] = useState(false);
+
+  const SignInWithGoogle = async () => {
+    const auth = getAuth();
+    const {
+      user: { displayName, email, photoURL },
+    } = await signInWithPopup(auth, new GoogleAuthProvider());
+
+    const { data } = await axios.post('http://localhost:8000/users/login', {
+      email,
+      name: displayName,
+      photo_url: photoURL,
+    });
+
+    setIsLogin(true);
+  };
+
   return (
     <Container>
       <PlantsContainer>
@@ -28,13 +47,23 @@ export default function Landing() {
       </PlantsContainer>
       <DesciptionText>Hover the mouse!</DesciptionText>
       <ButtonWrapper>
-        <Button
-          variant="outline"
-          size="large"
-          color="white"
-          label="Sign in"
-          icon={FcGoogle}
-        />
+        {isLogin ? (
+          <Button
+            variant="outline"
+            color="green"
+            size="large"
+            label="S T A R T"
+          />
+        ) : (
+          <Button
+            onClick={SignInWithGoogle}
+            variant="outline"
+            size="large"
+            color="white"
+            label="Sign in"
+            icon={FcGoogle}
+          />
+        )}
       </ButtonWrapper>
     </Container>
   );

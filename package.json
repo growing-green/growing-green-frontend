@@ -7,6 +7,8 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.22.0",
+    "firebase": "^9.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
@@ -18,8 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "next lint",
+    "lint": "react-scripts lint",
     "prepare": "husky install"
   },
   "eslintConfig": {
@@ -57,7 +58,11 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "eslint-plugin-testing-library": "^3.9.0",
     "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }

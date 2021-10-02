@@ -1,7 +1,8 @@
 {
   "name": "growing-green-frontend",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
+  "description": "A growing green project frontend",
+  "author": "Eunbin Kim <eunbines2@gamil.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

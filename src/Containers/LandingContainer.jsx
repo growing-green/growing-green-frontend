@@ -14,7 +14,7 @@ import Loading from '../components/Loading';
 export default function Landing() {
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.user);
-  console.log('user in landing', user);
+
   if (error) {
     return <ErrorBox message={error} />;
   }

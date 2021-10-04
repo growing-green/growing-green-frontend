@@ -1,18 +1,20 @@
-import { baseUrl } from './index';
+import { baseURL } from './index';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 1000,
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `bearer ${token}`;
+    const user = localStorage.getItem('user');
+
+    if (user) {
+      config.headers['Authorization'] = `bearer ${user.token}`;
     }
     return config;
   },

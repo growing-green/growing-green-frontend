@@ -45,7 +45,7 @@ const StyledButton = styled.button`
   font-size: ${({ size }) => buttonSizes[size].fontSize};
   line-height: ${({ size }) => buttonSizes[size].lineHeight};
   font-weight: ${({ size }) => buttonSizes[size].fontWeight};
-  background-color: ${({ color }) => buttonColors[color].background};
+  background: ${({ color }) => buttonColors[color].background};
   color: ${({ color }) => buttonColors[color].text};
   border-radius: ${({ variant, size }) =>
     variant === 'rounded' && buttonSizes[size].height};

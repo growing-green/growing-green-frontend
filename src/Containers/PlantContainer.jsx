@@ -5,6 +5,7 @@ import openWindow from '../assets/images/furniture/open_window.png';
 import pullSwitch from '../assets/images/furniture/pull_switch.png';
 
 import Themometer from '../components/Themometer';
+import CalendarIcon from '../components/CalendarIcon';
 
 export default function PlantContainer() {
   return (
@@ -12,7 +13,7 @@ export default function PlantContainer() {
       <WindowWrapper>
         <Aside>
           <Themometer height="120" temperature="30" />
-          <Calendar />
+          <CalendarIcon />
         </Aside>
         <OpenWindowImage src={openWindow} alt="opened window image" />
         <PullSwitchImage src={pullSwitch} alt="pull switch image" />
@@ -67,10 +68,4 @@ const Aside = styled.div`
   align-items: center;
   flex-direction: column;
   margin: 2rem 0;
-`;
-
-const Calendar = styled.div`
-  width: 100px;
-  height: 100px;
-  background: blue;
 `;

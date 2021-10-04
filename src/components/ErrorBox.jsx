@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 
-function ErrorBox({ message }) {
+export default function ErrorBox({ message }) {
   const history = useHistory();
 
   return (
@@ -37,8 +37,6 @@ const Wrapper = styled.div`
     font-weight: 400;
   }
 `;
-
-export default ErrorBox;
 
 ErrorBox.propTypes = {
   message: PropTypes.string.isRequired,

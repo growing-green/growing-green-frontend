@@ -13,6 +13,9 @@ export default function Thermometer({ temperature, height, theme }) {
 
   return (
     <Container height={height}>
+      <BackgroundBar height={height}>
+        <Bar currentHeight={currentHeight}></Bar>
+      </BackgroundBar>
       <ScaleWrapper height={height} theme={theme}>
         {temps.map((temp) => {
           if (temp === 0 || temp === -30 || temp === 50) {
@@ -26,9 +29,6 @@ export default function Thermometer({ temperature, height, theme }) {
           return <div key={temp}></div>;
         })}
       </ScaleWrapper>
-      <BackgroundBar height={height}>
-        <Bar currentHeight={currentHeight}></Bar>
-      </BackgroundBar>
     </Container>
   );
 }
@@ -38,10 +38,59 @@ const Container = styled.div`
   position: relative;
   width: 70px;
   height: ${({ height }) => `${height}px`};
-  background-color: lightGray;
-  border-radius: 10px;
-  padding: 1rem 0.3rem;
+  background-color: #fde581;
+  border-radius: 13px;
+
+  padding: 1.2rem 0.2rem;
   margin: 2rem 0;
+
+  box-shadow: #999999 -10px 0px 25px -30px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+`;
+
+const ScaleWrapper = styled.div`
+  position: absolute;
+  left: 50%;
+  margin-left: -10px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  width: 20px;
+  height: ${({ height }) => `${height}px`};
+
+  div {
+    width: 20px;
+    height: ${({ height }) => `${height / 8}px`};
+    border-top: 1px solid gray;
+  }
+
+  .display-temp {
+    position: relative;
+
+    p {
+      position: absolute;
+      left: -22px;
+      top: -24px;
+      font-size: 0.9em;
+      font-family: 'Times New Roman';
+    }
+  }
+
+  .temp-0 {
+    width: 30px;
+    p {
+      left: -10px;
+    }
+  }
+
+  .temp--30 {
+    background: ${({ theme }) => theme.baseTheme.colors.red};
+    height: 20px;
+    width: 15px;
+    border-radius: 10px;
+    border: none;
+  }
 `;
 
 const BackgroundBar = styled.div`
@@ -63,51 +112,4 @@ const Bar = styled.div`
   border-radius: 10px;
   transition: 1s ease;
   transition-delay: 0.5s;
-`;
-
-const ScaleWrapper = styled.div`
-  position: absolute;
-  left: 50%;
-  margin-left: -10px;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  width: 20px;
-  height: ${({ height }) => `${height}px`};
-  z-index: 5;
-
-  div {
-    width: 20px;
-    height: ${({ height }) => `${height / 8}px`};
-    border-top: 1px solid gray;
-    z-index: 10;
-  }
-  ${({ height }) => console.log(`${height / 8}px`)};
-
-  .display-temp {
-    position: relative;
-
-    p {
-      position: absolute;
-      left: -25px;
-      top: -23px;
-      font-size: 0.9em;
-      font-family: 'Gill Sans', sans-serif;
-    }
-  }
-
-  .temp-0 {
-    width: 30px;
-    p {
-      left: -20px;
-    }
-  }
-
-  .temp--30 {
-    background: ${({ theme }) => theme.baseTheme.colors.red};
-    height: 20px;
-    width: 15px;
-    border-radius: 10px;
-    border: none;
-  }
 `;

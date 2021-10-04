@@ -5,13 +5,14 @@ const baseTheme = {
     tomato: 'tomato',
     purple: 'purple',
     white: '#fcfcfc',
-    darkGreen: '#386641',
-    green: '#587e4e',
+    darkGreen: '#457f51',
+    green: '#9cbd93',
     lightGreen: '#9cbd93',
     black: '#111',
     gray: '#444',
     red: '#b12f35',
     darkRed: '#892429',
+    ivory: '#fefef7',
   },
 };
 

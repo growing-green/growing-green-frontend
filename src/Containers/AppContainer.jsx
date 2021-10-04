@@ -20,7 +20,7 @@ export default function AppContainer() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
+        <GlobalStyle theme={theme} />
         <Layout>
           <Switch>
             <Route exact path="/" component={Landing} />
@@ -42,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #457f51;
+    background: ${({ theme }) => theme.baseTheme.colors.darkGreen};
     font-family: "Courier New", monospace;
   }
 
@@ -54,7 +54,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Layout = styled.div`
-  background: #fefef7;
+  background: ${({ theme }) => theme.baseTheme.colors.ivory};
   width: 100%;
   border-radius: 20px;
 `;

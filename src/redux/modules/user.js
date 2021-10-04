@@ -1,18 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiController from '../../configs/apiController';
 
-export const signInSuccess = createAsyncThunk(
+export const loginSuccess = createAsyncThunk(
   'users/login',
   async ({ name, email, photo_url }) => {
     try {
-      const data = apiController({
-        url: '/users/login',
-        method: 'post',
-        data: {
-          email,
-          name,
-          photo_url,
-        },
+      const { data } = await apiController.post('users/login', {
+        email,
+        name,
+        photo_url,
       });
 
       return data;
@@ -30,29 +26,30 @@ export const slice = createSlice({
   name: 'user',
   initialState: {
     user: initialUser,
-    loading: false,
+    isLoading: false,
     error: null,
   },
   reducers: {
-    signOutSuccess: (state) => {
+    logoutSuccess: (state) => {
       state.user = null;
-      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     },
   },
   extraReducers: {
-    [signInSuccess.pending]: (state) => {
-      state.loading = true;
+    [loginSuccess.pending]: (state) => {
+      state.isLoading = true;
       state.user = initialUser;
       state.error = null;
     },
-    [signInSuccess.fullfilled]: (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      localStorage.setItem('user', JSON.stringify(action.payload));
+    [loginSuccess.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload.user;
       state.error = null;
+
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
-    [signInSuccess.rejected]: (state, action) => {
-      state.loading = false;
+    [loginSuccess.rejected]: (state, action) => {
+      state.isLoading = false;
       state.user = initialUser;
       state.error = action.payload;
     },
@@ -61,4 +58,4 @@ export const slice = createSlice({
 
 export default slice.reducer;
 
-export const { signOutSuccess } = slice.actions;
+export const { logoutSuccess } = slice.actions;

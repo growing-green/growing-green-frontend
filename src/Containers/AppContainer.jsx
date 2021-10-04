@@ -1,25 +1,32 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../assets/styles/theme';
+import { useSelector } from 'react-redux';
 
 import Landing from './LandingContainer';
-import Plant from './PlantPage';
-import NewPlant from './NewPlantPage';
-import Calendar from './CalendarContainer';
+import Plant from './PlantContainer';
+import NewPlant from './NewPlantContainer';
+import Calendar from './CalrendarContainer';
 
 export default function AppContainer() {
+  const { user } = useSelector((state) => state.user);
+
+  const privateRoute = (Component) => {
+    return user ? <Component /> : <Redirect to={{ pathname: '/' }} />;
+  };
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Layout>
           <Switch>
-            <Route exect path="/" component={Landing} />
-            <Route exect path="/plant" component={Plant} />
-            <Route exect path="/plant/new" component={NewPlant} />
-            <Route exect path="/calrendar" component={Calendar} />
+            <Route exact path="/" component={Landing} />
+            <Route path="/plant" component={() => privateRoute(Plant)} />
+            <Route path="/plant/new" component={() => privateRoute(NewPlant)} />
+            <Route path="/calendar" component={() => privateRoute(Calendar)} />
           </Switch>
         </Layout>
       </ThemeProvider>

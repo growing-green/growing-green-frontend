@@ -6,8 +6,8 @@ export default function DesciptionText({ children: text }) {
 
   return (
     <TextContainer text={textList}>
-      {textList.map((word) => (
-        <span>{word}</span>
+      {textList.map((word, index) => (
+        <span key={`${word} ${index}`}>{word}</span>
       ))}
     </TextContainer>
   );

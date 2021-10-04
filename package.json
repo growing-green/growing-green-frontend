@@ -4,12 +4,17 @@
   "description": "A growing green project frontend",
   "author": "Eunbin Kim <eunbines2@gamil.com",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.22.0",
+    "dotenv": "^10.0.0",
+    "firebase": "^9.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
+    "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.1"
@@ -18,8 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "next lint",
+    "lint": "react-scripts lint",
     "prepare": "husky install"
   },
   "eslintConfig": {
@@ -57,7 +61,11 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "eslint-plugin-testing-library": "^3.9.0",
     "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }

@@ -12,7 +12,7 @@ import PlantShelf from '../components/PlantShelf';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 
-export default function Landing() {
+export default function LandingContainer() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user, isLoading, error } = useSelector((state) => state.user);

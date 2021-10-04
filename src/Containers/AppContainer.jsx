@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import Landing from './LandingContainer';
 import Plant from './PlantContainer';
 import NewPlant from './NewPlantContainer';
-import Calendar from './CalrendarContainer';
+import Calendar from './CalendarContainer';
 
 export default function AppContainer() {
   const { user } = useSelector((state) => state.user);

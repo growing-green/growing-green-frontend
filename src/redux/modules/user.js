@@ -3,17 +3,16 @@ import apiController from '../../configs/apiController';
 
 export const loginSuccess = createAsyncThunk(
   'users/login',
-  async ({ name, email, photo_url }) => {
+  async ({ name, email, photo_url }, { rejectWithValue }) => {
     try {
       const { data } = await apiController.post('users/login', {
         email,
         name,
         photo_url,
       });
-
       return data;
     } catch (err) {
-      return err.message;
+      return rejectWithValue(err.response.data.message);
     }
   },
 );
@@ -36,11 +35,6 @@ export const slice = createSlice({
     },
   },
   extraReducers: {
-    [loginSuccess.pending]: (state) => {
-      state.isLoading = true;
-      state.user = initialUser;
-      state.error = null;
-    },
     [loginSuccess.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.user = action.payload.user;

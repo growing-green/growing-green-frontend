@@ -1,24 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import openWindow from '../assets/images/furniture/open_window.png';
 import pullSwitch from '../assets/images/furniture/pull_switch.png';
 
-import Themometer from '../components/Themometer';
+import Thermometer from '../components/Thermometer';
 import CalendarIcon from '../components/CalendarIcon';
+import WindowCanvas from '../components/WindowCanvas';
 
 export default function PlantContainer() {
   return (
     <Container>
-      <WindowWrapper>
-        <Aside>
-          <Themometer height="120" temperature="30" />
+      <MainWrapper>
+        <TermometerAndCalendar>
+          <Thermometer height="120" temperature="30" />
           <CalendarIcon />
-        </Aside>
-        <OpenWindowImage src={openWindow} alt="opened window image" />
-        <PullSwitchImage src={pullSwitch} alt="pull switch image" />
-      </WindowWrapper>
-      <GuageWrapper></GuageWrapper>
+        </TermometerAndCalendar>
+        <WindowCanvas />
+      </MainWrapper>
+      <GuageWrapper>
+        <div className="blue"></div>
+        <div className="red"></div>
+      </GuageWrapper>
     </Container>
   );
 }
@@ -30,42 +32,50 @@ const Container = styled.div`
   max-height: inherit;
   justify-content: center;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 `;
 
-const WindowWrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: flex-start
-  border: 1px solid black;
-  height: 500px;
-  min-height: 500px;
+const MainWrapper = styled.div`
+  position: relative;
   flex-grow: 1;
+  width: 670px;
+  height: 530px;
+`;
+
+const TermometerAndCalendar = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flext-start;
+  align-items: center;
+  left: -130px;
+`;
+
+const PullSwitchImage = styled.img`
+  position: absolute;
+  width: 17px;
+  right: -30px;
 `;
 
 const GuageWrapper = styled.div`
+  display: flex;
+  align-items: center;
   border: 1px solid red;
   height: 100px;
   max-height: 100px;
   flex-grow: 1;
-`;
 
-const OpenWindowImage = styled.img`
-  width: 670px;
-  height: 530px;
-  margin: 1rem 0 0 -3rem;
-`;
+  .blue {
+    width: 500px;
+    height: 40px;
+    background: blue;
+    margin: 10px;
+  }
 
-const PullSwitchImage = styled.img`
-  width: 17px;
-  height: 350px;
-  margin: 0 3rem 0 -2rem;
-`;
-
-const Aside = styled.div`
-  display: flex;
-  justify-content: flext-start;
-  align-items: center;
-  flex-direction: column;
-  margin: 2rem 0;
+  .red {
+    width: 500px;
+    height: 40px;
+    background: red;
+    margin: 10px;
+  }
 `;

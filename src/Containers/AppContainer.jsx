@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import theme from '../assets/styles/theme';
 import { useSelector } from 'react-redux';
 
 import Landing from './LandingContainer';
 import Plant from './PlantContainer';
 import NewPlant from './NewPlantContainer';
 import Calendar from './CalendarContainer';
+import ErrorBox from '../components/ErrorBox';
+
+import theme from '../assets/styles/theme';
+import { imageLoader } from '../pixi';
 
 export default function AppContainer() {
   const { user } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    imageLoader();
+  }, []);
+
   const privateRoute = (Component) => {
     return user ? <Component /> : <Redirect to={{ pathname: '/' }} />;
+  };
+
+  const notFoundErrorComponent = () => {
+    return <ErrorBox message="페이지를 찾을 수 없습니다." />;
   };
 
   return (
@@ -27,6 +38,7 @@ export default function AppContainer() {
             <Route path="/plant" component={() => privateRoute(Plant)} />
             <Route path="/plant/new" component={() => privateRoute(NewPlant)} />
             <Route path="/calendar" component={() => privateRoute(Calendar)} />
+            <Route component={notFoundErrorComponent} />
           </Switch>
         </Layout>
       </ThemeProvider>

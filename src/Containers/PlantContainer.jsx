@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import pullSwitch from '../assets/images/furniture/pull_switch.png';
-
 import Thermometer from '../components/Thermometer';
 import CalendarIcon from '../components/CalendarIcon';
-import WindowCanvas from '../components/WindowCanvas';
+import RoomCanvas from '../components/RoomCanvas';
 
 export default function PlantContainer() {
   return (
@@ -15,7 +13,7 @@ export default function PlantContainer() {
           <Thermometer height="120" temperature="30" />
           <CalendarIcon />
         </TermometerAndCalendar>
-        <WindowCanvas />
+        <RoomCanvas />
       </MainWrapper>
       <GuageWrapper>
         <div className="blue"></div>

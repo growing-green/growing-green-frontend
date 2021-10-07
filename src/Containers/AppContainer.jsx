@@ -32,7 +32,7 @@ export default function AppContainer() {
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle theme={theme} />
-        <Layout>
+        <Wrapper>
           <Switch>
             <Route exact path="/" component={Landing} />
             <Route path="/plant" component={() => privateRoute(Plant)} />
@@ -40,7 +40,7 @@ export default function AppContainer() {
             <Route path="/calendar" component={() => privateRoute(Calendar)} />
             <Route component={notFoundErrorComponent} />
           </Switch>
-        </Layout>
+        </Wrapper>
       </ThemeProvider>
     </>
   );
@@ -48,25 +48,35 @@ export default function AppContainer() {
 
 const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 320px;
+    min-height: 100vh;
+    line-height: 1;
+    overflow-x: hidden;
     background: ${({ theme }) => theme.baseTheme.colors.darkGreen};
     font-family: "Courier New", monospace;
   }
 
   #root {
-    width: 90%;
-    height: 90%;
-    display:flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    z-index:2;
+    overflow: hidden;
   }
 `;
 
-const Layout = styled.div`
+const Wrapper = styled.div`
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
-  width: 100%;
-  border-radius: 20px;
+  display: flex;
+  position: relative;
+  max-width: 100%;
+  z-index: 1;
+  align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  text-align: center;
+  border-radius: 1.5rem;
 `;

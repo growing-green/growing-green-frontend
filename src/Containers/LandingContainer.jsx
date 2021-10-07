@@ -90,15 +90,15 @@ export default function LandingContainer() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 2rem;
+  max-width: 100%;
+  width: 68rem;
+  text-align: center;
 `;
 
 const ButtonWrapper = styled.div`
-  margin-botton: 1rem;
-  text-align: center;
+  display: inline-block;
 `;

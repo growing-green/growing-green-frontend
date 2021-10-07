@@ -29,6 +29,13 @@ export default function RooomCanvas() {
   let bloomFilter;
   let count = 0;
   let wateringcount = 0;
+  let wateringGuageRec;
+  let sunGuageRec;
+  let wateringGuageContainer;
+  let wateringGuageRecDefault;
+  let sunGuageRecLineDefault;
+  let switchCount = 0;
+  let isBlindDown = false;
 
   const ropeLength = 4000 / 15;
 
@@ -50,19 +57,17 @@ export default function RooomCanvas() {
 
     windowSprite = new Sprite(TextureCache['openWindow']);
     windowSprite.anchor.set(0.5);
-    windowSprite.width = 670;
+    windowSprite.width = 680;
     windowSprite.height = 530;
-    windowSprite.x = app.view.width / 2 + 30;
+    windowSprite.x = app.screen.width / 2;
     windowSprite.y = windowSprite.height / 2;
-
-    const windowFrameWidth = windowSprite.x;
 
     landscape = new Sprite(TextureCache['dayTimeLandscape']);
     landscape.anchor.set(0.5);
-    landscape.width = windowFrameWidth * 0.8;
-    landscape.height = windowSprite.height * 0.8;
-    landscape.x = app.view.width / 2 + 30;
-    landscape.y = windowSprite.y;
+    landscape.width = 600;
+    landscape.height = 410;
+    landscape.x = app.screen.width / 2;
+    landscape.y = windowSprite.height / 2 + 10;
 
     plantContainer = new Container();
 
@@ -79,18 +84,18 @@ export default function RooomCanvas() {
     pot.height = 115;
     pot.y = 60;
 
+    plantContainer.anchor = 0.5;
     plantContainer.width = 200;
     plantContainer.height = 275;
     plantContainer.addChild(plant, pot);
-    plantContainer.anchor = 0;
     plantContainer.x = app.screen.width / 2 - 30;
-    plantContainer.y = app.screen.height / 2;
+    plantContainer.y = 320;
 
     blindHead = new Sprite(TextureCache['blindHead']);
     blindHead.anchor.set(0.5);
-    blindHead.x = app.screen.width / 2 + 15;
+    blindHead.x = app.screen.width / 2;
     blindHead.y = 50;
-    blindHead.width = windowFrameWidth * 0.75;
+    blindHead.width = 470;
     blindHead.height = 55;
 
     pullSwitch = new Sprite(TextureCache['pullSwitch']);
@@ -102,14 +107,19 @@ export default function RooomCanvas() {
     pullSwitch.interactive = true;
     pullSwitch.buttonMode = true;
 
+    pullSwitch.on('pointerup', doPullSwitchPointerUp);
+    pullSwitch.on('pointerdown', doPullSwitchPointerDown);
+    pullSwitch.on('pointerout', doPullSwitchPointerLeave);
+
     wateringCan = new Sprite(TextureCache['wateringCan']);
     wateringCan.anchor.set(0);
-    wateringCan.x = 1000;
-    wateringCan.y = 401;
+    wateringCan.width = 150;
+    wateringCan.height = 110;
+    wateringCan.x = app.screen.width / 2 + windowSprite.width / 2 + 10;
+    wateringCan.y = windowSprite.height - wateringCan.width;
     wateringCanX = wateringCan.x;
     wateringCanY = wateringCan.y;
-    wateringCan.width = 130;
-    wateringCan.height = 100;
+
     wateringCan.interactive = true;
     wateringCan.buttonMode = true;
     wateringCan.on('pointerup', doWateringCanPointerUp);
@@ -118,26 +128,107 @@ export default function RooomCanvas() {
 
     nail = new Sprite(TextureCache['nail']);
     nail.anchor.set(0);
-    nail.x = 1030;
-    nail.y = 410;
     nail.width = 13;
     nail.height = 13;
+    nail.x = app.screen.width / 2 + windowSprite.width / 2 + 46;
+    nail.y = windowSprite.height - wateringCan.width + 7;
+
+    wateringGuageContainer = new Container();
+
+    wateringGuageRecDefault = new PIXI.Graphics();
+    wateringGuageRecDefault.lineStyle(3, 0xffffff);
+    wateringGuageRecDefault.drawRoundedRect(
+      app.screen.width / 2 - 410,
+      windowSprite.height + 20,
+      400,
+      50,
+      25,
+    );
+
+    wateringGuageRec = new PIXI.Graphics();
+    wateringGuageRec.beginFill(0x99cee0);
+    wateringGuageRec.drawRoundedRect(
+      app.screen.width / 2 - 410,
+      windowSprite.height + 20,
+      400,
+      50,
+      25,
+    );
+
+    sunGuageRecLineDefault = new PIXI.Graphics();
+    sunGuageRecLineDefault.lineStyle(3, 0xffffff);
+    sunGuageRecLineDefault.drawRoundedRect(
+      app.screen.width / 2 + 10,
+      windowSprite.height + 20,
+      400,
+      50,
+      25,
+    );
+
+    sunGuageRec = new PIXI.Graphics();
+    sunGuageRec.beginFill(0xe0ca8c);
+    sunGuageRec.drawRoundedRect(
+      app.screen.width / 2 + 10,
+      windowSprite.height + 20,
+      400,
+      50,
+      25,
+    );
 
     app.stage.addChild(
       landscape,
       windowSprite,
-      plantContainer,
       blindHead,
+
+      plantContainer,
       pullSwitch,
       wateringCan,
       nail,
+      wateringGuageRecDefault,
+      wateringGuageRec,
+      sunGuageRecLineDefault,
+      sunGuageRec,
     );
 
-    app.ticker.add(plantMovingLoop);
+    app.ticker.add(objectMovingLoop);
 
     window.onresize = () => {
       app.resize(window.innerWidth, window.innerHeight);
     };
+  }
+
+  function doPullSwitchPointerLeave() {
+    pullSwitch.width = 13;
+    pullSwitch.height = 230;
+  }
+
+  function doPullSwitchPointerUp() {
+    pullSwitch.width = 13;
+    pullSwitch.height = 230;
+  }
+
+  function doPullSwitchPointerDown() {
+    if (isBlindDown) {
+      blindHead.texture = TextureCache['blindHead'];
+      blindHead.height = 55;
+      blindHead.y = 50;
+      isBlindDown = false;
+    } else {
+      blindHead.texture = TextureCache['blind'];
+      blindHead.height = 480;
+      blindHead.y = 250;
+      isBlindDown = true;
+    }
+    pullSwitch.width = 14;
+    pullSwitch.height = 234;
+  }
+
+  function objectMovingLoop() {
+    count += 0.05;
+
+    for (let i = 0; i < points.length; i++) {
+      points[i].y = Math.cos(i * 0.5 + count);
+    }
   }
 
   function doWateringCanPointerMove(e) {
@@ -188,32 +279,24 @@ export default function RooomCanvas() {
     ) {
       if (mouseOverPlant === true) return;
 
-      app.ticker.remove(plantMovingLoop);
+      app.ticker.remove(objectMovingLoop);
       app.ticker.add(bigMove);
       mouseOverPlant = true;
     } else {
       if (mouseOverPlant === false) return;
 
       app.ticker.remove(bigMove);
-      app.ticker.add(plantMovingLoop);
+      app.ticker.add(objectMovingLoop);
       mouseOverPlant = false;
     }
 
     if (mouseOverPlant === true) {
-      app.ticker.remove(plantMovingLoop);
+      app.ticker.remove(objectMovingLoop);
       app.ticker.add(bigMove);
     }
   }
 
-  function plantMovingLoop(delta) {
-    count += 0.05;
-
-    for (let i = 0; i < points.length; i++) {
-      points[i].y = Math.cos(i * 0.5 + count);
-    }
-  }
-
-  function watering(d) {
+  function watering() {
     if (wateringStart === true) {
       wateringcount += 0.1;
       const bloomXAmount = (Math.cos(wateringcount) + 1) / 2;
@@ -230,8 +313,19 @@ export default function RooomCanvas() {
         app.ticker.remove(watering);
         wateringcount = 0;
         wateringStart = false;
+        app.ticker.add(increaseWateringGuage);
       }, 3000);
     }
+  }
+
+  function increaseWateringGuage() {
+    const defaultGuage = 5;
+    const defaultGuageWidth = 400;
+    const oneGuageWidth = defaultGuageWidth / defaultGuage;
+
+    wateringGuageRec.width = wateringGuageRec.width - oneGuageWidth;
+    wateringGuageRec.x = wateringGuageRec.x + 52.5;
+    app.ticker.remove(increaseWateringGuage);
   }
 
   function growing() {

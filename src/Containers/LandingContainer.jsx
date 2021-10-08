@@ -95,7 +95,6 @@ const Container = styled.div`
   border-radius: inherit;
   padding: 2rem;
   max-width: 100%;
-  width: 68rem;
   text-align: center;
 `;
 

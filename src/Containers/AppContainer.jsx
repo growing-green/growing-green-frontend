@@ -69,14 +69,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.baseTheme.colors.ivory};
   display: flex;
-  position: relative;
-  max-width: 100%;
-  z-index: 1;
+  justify-content: center;
   align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
+  background: ${({ theme }) => theme.baseTheme.colors.ivory};
+  position: relative;
+  z-index: 1;
   text-align: center;
   border-radius: 1.5rem;
+  width: 1200px;
+  height: 700px;
 `;

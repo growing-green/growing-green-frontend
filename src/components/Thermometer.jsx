@@ -26,7 +26,7 @@ export default function Thermometer({ temperature, height, theme }) {
             );
           }
 
-          return <div key={temp}></div>;
+          return <div key={temp} />;
         })}
       </ScaleWrapper>
     </Container>
@@ -51,12 +51,13 @@ const Container = styled.div`
 
 const ScaleWrapper = styled.div`
   position: absolute;
+  width: 20px;
+  top: 50%;
   left: 50%;
-  margin-left: -10px;
+  transform: translate(-50%, -50%);
   flex-direction: column;
   display: flex;
   align-items: center;
-  width: 20px;
   height: ${({ height }) => `${height}px`};
 
   div {

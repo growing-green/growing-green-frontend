@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
 
-import GrowingPlant from '../pixi/containers/GrowingPlant';
-import Background from '../pixi/containers/Background';
-import Watering from '../pixi/containers/Watering';
+import GrowingPlant from '../pixi/displayObjects/GrowingPlant';
+import Background from '../pixi/displayObjects/Background';
+import Watering from '../pixi/displayObjects/Watering';
+import WaterAndSunGuage from '../pixi/displayObjects/WaterAndSunGuage';
 
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
   window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
@@ -12,15 +13,9 @@ window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
 export default function RooomCanvas() {
   const canvas = useRef(null);
 
-  const Container = PIXI.Container;
-  const Sprite = PIXI.Sprite;
-
   let app;
-  let wateringGuageRec;
-  let sunGuageRec;
-  let wateringGuageContainer;
-  let sunGuageRecLineDefault;
   let watering;
+  let guage;
 
   function setup() {
     app = new PIXI.Application({
@@ -44,57 +39,19 @@ export default function RooomCanvas() {
     watering = new Watering(app);
     app.stage.addChild(watering.container);
 
-    wateringGuageContainer = new Container();
-
-    const wateringGuageGraphic = new PIXI.Graphics()
-      .beginFill(0x99cee0)
-      .drawRoundedRect(0, 0, 400, 400, 25);
-
-    const texture = app.renderer.generateTexture(wateringGuageGraphic);
-
-    wateringGuageRec = new Sprite(texture);
-    wateringGuageRec.anchor.set(0.5);
-    wateringGuageRec.x = app.screen.width / 2;
-    wateringGuageRec.y = background.window.height + 20;
-
-    wateringGuageContainer.addChild(wateringGuageRec);
-
-    const mask = new PIXI.Graphics()
-      .beginFill(0xffffff)
-      .drawRoundedRect(
-        app.screen.width / 2 + 10,
-        background.window.height + 20,
-        500,
-        400,
-        25,
-      ).endFill;
-
-    sunGuageRecLineDefault = new PIXI.Graphics();
-    sunGuageRecLineDefault.lineStyle(3, 0x111111);
-    sunGuageRecLineDefault.drawRoundedRect(
-      app.screen.width / 2 + 10,
-      background.window.height + 20,
-      400,
-      50,
-      25,
-    );
-
-    sunGuageRec = new PIXI.Graphics();
-    sunGuageRec.beginFill(0xe0ca8c);
-    sunGuageRec.drawRoundedRect(
-      app.screen.width / 2 + 10,
-      background.window.height + 20,
-      400,
-      50,
-      25,
-    );
+    guage = new WaterAndSunGuage(app);
+    app.stage.addChild(guage.container);
 
     app.ticker.add(increaseWateringGuage);
   }
 
-  function increaseWateringGuage() {
+  function increaseWateringGuage(e) {
+    const totalGuageWidth = 400;
+    const wateringPeriod = 5;
+    const eachGuageWidth = totalGuageWidth / wateringPeriod;
+
     if (watering.wateringCan.isWatering === true) {
-      console.log('true');
+      guage.waterGuage.width = guage.waterGuage.width + eachGuageWidth;
     }
   }
 
@@ -103,8 +60,8 @@ export default function RooomCanvas() {
       setup();
     }, 1000);
     return () => {
-      // app.stop();
-      // canvas.current = null;
+      app.stop();
+      canvas.current = null;
     };
   }, []);
 

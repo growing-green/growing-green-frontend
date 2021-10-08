@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
-import Plant from '../displayObjects/Plant';
-import Pot from '../displayObjects/Pot';
+import Plant from './Plant';
+import Pot from './Pot';
 
 export default class GrowingPlant {
   constructor(app) {

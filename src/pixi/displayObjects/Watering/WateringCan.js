@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { isMouseXOver, isMouseYOver } from '../pixiIUtils/isMouseOver';
+import { isMouseXOver, isMouseYOver } from '../../pixiUtils/isMouseOver';
 import { ColorOverlayFilter } from 'pixi-filters';
 
 const TextureCache = PIXI.utils.TextureCache;

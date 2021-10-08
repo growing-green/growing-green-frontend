@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js';
-import Blind from '../displayObjects/Blind';
-import PullSwitch from '../displayObjects/PullSwitch';
-import Window from '../displayObjects/Window';
-import Landscape from '../displayObjects/LandScape';
+import Blind from './Blind';
+import PullSwitch from './PullSwitch';
+import Window from './Window';
+import Landscape from './LandScape';
 
 export default class Background {
   constructor(app, isBlindUp) {

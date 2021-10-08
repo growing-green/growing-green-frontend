@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { isMouseXOver, isMouseYOver } from '../pixiIUtils/isMouseOver';
+import { isMouseXOver, isMouseYOver } from '../../pixiUtils/isMouseOver';
 const TextureCache = PIXI.utils.TextureCache;
 
 const ropeLength = 8000 / 5;

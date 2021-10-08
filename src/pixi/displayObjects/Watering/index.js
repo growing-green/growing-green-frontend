@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
-import WateringCan from '../displayObjects/WateringCan';
-import Nail from '../displayObjects/Nail';
+import WateringCan from './WateringCan';
+import Nail from './Nail';
 
 export default class Watering {
   constructor(app) {

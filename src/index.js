@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import './configs/firebase';
 
-import AppContainer from './Containers/AppContainer';
+import AppContainer from './containers/AppContainer';
 
 ReactDOM.render(
   <React.StrictMode>

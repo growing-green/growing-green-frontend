@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
 
-import GrowingPlant from '../pixi/displayObjects/GrowingPlant';
+import PlantContainer from '../pixi/displayObjects/PlantContainer';
 import Background from '../pixi/displayObjects/Background';
-import Watering from '../pixi/displayObjects/Watering';
-import WaterAndSunGuage from '../pixi/displayObjects/WaterAndSunGuage';
+import WateringContainer from '../pixi/displayObjects/WateringContainer';
+import GuageContainer from '../pixi/displayObjects/GuageContainer';
 
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
   window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
@@ -33,13 +33,13 @@ export default function RooomCanvas() {
     const background = new Background(app, true); // isBlindUp
     app.stage.addChild(background.container);
 
-    const growingPlant = new GrowingPlant(app);
-    app.stage.addChild(growingPlant.container);
+    const plant = new PlantContainer(app);
+    app.stage.addChild(plant.container);
 
-    watering = new Watering(app);
+    watering = new WateringContainer(app);
     app.stage.addChild(watering.container);
 
-    guage = new WaterAndSunGuage(app);
+    guage = new GuageContainer(app);
     app.stage.addChild(guage.container);
 
     app.ticker.add(increaseWateringGuage);

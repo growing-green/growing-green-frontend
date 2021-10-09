@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { isMouseXOver, isMouseYOver } from '../../../utils/isMouseOver';
-import { ColorOverlayFilter } from 'pixi-filters';
+import { ColorOverlayFilter, GlowFilter } from 'pixi-filters';
 
 const TextureCache = PIXI.utils.TextureCache;
 const defaultValue = {
@@ -10,7 +10,7 @@ const defaultValue = {
   y: null,
 };
 let wateringCount = 0;
-let filter;
+let colorOverlayFilter;
 
 export default class WateringCan extends PIXI.Sprite {
   constructor(app, x = 0, y = 0, plantContainer) {
@@ -31,6 +31,9 @@ export default class WateringCan extends PIXI.Sprite {
     this.isOnDrag = false;
     this.isFilterOn = false;
     this.isWatering = false;
+
+    this.glowFilter = new GlowFilter(0, 2, 0xfff8b3);
+    this.filters = [this.glowFilter];
 
     defaultValue.width = this.width;
     defaultValue.height = this.height;
@@ -76,13 +79,13 @@ export default class WateringCan extends PIXI.Sprite {
     if (this.isWatering === true) return;
 
     if (this.isFilterOn === false) {
-      filter = new ColorOverlayFilter(0xa4dbff);
-      this.plantContainer.filters = [filter];
+      colorOverlayFilter = new ColorOverlayFilter(0xa4dbff);
+      this.plantContainer.filters = [colorOverlayFilter];
       this.isFilterOn = true;
 
       await new Promise((resolve) =>
         setTimeout(() => {
-          filter.uniformGroup.uniforms.alpha = 0;
+          colorOverlayFilter.uniformGroup.uniforms.alpha = 0;
           wateringCount = 0;
 
           this.isFilterOn = false;
@@ -96,7 +99,7 @@ export default class WateringCan extends PIXI.Sprite {
       wateringCount += 0.1;
       const amount = (Math.cos(wateringCount) + 1) / 2;
 
-      filter.uniformGroup.uniforms.alpha = 0.5 * amount;
+      colorOverlayFilter.uniformGroup.uniforms.alpha = 0.5 * amount;
     }
   }
 
@@ -109,31 +112,23 @@ export default class WateringCan extends PIXI.Sprite {
     const position = e.data.global;
     const isMouseOverWateringCan =
       isMouseXOver(position.x, this.x, this.x + this.width) &&
-      isMouseYOver(
-        position.y,
-        this.y - this.height / 2,
-        this.y + this.height / 2,
-      );
+      isMouseYOver(position.y, this.y, this.y + this.height);
 
     if (this.isOnDrag === true) {
       this.x = position.x - this.width / 2;
       this.y = position.y - this.height / 2;
+    }
+
+    if (isMouseOverWateringCan) {
+      this.width = defaultValue.width + 10;
+      this.height = defaultValue.height + 10;
+      this.rotation = -0.1;
+      this.glowFilter.uniformGroup.uniforms.outerStrength = 5;
     } else {
-      if (isMouseOverWateringCan) {
-        if (this.isMouseOver === true) return;
-
-        this.width = defaultValue.width + 10;
-        this.height = defaultValue.height + 10;
-        this.rotation = this.rotation - 0.1;
-        this.isMouseOver = true;
-      } else {
-        if (this.isMouseOver === false) return;
-
-        this.width = defaultValue.width;
-        this.height = defaultValue.height;
-        this.rotation = this.rotation + 0.1;
-        this.isMouseOver = false;
-      }
+      this.width = defaultValue.width;
+      this.height = defaultValue.height;
+      this.rotation = 0;
+      this.glowFilter.uniformGroup.uniforms.outerStrength = 0;
     }
   }
 }

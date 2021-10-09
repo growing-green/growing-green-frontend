@@ -30,7 +30,7 @@ export default function RooomCanvas() {
     canvas.current.appendChild(app.view);
     app.start();
 
-    const background = new Background(app, true); // isBlindUp
+    const background = new Background(app);
     app.stage.addChild(background.container);
 
     const plant = new PlantContainer(app);
@@ -42,10 +42,10 @@ export default function RooomCanvas() {
     guage = new GuageContainer(app);
     app.stage.addChild(guage.container);
 
-    app.ticker.add(increaseWateringGuage);
+    app.ticker.add(increaseWaterGuage);
   }
 
-  function increaseWateringGuage(e) {
+  function increaseWaterGuage(e) {
     const totalGuageWidth = 400;
     const wateringPeriod = 5;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;

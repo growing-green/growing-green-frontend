@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import WateringCan from './WateringCan';
 import Nail from './Nail';
 
-export default class Watering {
+export default class WateringContainer {
   constructor(app) {
     this.app = app;
     this.plantContainer = app.stage.children[1];

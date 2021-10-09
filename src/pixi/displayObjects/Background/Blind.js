@@ -3,7 +3,7 @@ const TextureCache = PIXI.utils.TextureCache;
 
 export default class Blind extends PIXI.Sprite {
   constructor(x = 0, y = 0, isBlindUp) {
-    const texture = TextureCache['blindHead'];
+    const texture = TextureCache['blind1.png'];
     super(texture);
 
     this.anchor.set(0.5);

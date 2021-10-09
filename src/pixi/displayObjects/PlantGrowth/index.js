@@ -33,8 +33,8 @@ export default class PlantGrowth {
 
     this.plant.anchor.set(0.5, 1);
     this.plant.position.set(800, 600);
-    this.plant.scale.set(1, 1);
     this.plant.animationSpeed = 0.01;
+    this.blind.loop = false;
     this.plant.play();
 
     this.filter = new AdvancedBloomFilter(0.5, 0.5, 0.6, 0, 10);

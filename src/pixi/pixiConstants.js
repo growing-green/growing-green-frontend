@@ -9,8 +9,8 @@ export const imagePath = [
   { alias: 'blindHead', path: 'images/furniture/blind_head.png' },
   { alias: 'dayTimeLandscape', path: 'images/landscapes/day.png' },
   { alias: 'nail', path: 'images/furniture/nail.png' },
-  { alias: 'blind', path: 'images/furniture/blind.png' },
   { alias: 'defaultPlant', path: '../images/plants/default_plant.json' },
+  { alias: 'blind', path: '../images/furniture/blind.json' },
 ];
 
 export const plantTypes = {

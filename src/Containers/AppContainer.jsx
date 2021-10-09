@@ -12,6 +12,7 @@ import ErrorBox from '../components/ErrorBox';
 
 import theme from '../assets/styles/theme';
 import { imageLoader } from '../pixi';
+import wall from '../assets/images/furniture/wall.jpg';
 
 export default function AppContainer() {
   const { user } = useSelector((state) => state.user);
@@ -72,7 +73,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.baseTheme.colors.ivory};
+  background-image: url(${wall});
   position: relative;
   z-index: 1;
   text-align: center;

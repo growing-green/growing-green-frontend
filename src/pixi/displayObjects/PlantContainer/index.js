@@ -4,12 +4,13 @@ import Plant from './Plant';
 import Pot from './Pot';
 
 export default class PlantContainer {
-  constructor(app) {
+  constructor(app, plantInfo = { species: 'treePlant', size: 2 }) {
     this.app = app;
 
     this.container = new PIXI.Container();
     this.pot = null;
     this.plant = null;
+    this.plantInfo = plantInfo;
 
     this.createSpriteAndRope();
     this.render();
@@ -17,12 +18,7 @@ export default class PlantContainer {
 
   createSpriteAndRope() {
     this.pot = new Pot(this.app.screen.width / 2, 380);
-    this.plant = new Plant(
-      this.app,
-      this.app.screen.width / 2,
-      320,
-      this.pot.height,
-    );
+    this.plant = new Plant(this.app, this.pot.height, this.plantInfo);
   }
 
   render() {

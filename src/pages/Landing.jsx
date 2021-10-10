@@ -10,34 +10,31 @@ import DesciptionText from '../components/DescrptionText';
 import Button from '../components/Button';
 import PlantShelf from '../components/PlantShelf';
 import ErrorBox from '../components/ErrorBox';
-import Loading from '../components/Loading';
 
-export default function LandingContainer() {
+export default function Landing() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { isLogin, error } = useSelector((state) => state.user);
 
   if (error) {
     return <ErrorBox message={error} />;
   }
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const loginWithGoogle = async () => {
-    const auth = getAuth();
-    const {
-      user: { displayName, email, photoURL },
-    } = await signInWithPopup(auth, new GoogleAuthProvider());
+    try {
+      const auth = getAuth();
+      const {
+        user: { displayName, email, photoURL },
+      } = await signInWithPopup(auth, new GoogleAuthProvider());
 
-    dispatch(
-      loginSuccess({
-        email,
-        name: displayName,
-        photo_url: photoURL,
-      }),
-    );
+      await dispatch(
+        loginSuccess({
+          email,
+          name: displayName,
+          photo_url: photoURL,
+        }),
+      );
+    } catch {}
   };
 
   const logout = () => {
@@ -76,7 +73,7 @@ export default function LandingContainer() {
       <PlantShelf />
       <DesciptionText>Touch the plant!</DesciptionText>
       <ButtonWrapper>
-        {user ? renderStartButton() : renderLoginButton()}
+        {isLogin ? renderStartButton() : renderLoginButton()}
         <Button
           onClick={logout}
           variant="outline"

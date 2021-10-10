@@ -8,12 +8,17 @@ import Button from './Button';
 export default function ErrorBox({ message }) {
   const history = useHistory();
 
+  const goHome = () => {
+    history.push('/');
+    window.location.reload();
+  };
+
   return (
     <Wrapper>
       <h1>Error!</h1>
       <h3>{message}</h3>
       <Button
-        onClick={() => history.push('/')}
+        onClick={goHome}
         label="Back"
         variant="outline"
         size="small"

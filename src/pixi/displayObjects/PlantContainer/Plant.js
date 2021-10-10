@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 import { isMouseXOver, isMouseYOver } from '../../../utils/isMouseOver';
+import { plantTypes, plantPositions } from '../../pixiConstants';
+
 const TextureCache = PIXI.utils.TextureCache;
-
 const ropeLength = 8000 / 5;
-
 let points = [];
 let count = 0;
 
@@ -12,15 +12,19 @@ for (let i = 0; i < 5; i++) {
 }
 
 export default class Plant extends PIXI.SimpleRope {
-  constructor(app, x = 0, y = 0, potHeight) {
-    const texture = TextureCache['youngStageOfPlant'];
+  constructor(app, potHeight, plant) {
+    const { species, size } = plant;
+    const type = plantTypes[species];
+    const texture = TextureCache[`${type}${size}.png`];
     super(texture, points);
-
     this.app = app;
-    this.width = 185;
-    this.height = 160;
-    this.x = x - this.width / 2;
-    this.y = y;
+
+    this.width = plantPositions[species][size].width;
+    this.height = plantPositions[species][size].height;
+    this.x =
+      (this.app.screen.width - this.width) / 2 +
+      plantPositions[species][size].x;
+    this.y = plantPositions[species][size].y;
     this.potHeight = potHeight;
 
     this.isMouseOver = false;

@@ -1,52 +1,50 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiController from '../../configs/apiController';
+import { MESSAGES } from '../../constants';
 
 export const loginSuccess = createAsyncThunk(
   'users/login',
   async ({ name, email, photo_url }, { rejectWithValue }) => {
     try {
-      const { data } = await apiController.post('users/login', {
+      const response = await apiController.post('users/login', {
         email,
         name,
         photo_url,
       });
-      return data;
-    } catch (err) {
-      return rejectWithValue(err.response.data.message);
+
+      return response.data;
+    } catch {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
     }
   },
 );
 
-const initialUser = localStorage.getItem('user')
-  ? JSON.parse(localStorage.getItem('user'))
-  : null;
+const isLogin = localStorage.getItem('token') ? true : false;
 
 export const slice = createSlice({
   name: 'user',
   initialState: {
-    user: initialUser,
-    isLoading: false,
+    info: null,
     error: null,
+    isLogin,
   },
   reducers: {
     logoutSuccess: (state) => {
-      state.user = null;
+      state.info = null;
+      state.isLogin = false;
       localStorage.removeItem('token');
     },
   },
-  extraReducers: {
-    [loginSuccess.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.user = action.payload.user;
-      state.error = null;
+  extraReducers: (builder) => {
+    builder.addCase(loginSuccess.fulfilled, (state, action) => {
+      state.info = action.payload.user;
+      state.isLogin = true;
 
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-    },
-    [loginSuccess.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.user = initialUser;
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
+    });
+    builder.addCase(loginSuccess.rejected, (state, action) => {
       state.error = action.payload;
-    },
+    });
   },
 });
 

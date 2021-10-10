@@ -4,25 +4,26 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import Landing from './LandingContainer';
-import Plant from './PlantContainer';
-import NewPlant from './NewPlantContainer';
-import Calendar from './CalendarContainer';
+import Landing from './Landing';
+import Plant from './Plant';
+import NewPlant from './NewPlant';
+import Calendar from './Calendar';
 import ErrorBox from '../components/ErrorBox';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import theme from '../assets/styles/theme';
 import { imageLoader } from '../pixi';
 import wall from '../assets/images/furniture/wall.jpg';
 
-export default function AppContainer() {
-  const { user } = useSelector((state) => state.user);
+export default function App() {
+  const { isLogin } = useSelector((state) => state.user);
 
   useEffect(() => {
     imageLoader();
   }, []);
 
   const privateRoute = (Component) => {
-    return user ? <Component /> : <Redirect to={{ pathname: '/' }} />;
+    return isLogin ? <Component /> : <Redirect to={{ pathname: '/' }} />;
   };
 
   const notFoundErrorComponent = () => {
@@ -35,10 +36,18 @@ export default function AppContainer() {
         <GlobalStyle theme={theme} />
         <Wrapper>
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route path="/plant" component={() => privateRoute(Plant)} />
-            <Route path="/plant/new" component={() => privateRoute(NewPlant)} />
-            <Route path="/calendar" component={() => privateRoute(Calendar)} />
+            <ErrorBoundary>
+              <Route exact path="/" component={Landing} />
+              <Route path="/plant" component={() => privateRoute(Plant)} />
+              <Route
+                path="/plant/new"
+                component={() => privateRoute(NewPlant)}
+              />
+              <Route
+                path="/calendar"
+                component={() => privateRoute(Calendar)}
+              />
+            </ErrorBoundary>
             <Route component={notFoundErrorComponent} />
           </Switch>
         </Wrapper>

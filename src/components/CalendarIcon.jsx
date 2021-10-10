@@ -90,14 +90,13 @@ const Wrapper = styled.div`
       margin: 0;
       vertical-align: middle;
       display: table-cell;
-      font-size: 2.5em;
+      font-size: 2.3em;
     }
 
     .week-name {
-      margin: 0;
       font-weight: 400;
-      margin-top: -0.5rem;
-      margin-bottom: 1rem;
+      margin-top: -0.1rem;
+      margin-bottom: 0.8rem;
       font-size: 1em;
     }
   }

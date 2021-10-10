@@ -7,7 +7,7 @@ import Landscape from './LandScape';
 const TextureCache = PIXI.utils.TextureCache;
 
 export default class Background {
-  constructor(app, isBlindUp = false) {
+  constructor(app, isBlindUp = true) {
     this.app = app;
 
     this.initailBlindUp = isBlindUp;

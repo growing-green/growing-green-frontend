@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 
-import { temps } from '../constants';
+import { TEMPS } from '../constants';
 import { getCurrentHeight } from '../utils/getCurrentHeight';
 
 export default function Thermometer({ temperature, height, theme }) {
@@ -17,7 +17,7 @@ export default function Thermometer({ temperature, height, theme }) {
         <Bar currentHeight={currentHeight}></Bar>
       </BackgroundBar>
       <ScaleWrapper height={height} theme={theme}>
-        {temps.map((temp) => {
+        {TEMPS.map((temp) => {
           if (temp === 0 || temp === -30 || temp === 50) {
             return (
               <div className={`display-temp temp-${temp}`} key={temp}>
@@ -38,7 +38,7 @@ const Container = styled.div`
   position: relative;
   width: 70px;
   height: ${({ height }) => `${height}px`};
-  background-color: #fde581;
+  background-color: #d3dfe3;
   border-radius: 13px;
 
   padding: 1.2rem 0.2rem;

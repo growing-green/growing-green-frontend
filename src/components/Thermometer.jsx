@@ -1,11 +1,22 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { TEMPS } from '../constants';
 import { getCurrentHeight } from '../utils/getCurrentHeight';
+import { getCurrentWeather } from '../redux/modules/environments';
 
-export default function Thermometer({ temperature, height, theme }) {
+export default function Thermometer({ height, theme }) {
   const [currentHeight, setCurrentHeight] = useState(0);
+  const { iconPath, temperature, isDay, weather } = useSelector(
+    (state) => state.environments,
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentWeather());
+  }, [dispatch]);
 
   useEffect(() => {
     setCurrentHeight(getCurrentHeight(temperature, height));
@@ -96,7 +107,7 @@ const ScaleWrapper = styled.div`
 
 const BackgroundBar = styled.div`
   position: absolute;
-  left: 50%;
+  left: 2.4rem;
   margin-left: -5px;
   display: flex;
   align-items: flex-end;

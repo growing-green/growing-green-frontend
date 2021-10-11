@@ -12,19 +12,20 @@ for (let i = 0; i < 5; i++) {
 }
 
 export default class Plant extends PIXI.SimpleRope {
-  constructor(app, potHeight, plant) {
-    const { species, size } = plant;
-    const type = plantTypes[species];
-    const texture = TextureCache[`${type}${size}.png`];
+  constructor(app, potHeight, type, growth_stage) {
+    const typeName = plantTypes[type];
+    const texture = TextureCache[`${typeName}${growth_stage}.png`];
+
     super(texture, points);
     this.app = app;
+    this.type = type;
 
-    this.width = plantPositions[species][size].width;
-    this.height = plantPositions[species][size].height;
+    this.width = plantPositions[type][growth_stage].width;
+    this.height = plantPositions[type][growth_stage].height;
     this.x =
       (this.app.screen.width - this.width) / 2 +
-      plantPositions[species][size].x;
-    this.y = plantPositions[species][size].y;
+      plantPositions[type][growth_stage].x;
+    this.y = plantPositions[type][growth_stage].y;
     this.potHeight = potHeight;
 
     this.isMouseOver = false;
@@ -63,7 +64,7 @@ export default class Plant extends PIXI.SimpleRope {
   }
 
   defaultLoop() {
-    count += 0.08;
+    count += 0.05;
 
     for (let i = 0; i < points.length; i++) {
       points[i].y = Math.cos(i * 3 + count);

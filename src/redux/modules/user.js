@@ -19,28 +19,46 @@ export const loginSuccess = createAsyncThunk(
   },
 );
 
-const isLogin = localStorage.getItem('token') ? true : false;
+export const getUser = createAsyncThunk(
+  'users/getUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiController.get('users/auth');
+
+      return response.data;
+    } catch {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
+    }
+  },
+);
+
+const iniitalUser = {
+  _id: '',
+  email: '',
+  name: '',
+  photo_url: '',
+  plant_ids: [],
+};
 
 export const slice = createSlice({
   name: 'user',
   initialState: {
-    info: null,
+    info: iniitalUser,
     error: null,
-    isLogin,
+    isLogin: Boolean(localStorage.getItem('user')),
   },
   reducers: {
     logoutSuccess: (state) => {
-      state.info = null;
+      state.info = iniitalUser;
       state.isLogin = false;
-      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginSuccess.fulfilled, (state, action) => {
       state.info = action.payload.user;
       state.isLogin = true;
-
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
+      localStorage.setItem('user', JSON.stringify(action.payload));
     });
     builder.addCase(loginSuccess.rejected, (state, action) => {
       state.error = action.payload;

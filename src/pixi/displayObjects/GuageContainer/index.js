@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import Guage from './Guage';
 
 export default class GuageContainer {
-  constructor(app) {
+  constructor(app, sunGuage, waterGuage) {
     this.app = app;
 
     this.container = new PIXI.Container();
@@ -18,6 +18,14 @@ export default class GuageContainer {
     this.waterGuageLine = null;
     this.sunGuageLine = null;
 
+    this.defaultWaterGuage = waterGuage.defaultGuage;
+    this.currentWaterGuage = waterGuage.currentGuage;
+    this.eachWaterGuageWidth = 400 / this.defaultWaterGuage;
+
+    this.defaultSunGuage = sunGuage.defaultGuage;
+    this.currentSunGuage = sunGuage.currentGuage;
+    this.eachSunGuageWidth = 400 / this.defaultSunGuage;
+
     this.createTexture();
     this.createSprite();
     this.createLine();
@@ -25,12 +33,16 @@ export default class GuageContainer {
     this.render();
   }
   createTexture() {
+    const waterGuageWidth = this.eachWaterGuageWidth * this.currentWaterGuage;
     this.waterTexture = this.app.renderer.generateTexture(
-      new PIXI.Graphics().beginFill(0x8bd6f8).drawRect(0, 0, 100, 50),
+      new PIXI.Graphics()
+        .beginFill(0x8bd6f8)
+        .drawRect(0, 0, waterGuageWidth, 50),
     );
 
+    const sunGuageWidth = this.eachSunGuageWidth * this.currentSunGuage;
     this.sunTexture = this.app.renderer.generateTexture(
-      new PIXI.Graphics().beginFill(0xffc438).drawRect(0, 0, 100, 50),
+      new PIXI.Graphics().beginFill(0xffc438).drawRect(0, 0, sunGuageWidth, 50),
     );
   }
 

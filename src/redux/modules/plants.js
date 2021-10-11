@@ -2,35 +2,41 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiController from '../../configs/apiController';
 import { MESSAGES } from '../../constants';
 
-export const fetchAllPlant = createAsyncThunk(
-  'plants/fetchAllPlant',
+export const getAllPlantsByUserId = createAsyncThunk(
+  'plants/fetchAllPlants',
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiController.get('plants');
 
       return response.data;
     } catch (err) {
+      console.log(err);
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
     }
   },
 );
 
 export const slice = createSlice({
-  name: 'user',
+  name: 'plants',
   initialState: {
-    allPlant: [],
+    allPlants: {},
     error: null,
     isLoading: false,
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAllPlant.pending, (state) => {
+    builder.addCase(getAllPlantsByUserId.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(fetchAllPlant.fulfilled, (state, action) => {
-      state.allPlant = action.payload;
+
+    builder.addCase(getAllPlantsByUserId.fulfilled, (state, action) => {
+      action.payload.forEach((plant) => {
+        state.allPlants[plant._id] = plant;
+      });
+
+      state.isLoading = false;
     });
-    builder.addCase(fetchAllPlant.rejected, (state) => {
+    builder.addCase(getAllPlantsByUserId.rejected, (state) => {
       state.isLoading = false;
     });
   },

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
 import { loginSuccess, logoutSuccess } from '../redux/modules/user';
+import { getAllPlantsByUserId } from '../redux/modules/plants';
 
 import DesciptionText from '../components/DescrptionText';
 import Button from '../components/Button';
@@ -15,19 +16,28 @@ export default function Landing() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isLogin, error } = useSelector((state) => state.user);
+  const { allPlants } = useSelector((state) => state.plants);
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+
+    if (user) {
+      dispatch(getAllPlantsByUserId());
+    }
+  }, [isLogin, dispatch]);
 
   if (error) {
     return <ErrorBox message={error} />;
   }
 
-  const loginWithGoogle = async () => {
+  async function loginWithGoogle() {
     try {
       const auth = getAuth();
       const {
         user: { displayName, email, photoURL },
       } = await signInWithPopup(auth, new GoogleAuthProvider());
 
-      await dispatch(
+      dispatch(
         loginSuccess({
           email,
           name: displayName,
@@ -35,7 +45,17 @@ export default function Landing() {
         }),
       );
     } catch {}
-  };
+  }
+
+  function onStartButtonClick() {
+    const allPlantIds = Object.keys(allPlants);
+
+    if (allPlantIds.length > 0) {
+      return history.push(`/plants/${allPlantIds[0]}`);
+    }
+
+    history.push('plants/new');
+  }
 
   const logout = () => {
     return dispatch(logoutSuccess());
@@ -61,9 +81,7 @@ export default function Landing() {
         color="green"
         size="large"
         label="S T A R T"
-        onClick={() => {
-          history.push('/plant');
-        }}
+        onClick={onStartButtonClick}
       />
     );
   };

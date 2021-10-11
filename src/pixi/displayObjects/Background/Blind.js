@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 const TextureCache = PIXI.utils.TextureCache;
 
 export default class Blind extends PIXI.Sprite {
-  constructor(x = 0, y = 0, isBlindUp) {
+  constructor(x = 0, y = 0) {
     const texture = TextureCache['blind1.png'];
     super(texture);
 
@@ -11,7 +11,5 @@ export default class Blind extends PIXI.Sprite {
     this.height = 55;
     this.x = x;
     this.y = y;
-
-    this.isUp = isBlindUp;
   }
 }

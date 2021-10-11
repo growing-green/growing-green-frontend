@@ -22,11 +22,12 @@ export default function Plant() {
   const currentIndex = plantIds.indexOf(plantId);
   const prevPlantId = plantIds[currentIndex - 1];
   const nextPlantId = plantIds[currentIndex + 1];
+
   const [currentPlant, setCurrentPlant] = useState(null);
 
   useEffect(() => {
     dispatch(getAllPlantsByUserId());
-  }, [dispatch]);
+  }, [dispatch, plantId]);
 
   useEffect(() => {
     setCurrentPlant(allPlants[plantId]);
@@ -44,7 +45,7 @@ export default function Plant() {
     return (
       <>
         <TermometerAndCalendar>
-          <Thermometer height="120" temperature="30" />
+          <Thermometer height="120" temperature="30" icon />
           <CalendarIcon />
         </TermometerAndCalendar>
         {prevPlantId && (
@@ -53,7 +54,11 @@ export default function Plant() {
           </Link>
         )}
         <PlantCanvas plant={currentPlant} />
-        {nextPlantId && (
+        {nextPlantId ? (
+          <Link to={nextPlantId}>
+            <RightArrow src={rightArrow} alr="right arrow" />
+          </Link>
+        ) : (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>

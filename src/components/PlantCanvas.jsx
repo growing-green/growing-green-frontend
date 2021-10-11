@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
+import apiController from '../configs/apiController';
 
 import PlantContainer from '../pixi/displayObjects/PlantContainer';
 import Background from '../pixi/displayObjects/Background';
@@ -8,6 +9,8 @@ import WateringContainer from '../pixi/displayObjects/WateringContainer';
 import GuageContainer from '../pixi/displayObjects/GuageContainer';
 
 import { imagePath } from '../pixi/pixiConstants';
+import { waterGuageValidator } from '../utils/waterGuageValidator';
+import { penaltyPointValidator } from '../utils/penaltyPointValidator';
 
 const loader = PIXI.Loader.shared;
 
@@ -20,6 +23,7 @@ export default function PlantCanvas({ plant }) {
   let app;
   let watering;
   let guage;
+  let background;
 
   function loadImage() {
     return new Promise((resolve) => {
@@ -50,34 +54,41 @@ export default function PlantCanvas({ plant }) {
       antialias: true,
     });
 
+    myCanvas.appendChild(app.view);
+
+    if (plantInfo.isLast === true) {
+      const lastContainer = new PIXI.Container();
+
+      app.stage.addChild(lastContainer);
+    }
+
     const {
-      growth_stage,
-      is_blind_up,
+      _id,
+      growthStage,
+      isBlindUp,
       type,
       name,
       species,
-      sun_guage,
-      water_guage,
+      sunGuage,
+      waterGuage,
     } = plantInfo;
 
-    myCanvas.appendChild(app.view);
-
-    const background = new Background(app, is_blind_up);
+    background = new Background(app, isBlindUp, _id);
     app.stage.addChild(background.container);
 
-    const plant = new PlantContainer(app, name, species, type, growth_stage);
+    const plant = new PlantContainer(app, name, species, type, growthStage);
     app.stage.addChild(plant.container);
 
     watering = new WateringContainer(app);
     app.stage.addChild(watering.container);
 
-    guage = new GuageContainer(app, sun_guage, water_guage);
+    guage = new GuageContainer(app, sunGuage, waterGuage);
     app.stage.addChild(guage.container);
 
-    app.ticker.add(increaseWaterGuage);
+    app.ticker.add(loop);
   }
 
-  function increaseWaterGuage(e) {
+  async function loop(e) {
     const totalGuageWidth = 400;
     const wateringPeriod = 5;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
@@ -85,6 +96,29 @@ export default function PlantCanvas({ plant }) {
     if (watering.wateringCan.isWatering === true) {
       guage.waterGuage.width = guage.waterGuage.width + eachGuageWidth;
       watering.wateringCan.isWatering = false;
+      await increaseWaterGuage(plant);
+    }
+  }
+
+  async function increaseWaterGuage(plant) {
+    const isValid = waterGuageValidator(plant);
+
+    if (isValid === true) {
+      await apiController.put(`plants/${plant._id}`, {
+        state: 'water',
+        isIncrease: true,
+      });
+    } else {
+      const isAlive = penaltyPointValidator(plant);
+
+      if (isAlive === true) {
+        await apiController.put(`plants/${plant._id}`, {
+          state: 'penalty',
+          isIncrease: true,
+        });
+      } else {
+        // await apiController.delete(`plants/${plant._id}`);
+      }
     }
   }
 
@@ -93,10 +127,6 @@ export default function PlantCanvas({ plant }) {
       const myCanvas = canvas?.current;
       setup(myCanvas, plant);
     })(plant);
-
-    return () => {
-      canvas.current = null;
-    };
   }, [plant]);
 
   return (

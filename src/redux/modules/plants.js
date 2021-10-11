@@ -33,9 +33,12 @@ export const slice = createSlice({
         state.allPlants[plant._id] = plant;
       });
 
+      state.allPlants['last'] = {};
+
       state.isLoading = false;
     });
-    builder.addCase(getAllPlantsByUserId.rejected, (state) => {
+    builder.addCase(getAllPlantsByUserId.rejected, (state, action) => {
+      state.error = action.payload;
       state.isLoading = false;
     });
   },

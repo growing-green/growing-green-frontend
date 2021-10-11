@@ -4,14 +4,16 @@ import PullSwitch from './PullSwitch';
 import Window from './Window';
 import Landscape from './LandScape';
 
+import apiController from '../../../configs/apiController';
+
 const TextureCache = PIXI.utils.TextureCache;
 
 export default class Background {
-  constructor(app, isBlindUp = true) {
+  constructor(app, isBlindUp = true, plantId) {
     this.app = app;
 
-    this.initailBlindUp = isBlindUp;
     this.isBlindUp = isBlindUp;
+    this.plantId = plantId;
 
     this.container = new PIXI.Container();
     this.animationBlind = null;
@@ -26,28 +28,37 @@ export default class Background {
     this.app.ticker.add(this.handleBlind, this);
   }
 
-  handleBlind() {
-    if (this.pullSwitch.isMouseClick === true) {
-      if (this.isBlindUp === true) {
-        this.animationBlind.animationSpeed = 0.45;
-        this.animationBlind.play();
-        this.isBlindUp = false;
-      } else {
-        this.animationBlind.animationSpeed = -Math.abs(
-          this.animationBlind.animationSpeed,
-        );
-        this.animationBlind.play();
-        this.isBlindUp = true;
-      }
+  async handleBlind() {
+    if (this.pullSwitch.isMouseClick === false) return;
 
-      this.pullSwitch.isMouseClick = false;
+    if (this.isBlindUp === true) {
+      this.animationBlind.play();
+      this.isBlindUp = false;
+      this.animationBlind.animationSpeed = Math.abs(
+        this.animationBlind.animationSpeed,
+      );
+    } else {
+      this.animationBlind.animationSpeed = -Math.abs(
+        this.animationBlind.animationSpeed,
+      );
+      this.animationBlind.play();
+      this.isBlindUp = true;
     }
+
+    this.pullSwitch.isMouseClick = false;
+    await this.updateBlind();
+  }
+
+  async updateBlind() {
+    await apiController.put(`plants/${this.plantId}`, {
+      state: 'blind',
+    });
   }
 
   createSprite() {
     let textures = [];
 
-    if (this.initailBlindUp === true) {
+    if (this.isBlindUp === true) {
       for (let i = 1; i < 7; i++) {
         textures.push(TextureCache[`blind${i}.png`]);
       }
@@ -60,7 +71,13 @@ export default class Background {
     this.animationBlind = new PIXI.AnimatedSprite(textures);
     this.animationBlind.anchor.set(0.5, 0);
     this.animationBlind.position.set(this.app.screen.width / 2, 30);
-    this.animationBlind.animationSpeed = 0.45;
+
+    if (this.isBlindUp === true) {
+      this.animationBlind.animationSpeed = 0.45;
+    } else {
+      this.animationBlind.animationSpeed = -0.45;
+    }
+
     this.animationBlind.width = 490;
 
     this.animationBlind.loop = false;

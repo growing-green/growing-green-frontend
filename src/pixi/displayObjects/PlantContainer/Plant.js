@@ -15,7 +15,6 @@ export default class Plant extends PIXI.SimpleRope {
   constructor(app, potHeight, type, growth_stage) {
     const typeName = plantTypes[type];
     const texture = TextureCache[`${typeName}${growth_stage}.png`];
-    console.log(`${typeName}${growth_stage}.png`);
 
     super(texture, points);
     this.app = app;

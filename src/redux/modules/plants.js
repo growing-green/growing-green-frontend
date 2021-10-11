@@ -10,7 +10,6 @@ export const getAllPlantsByUserId = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
     }
   },

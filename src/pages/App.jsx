@@ -12,15 +12,10 @@ import ErrorBox from '../components/ErrorBox';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 import theme from '../assets/styles/theme';
-import { imageLoader } from '../pixi';
 import wall from '../assets/images/furniture/wall.jpg';
 
 export default function App() {
   const { isLogin } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    imageLoader();
-  }, []);
 
   const privateRoute = (Component) => {
     return isLogin ? <Component /> : <Redirect to={{ pathname: '/' }} />;
@@ -38,9 +33,12 @@ export default function App() {
           <Switch>
             <ErrorBoundary>
               <Route exact path="/" component={Landing} />
-              <Route path="/plant" component={() => privateRoute(Plant)} />
               <Route
-                path="/plant/new"
+                path="/plants/:plantId"
+                component={() => privateRoute(Plant)}
+              />
+              <Route
+                path="/plants/new"
                 component={() => privateRoute(NewPlant)}
               />
               <Route

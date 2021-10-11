@@ -14,7 +14,6 @@ export default class Background {
     this.isBlindUp = isBlindUp;
 
     this.container = new PIXI.Container();
-    this.blind = null;
     this.animationBlind = null;
     this.pullSwitch = null;
     this.window = null;

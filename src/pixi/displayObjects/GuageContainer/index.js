@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import Guage from './Guage';
 
 export default class GuageContainer {
-  constructor(app) {
+  constructor(app, sunGuage, waterGuage) {
     this.app = app;
 
     this.container = new PIXI.Container();

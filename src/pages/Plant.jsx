@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { getAllPlantsByUserId } from '../redux/modules/plants';
 
 import Thermometer from '../components/Thermometer';
 import CalendarIcon from '../components/CalendarIcon';
@@ -8,35 +10,57 @@ import PlantCanvas from '../components/PlantCanvas';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 
-import { fetchAllPlant } from '../redux/modules/plants';
+import leftArrow from '../assets/arrows/left_arrow.png';
+import rightArrow from '../assets/arrows/right_arrow.png';
 
 export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
+  const { plantId } = useParams();
   const dispatch = useDispatch();
 
+  const plantIds = Object.keys(allPlants);
+  const currentIndex = plantIds.indexOf(plantId);
+  const prevPlantId = plantIds[currentIndex - 1];
+  const nextPlantId = plantIds[currentIndex + 1];
+  const [currentPlant, setCurrentPlant] = useState(null);
+
   useEffect(() => {
-    dispatch(fetchAllPlant());
-  }, [allPlants, dispatch]);
+    dispatch(getAllPlantsByUserId());
+  }, [dispatch]);
 
-  const renderError = () => {
+  useEffect(() => {
+    setCurrentPlant(allPlants[plantId]);
+  }, [plantId, allPlants]);
+
+  function renderError() {
     return <ErrorBox message={error} />;
-  };
+  }
 
-  const renderLoading = () => {
+  function renderLoading() {
     return <Loading />;
-  };
+  }
 
-  const renderPage = () => {
+  function renderPage() {
     return (
       <>
         <TermometerAndCalendar>
           <Thermometer height="120" temperature="30" />
           <CalendarIcon />
         </TermometerAndCalendar>
-        <PlantCanvas plants={allPlants} />
+        {prevPlantId && (
+          <Link to={prevPlantId}>
+            <LeftArrow src={leftArrow} alt="left arrow button" />
+          </Link>
+        )}
+        <PlantCanvas plant={currentPlant} />
+        {nextPlantId && (
+          <Link to={nextPlantId}>
+            <RightArrow src={rightArrow} alr="right arrow" />
+          </Link>
+        )}
       </>
     );
-  };
+  }
 
   return (
     <Container>
@@ -61,4 +85,18 @@ const TermometerAndCalendar = styled.div`
   justify-content: flex-start;
   align-items: center;
   align-self: flex-start;
+`;
+
+const LeftArrow = styled.img`
+  position: absolute;
+  left: 8rem;
+  top: 14rem;
+  width: 150px;
+`;
+
+const RightArrow = styled.img`
+  position: absolute;
+  right: 8rem;
+  top: 14rem;
+  width: 150px;
 `;

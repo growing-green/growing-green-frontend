@@ -24,15 +24,9 @@ export default function Plant() {
   const prevPlantId = plantIds[currentIndex - 1];
   const nextPlantId = plantIds[currentIndex + 1];
 
-  const [currentPlant, setCurrentPlant] = useState(null);
-
   useEffect(() => {
     dispatch(getAllPlantsByUserId());
   }, [dispatch, plantId]);
-
-  useEffect(() => {
-    setCurrentPlant(allPlants[plantId]);
-  }, [plantId, allPlants]);
 
   function renderError() {
     return <ErrorBox message={error} />;
@@ -54,12 +48,8 @@ export default function Plant() {
             <LeftArrow src={leftArrow} alt="left arrow button" />
           </Link>
         )}
-        <PlantCanvas plant={currentPlant} />
-        {nextPlantId ? (
-          <Link to={nextPlantId}>
-            <RightArrow src={rightArrow} alr="right arrow" />
-          </Link>
-        ) : (
+        <PlantCanvas plant={allPlants.plantId} />
+        {nextPlantId && (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>

@@ -4,14 +4,12 @@ import Plant from './Plant';
 import Pot from './Pot';
 
 export default class PlantContainer {
-  constructor(app, name, species, type, growthStage) {
+  constructor(app, type, growthStage) {
     this.app = app;
 
     this.container = new PIXI.Container();
     this.pot = null;
     this.plant = null;
-    this.name = name;
-    this.species = species;
     this.type = type;
     this.growthStage = growthStage;
 

@@ -9,7 +9,7 @@ import apiController from '../../../configs/apiController';
 const TextureCache = PIXI.utils.TextureCache;
 
 export default class Background {
-  constructor(app, isBlindUp = true, plantId) {
+  constructor(app, name, species, isBlindUp = true, plantId) {
     this.app = app;
 
     this.isBlindUp = isBlindUp;
@@ -20,6 +20,8 @@ export default class Background {
     this.pullSwitch = null;
     this.window = null;
     this.landscape = null;
+    this.name = name;
+    this.species = species;
 
     this.createSprite();
 
@@ -89,6 +91,26 @@ export default class Background {
       this.app.screen.width / 2,
       this.window.height / 2 + 10,
     );
+
+    this.nameText = new PIXI.Text(`<${this.name}>`, {
+      fontFamily: 'Arial',
+      fontSize: 24,
+      fill: 0x333333,
+      align: 'center',
+    });
+    this.nameText.anchor.set(0.5);
+    this.nameText.x = this.app.screen.width / 2;
+    this.nameText.y = 120;
+
+    this.speciesText = new PIXI.Text(this.species, {
+      fontFamily: 'Arial',
+      fontSize: 18,
+      fill: 0x333333,
+      align: 'center',
+    });
+    this.speciesText.anchor.set(0.5);
+    this.speciesText.x = this.app.screen.width / 2;
+    this.speciesText.y = 160;
   }
 
   render() {
@@ -97,6 +119,8 @@ export default class Background {
       this.window,
       this.animationBlind,
       this.pullSwitch,
+      this.nameText,
+      this.speciesText,
     );
   }
 }

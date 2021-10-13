@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { getAllPlantsByUserId } from '../redux/modules/plants';
 
 import Thermometer from '../components/Thermometer';
@@ -17,6 +17,7 @@ export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
   const { plantId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const plantIds = Object.keys(allPlants);
   const currentIndex = plantIds.indexOf(plantId);
@@ -63,6 +64,9 @@ export default function Plant() {
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>
         )}
+        <NewPlantButton onClick={() => history.push('/create')}>
+          새로운 식물 추가하기
+        </NewPlantButton>
       </>
     );
   }
@@ -83,7 +87,7 @@ const Container = styled.div`
 const TermometerAndCalendar = styled.div`
   position: absolute;
   align-items: center;
-  left: 3rem;
+  left: 4rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -104,4 +108,12 @@ const RightArrow = styled.img`
   right: 8rem;
   top: 14rem;
   width: 150px;
+`;
+
+const NewPlantButton = styled.button`
+  position: absolute;
+  right: 4rem;
+  top: 8rem;
+  width: 100px;
+  height: 100px;
 `;

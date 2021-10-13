@@ -4,12 +4,12 @@ import { MESSAGES } from '../../constants';
 
 export const loginSuccess = createAsyncThunk(
   'users/login',
-  async ({ name, email, photo_url }, { rejectWithValue }) => {
+  async ({ name, email, photoURL }, { rejectWithValue }) => {
     try {
       const response = await apiController.post('users/login', {
         email,
         name,
-        photo_url,
+        photoURL,
       });
 
       return response.data;
@@ -36,8 +36,7 @@ const iniitalUser = {
   _id: '',
   email: '',
   name: '',
-  photo_url: '',
-  plant_ids: [],
+  photoURL: '',
 };
 
 export const slice = createSlice({

@@ -8,7 +8,7 @@ import { getCurrentWeather } from '../redux/modules/environments';
 
 export default function Thermometer({ height, theme }) {
   const [currentHeight, setCurrentHeight] = useState(0);
-  const { iconPath, temperature, isDay, weather } = useSelector(
+  const { temperature, isDay, weather } = useSelector(
     (state) => state.environments,
   );
 
@@ -49,13 +49,13 @@ const Container = styled.div`
   position: relative;
   width: 70px;
   height: ${({ height }) => `${height}px`};
-  background-color: #d3dfe3;
+  background-color: #d6d6d6;
   border-radius: 13px;
 
   padding: 1.2rem 0.2rem;
-  margin: 2rem 0;
+  margin: 6rem 0;
 
-  box-shadow: #999999 -10px 0px 25px -30px,
+  box-shadow: #dedede -10px 0px 25px -30px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
     rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 `;
@@ -83,16 +83,16 @@ const ScaleWrapper = styled.div`
     p {
       position: absolute;
       left: -22px;
-      top: -24px;
+      top: -23px;
       font-size: 0.9em;
-      font-family: 'Times New Roman';
     }
   }
 
   .temp-0 {
     width: 30px;
+
     p {
-      left: -10px;
+      left: -11px;
     }
   }
 
@@ -102,6 +102,10 @@ const ScaleWrapper = styled.div`
     width: 15px;
     border-radius: 10px;
     border: none;
+
+    p {
+      left: -27px;
+    }
   }
 `;
 

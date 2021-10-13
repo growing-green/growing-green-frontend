@@ -12,7 +12,7 @@ const baseTheme = {
     gray: '#444',
     red: '#b12f35',
     darkRed: '#892429',
-    ivory: '#fefef7',
+    ivory: '#fbfbf9',
   },
 };
 

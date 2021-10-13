@@ -42,6 +42,10 @@ export const plantPositions = {
       width: 185,
       height: 160,
     },
+    preview: {
+      x: 250,
+      y: 390,
+    },
   },
   treePlant: {
     1: {
@@ -62,6 +66,10 @@ export const plantPositions = {
       width: 185,
       height: 160,
     },
+    preview: {
+      x: 237,
+      y: 384,
+    },
   },
   cloverPlant: {
     1: {
@@ -81,6 +89,10 @@ export const plantPositions = {
       y: 320,
       width: 185,
       height: 160,
+    },
+    preview: {
+      x: 240,
+      y: 392,
     },
   },
 };

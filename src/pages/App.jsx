@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux';
 
 import Landing from './Landing';
 import Plant from './Plant';
-import NewPlant from './NewPlant';
+import SelectPlant from './SelectPlant';
 import Calendar from './Calendar';
+import CreatePlant from './CreatePlant';
 import ErrorBox from '../components/ErrorBox';
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -34,12 +35,19 @@ export default function App() {
             <ErrorBoundary>
               <Route exact path="/" component={Landing} />
               <Route
+                exact
                 path="/plants/:plantId"
                 component={() => privateRoute(Plant)}
               />
               <Route
-                path="/plants/new"
-                component={() => privateRoute(NewPlant)}
+                exact
+                path="/create"
+                component={() => privateRoute(SelectPlant)}
+              />
+              <Route
+                exact
+                path="/create/:plantNumber"
+                component={() => privateRoute(CreatePlant)}
               />
               <Route
                 path="/calendar"

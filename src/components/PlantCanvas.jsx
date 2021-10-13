@@ -56,12 +56,6 @@ export default function PlantCanvas({ plant }) {
 
     myCanvas.appendChild(app.view);
 
-    if (plantInfo.isLast === true) {
-      const lastContainer = new PIXI.Container();
-
-      app.stage.addChild(lastContainer);
-    }
-
     const {
       _id,
       growthStage,

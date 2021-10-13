@@ -7,7 +7,7 @@ import { imagePath } from '../pixi/pixiConstants';
 import styled from 'styled-components';
 import chair from '../assets/images/furniture/chair.png';
 import PlantGrowth from '../pixi/displayObjects/PlantGrowth';
-import Modal from '../components/Modal';
+import Modal from './Modal';
 
 const loader = PIXI.Loader.shared;
 

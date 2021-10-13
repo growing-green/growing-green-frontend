@@ -41,7 +41,7 @@ export default function Landing() {
         loginSuccess({
           email,
           name: displayName,
-          photo_url: photoURL,
+          photoURL,
         }),
       );
     } catch {}
@@ -54,7 +54,7 @@ export default function Landing() {
       return history.push(`/plants/${allPlantIds[0]}`);
     }
 
-    history.push('plants/new');
+    history.push('/new');
   }
 
   const logout = () => {

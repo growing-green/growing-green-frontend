@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 
 import { plantTypes } from '../../pixiConstants';
 import { AdvancedBloomFilter } from 'pixi-filters';
+import Pot from '../PlantContainer/Pot';
+import { plantPositions } from '../../../pixi/pixiConstants';
 
 const TextureCache = PIXI.utils.TextureCache;
 let count = 0;
@@ -13,6 +15,9 @@ export default class PlantGrowth {
 
     this.container = new PIXI.Container();
     this.type = plantTypes[type];
+    this.plantX = plantPositions[type].preview.x;
+    this.plantY = plantPositions[type].preview.y;
+
     this.plant = null;
 
     this.createSprite();
@@ -32,10 +37,10 @@ export default class PlantGrowth {
     this.plant = new PIXI.AnimatedSprite(textures);
 
     this.plant.anchor.set(0.5, 1);
-    this.plant.position.set(800, 600);
+    this.plant.position.set(this.plantX, this.plantY);
     this.plant.animationSpeed = 0.01;
-    this.blind.loop = false;
-    this.plant.play();
+
+    this.pot = new Pot(250, 380);
 
     this.filter = new AdvancedBloomFilter(0.5, 0.5, 0.6, 0, 10);
     this.plant.filters = [this.filter];
@@ -53,8 +58,6 @@ export default class PlantGrowth {
     }
 
     setTimeout(() => {
-      this.plant.width = 277;
-      this.plant.height = 286;
       this.filter.bloomScale = 0.0;
       this.filter.brightness = 1.09;
       this.plant.stop();
@@ -64,6 +67,6 @@ export default class PlantGrowth {
   }
 
   render() {
-    this.container.addChild(this.plant);
+    this.container.addChild(this.plant, this.pot);
   }
 }

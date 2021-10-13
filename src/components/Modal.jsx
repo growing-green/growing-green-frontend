@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 const Dimmed = styled.div`
-  z-index: 99;
+  z-index: 11;
   position: fixed;
   top: 0;
   left: 0;
@@ -35,12 +35,10 @@ const Dimmed = styled.div`
 `;
 
 const StyledModal = styled.div`
-  z-index: 999;
+  z-index: 12;
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 600px;
-  height: 450px;
   text-align: center;
   transform: translate(-50%, -50%);
   box-shadow: ${({ theme }) => theme.whiteShadow};

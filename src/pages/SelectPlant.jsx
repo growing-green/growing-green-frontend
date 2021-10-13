@@ -1,4 +1,5 @@
-import React, { useState, useHistory } from 'react';
+import React, { useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,24 +25,17 @@ export default function SelectPlant({ theme }) {
     dispatch(searchPlantNames(inputText));
   }
 
-  function onSelectPlant(e) {
-    const selectedName = e.currentTarget.children[0].innerText;
-
-    for (let i = 0; i < plants.length; i++) {
-      if (selectedName === plants[i].name) {
-        history.push(`new/${plants[i].number}`);
-      }
-    }
-  }
-
   function renderPlantList() {
     return (
       <>
-        {plants.map((plant) => {
+        {plants.map((plant, index) => {
           return (
-            <Result className="result" onClick={onSelectPlant} key={plant.name}>
+            <Result
+              to={`/create/${plants[index].number}`}
+              className="result"
+              key={plant.name}
+            >
               <h3>{plant.name}</h3>
-              <p>추가하기</p>
             </Result>
           );
         })}
@@ -119,9 +113,11 @@ const ResultContainer = styled.div`
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;
+  overflow: scroll;
+  max-height: 350px;
 `;
 
-const Result = styled.button`
+const Result = styled(Link)`
   display: inline-flex;
   justify-content: space-between;
 

@@ -1,9 +1,16 @@
-import React, { useState, useParams, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
 import { searchPlantInfo } from '../redux/modules/search';
+import Modal from '../components/Modal';
+
+import cloverPlant from '../assets/images/plants/clover_plant.png';
+import defaultPlant from '../assets/images/plants/default_plant.png';
+import treePlant from '../assets/images/plants/tree_plant.png';
+import chair from '../assets/images/furniture/chair.png';
 
 export default function CreatePlant() {
   const { plantNumber } = useParams();
@@ -11,20 +18,22 @@ export default function CreatePlant() {
   const { plantInfo, isLoading } = useSelector((state) => state.search);
   const [selectedData, setSelectedData] = useState({
     nickname: '',
-    type: '',
+    type: 'default',
     growthStage: '',
   });
-  const [isGrowthButtonClick, setIsGrowthButtonClick] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(searchPlantInfo(plantNumber));
-  });
+  }, []);
+
+  if (isLoading === true) {
+    return <p>식물정보를 불러오고 있습니다.</p>;
+  }
 
   return (
     <Container>
-      {isLoading === true ? (
-        <p>식물정보를 불러오고 있습니다.</p>
-      ) : (
+      {plantInfo && (
         <>
           <PlantInfo>
             <InfoBox>
@@ -35,15 +44,29 @@ export default function CreatePlant() {
               <p>물주기: {plantInfo.watering}일</p>
               <p>광도: {plantInfo.isSun === true ? '양지 식물' : '음지식물'}</p>
             </InfoBox>
-            <PlantGrowthCanvas
-              plantType={selectedData.type}
-              growthStart={isGrowthButtonClick}
-              onGrowthEnd={() => setIsGrowthButtonClick(false)}
-            />
+            <ChairImage src={chair} />
+            <PlantImageWrapper>
+              {selectedData.type === 'clover' && (
+                <img src={cloverPlant} alt="clover plant" />
+              )}
+              {selectedData.type === 'default' && (
+                <img src={defaultPlant} alt="default plant" />
+              )}
+              {selectedData.type === 'tree' && (
+                <img src={treePlant} alt="alt plant" />
+              )}
+            </PlantImageWrapper>
+            {isModalOpen && (
+              <Modal closeModal={() => setIsModalOpen(false)}>
+                <PlantGrowthCanvas
+                  plantType={selectedData.type}
+                  onGrowthEnd={() => setIsModalOpen(false)}
+                />
+              </Modal>
+            )}
           </PlantInfo>
           <PlantFrom>
             <div>
-              <label htmlFor="nickname">닉네임</label>
               <input
                 id="nickname"
                 type="text"
@@ -52,7 +75,7 @@ export default function CreatePlant() {
                 onChange={(e) =>
                   setSelectedData({
                     ...selectedData,
-                    type: e.currentTarget.value,
+                    nickname: e.currentTarget.value,
                   })
                 }
               />
@@ -73,25 +96,7 @@ export default function CreatePlant() {
                 <option value="clover">clover</option>
               </select>
             </div>
-            <div>
-              <label htmlFor="growthStage">
-                식물의 성장단계를 선택해주세요
-              </label>
-              <select
-                id="growthStage"
-                onChange={(e) =>
-                  setSelectedData({
-                    ...selectedData,
-                    growthStage: e.currentTarget.value,
-                  })
-                }
-              >
-                <option value="1">1단계(seed stage)</option>
-                <option value="2">2단계(young stage)</option>
-                <option value="3">3단계(adult stage)</option>
-              </select>
-            </div>
-            <button type="button" onClick={() => setIsGrowthButtonClick(true)}>
+            <button type="button" onClick={() => setIsModalOpen(true)}>
               성장 미리보기
             </button>
             <button type="submit">추가하기</button>
@@ -121,6 +126,7 @@ const InfoBox = styled.div`
 `;
 
 const PlantFrom = styled.form`
+  z-index: 10;
   display: flex;
   flex-direction: column;
   width: 600px;
@@ -132,5 +138,18 @@ const PlantFrom = styled.form`
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;
-  z-index: 10;
+`;
+
+const PlantImageWrapper = styled.div`
+  img {
+    width: 100px;
+  }
+`;
+
+const ChairImage = styled.img`
+  position: absolute;
+  bottom: -10px;
+  right: 3rem;
+  width: 140px;
+  z-index: -1;
 `;

@@ -42,7 +42,7 @@ export const plantPositions = {
       width: 185,
       height: 160,
     },
-    simulation: {
+    preview: {
       x: 250,
       y: 390,
     },
@@ -66,7 +66,7 @@ export const plantPositions = {
       width: 185,
       height: 160,
     },
-    simulation: {
+    preview: {
       x: 237,
       y: 384,
     },
@@ -90,7 +90,7 @@ export const plantPositions = {
       width: 185,
       height: 160,
     },
-    simulation: {
+    preview: {
       x: 240,
       y: 392,
     },

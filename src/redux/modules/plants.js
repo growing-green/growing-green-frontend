@@ -15,6 +15,76 @@ export const getAllPlantsByUserId = createAsyncThunk(
   },
 );
 
+export const createNewPlant = createAsyncThunk(
+  'plants/createNewPlant',
+  async (
+    { history, name, species, type, isSunPlant, watering },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      const response = await apiController.post('plants/new', {
+        name,
+        species,
+        type,
+        isSunPlant,
+        watering,
+      });
+
+      dispatch(getAllPlantsByUserId());
+
+      history.push('/');
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  },
+);
+
+export const updatePlant = createAsyncThunk(
+  'plants/updatePlant',
+  async ({ plantId, data }, { rejectWithValue }) => {
+    try {
+      const response = await apiController.put(`plants/${plantId}`, data);
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
+    }
+  },
+);
+
+export const UpdatePlantAll = createAsyncThunk(
+  'plants/UpdatePlantAll',
+  async (plant, { rejectWithValue }) => {
+    try {
+      const response = await apiController.put(
+        `plants/${plant._id}/all`,
+        plant,
+      );
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
+    }
+  },
+);
+
+export const deletePlant = createAsyncThunk(
+  'plants/deletePlant',
+  async ({ history, plantId }, { rejectWithValue }) => {
+    try {
+      const response = await apiController.delete(`plants/${plantId}`);
+
+      history.push('/');
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
+    }
+  },
+);
+
 export const slice = createSlice({
   name: 'plants',
   initialState: {
@@ -35,13 +105,31 @@ export const slice = createSlice({
 
       state.isLoading = false;
     });
+
     builder.addCase(getAllPlantsByUserId.rejected, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
+    });
+
+    builder.addCase(createNewPlant.fulfilled, (state, action) => {
+      const { plant } = action.payload;
+      state.allPlants[plant._id] = plant;
+    });
+
+    builder.addCase(createNewPlant.rejected, (state, action) => {
+      state.error = action.payload;
+    });
+
+    builder.addCase(updatePlant.fulfilled, (state, action) => {
+      const { plant } = action.payload;
+
+      state.allPlants[plant._id] = plant;
+    });
+
+    builder.addCase(updatePlant.rejected, (state, action) => {
+      state.error = action.payload;
     });
   },
 });
 
 export default slice.reducer;
-
-export const { logoutSuccess } = slice.actions;

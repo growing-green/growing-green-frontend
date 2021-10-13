@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
 import { searchPlantInfo } from '../redux/modules/search';
 import Modal from '../components/Modal';
+import { createNewPlant } from '../redux/modules/plants';
+import ErrorBox from '../components/ErrorBox';
 
 import cloverPlant from '../assets/images/plants/clover_plant.png';
 import defaultPlant from '../assets/images/plants/default_plant.png';
@@ -15,20 +17,43 @@ import chair from '../assets/images/furniture/chair.png';
 export default function CreatePlant() {
   const { plantNumber } = useParams();
   const dispatch = useDispatch();
-  const { plantInfo, isLoading } = useSelector((state) => state.search);
+  const history = useHistory();
+  const { plantInfo, isLoading, error } = useSelector((state) => state.search);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState({
     nickname: '',
-    type: 'default',
-    growthStage: '',
+    type: 'defaultPlant',
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(searchPlantInfo(plantNumber));
   }, []);
 
+  if (error) {
+    return <ErrorBox message={error} />;
+  }
+
   if (isLoading === true) {
     return <p>식물정보를 불러오고 있습니다.</p>;
+  }
+
+  function submitData(e) {
+    e.preventDefault();
+
+    if (selectedData.nickname.length === 0) {
+      return alert('식물의 이름을 입력해주세요.');
+    }
+
+    dispatch(
+      createNewPlant({
+        history,
+        name: selectedData.nickname,
+        species: plantInfo.name,
+        type: selectedData.type,
+        isSunPlant: plantInfo.isSunPlant,
+        watering: plantInfo.watering,
+      }),
+    );
   }
 
   return (
@@ -42,17 +67,19 @@ export default function CreatePlant() {
               <p>학명: {plantInfo.scientificName}</p>
               <p>과: {plantInfo.species}</p>
               <p>물주기: {plantInfo.watering}일</p>
-              <p>광도: {plantInfo.isSun === true ? '양지 식물' : '음지식물'}</p>
+              <p>
+                광도: {plantInfo.isSunPlant === true ? '양지 식물' : '음지식물'}
+              </p>
             </InfoBox>
             <ChairImage src={chair} />
             <PlantImageWrapper>
-              {selectedData.type === 'clover' && (
+              {selectedData.type === 'cloverPlant' && (
                 <img src={cloverPlant} alt="clover plant" />
               )}
-              {selectedData.type === 'default' && (
+              {selectedData.type === 'defaultPlant' && (
                 <img src={defaultPlant} alt="default plant" />
               )}
-              {selectedData.type === 'tree' && (
+              {selectedData.type === 'treePlant' && (
                 <img src={treePlant} alt="alt plant" />
               )}
             </PlantImageWrapper>
@@ -65,7 +92,7 @@ export default function CreatePlant() {
               </Modal>
             )}
           </PlantInfo>
-          <PlantFrom>
+          <PlantFrom onSubmit={submitData}>
             <div>
               <input
                 id="nickname"
@@ -91,9 +118,9 @@ export default function CreatePlant() {
                   })
                 }
               >
-                <option value="default">default</option>
-                <option value="tree">tree</option>
-                <option value="clover">clover</option>
+                <option value="defaultPlant">default</option>
+                <option value="treePlant">tree</option>
+                <option value="cloverPlant">clover</option>
               </select>
             </div>
             <button type="button" onClick={() => setIsModalOpen(true)}>

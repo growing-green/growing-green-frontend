@@ -46,8 +46,7 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
 
       canvas.current.appendChild(app.view);
 
-      const type = `${plantType}Plant`;
-      growthPlant = new PlantGrowth(app, type);
+      growthPlant = new PlantGrowth(app, plantType);
       app.stage.addChild(growthPlant.container);
 
       growthPlant.plant.play();

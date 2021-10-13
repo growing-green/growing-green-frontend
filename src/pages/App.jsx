@@ -41,12 +41,12 @@ export default function App() {
               />
               <Route
                 exact
-                path="/select"
+                path="/create"
                 component={() => privateRoute(SelectPlant)}
               />
               <Route
                 exact
-                path="/new/:plantNumber"
+                path="/create/:plantNumber"
                 component={() => privateRoute(CreatePlant)}
               />
               <Route

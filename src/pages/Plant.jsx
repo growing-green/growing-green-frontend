@@ -64,7 +64,7 @@ export default function Plant() {
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>
         )}
-        <NewPlantButton onClick={() => history.push('/new')}>
+        <NewPlantButton onClick={() => history.push('/create')}>
           새로운 식물 추가하기
         </NewPlantButton>
       </>

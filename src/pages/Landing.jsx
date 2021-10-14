@@ -5,7 +5,8 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import styled from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
 import { loginSuccess, logoutSuccess } from '../redux/modules/user';
-import { getAllPlantsByUserId } from '../redux/modules/plants';
+import { getAllPlantsByUserId, updateAllPlant } from '../redux/modules/plants';
+import { calculatePlantInfo } from '../utils/calcuatePlantInfo';
 
 import DesciptionText from '../components/DescrptionText';
 import Button from '../components/Button';
@@ -25,6 +26,20 @@ export default function Landing() {
       dispatch(getAllPlantsByUserId());
     }
   }, [isLogin, dispatch]);
+
+  useEffect(() => {
+    const updatedAllPlants = [];
+
+    if (Object.keys(allPlants).length) {
+      for (const id in allPlants) {
+        const updatedPlant = calculatePlantInfo(allPlants[id]);
+
+        updatedAllPlants.push(updatedPlant);
+      }
+    }
+
+    dispatch(updateAllPlant(updatedAllPlants));
+  }, [allPlants]);
 
   if (error) {
     return <ErrorBox message={error} />;
@@ -54,7 +69,7 @@ export default function Landing() {
       return history.push(`/plants/${allPlantIds[0]}`);
     }
 
-    history.push('/new');
+    history.push('/create');
   }
 
   const logout = () => {
@@ -68,7 +83,7 @@ export default function Landing() {
         variant="outline"
         size="large"
         color="white"
-        label="Log in"
+        label="L O G I N"
         icon={FcGoogle}
       />
     );
@@ -76,13 +91,16 @@ export default function Landing() {
 
   const renderStartButton = () => {
     return (
-      <Button
-        variant="outline"
-        color="green"
-        size="large"
-        label="S T A R T"
-        onClick={onStartButtonClick}
-      />
+      <>
+        <Button
+          variant="outline"
+          color="green"
+          size="large"
+          label="S T A R T"
+          onClick={onStartButtonClick}
+        />
+        <LogoutText onClick={logout}>logout</LogoutText>
+      </>
     );
   };
 
@@ -92,13 +110,6 @@ export default function Landing() {
       <DesciptionText>Touch the plant!</DesciptionText>
       <ButtonWrapper>
         {isLogin ? renderStartButton() : renderLoginButton()}
-        <Button
-          onClick={logout}
-          variant="outline"
-          color="green"
-          size="large"
-          label="logout"
-        />
       </ButtonWrapper>
     </Container>
   );
@@ -115,4 +126,15 @@ const Container = styled.div`
 
 const ButtonWrapper = styled.div`
   display: inline-block;
+`;
+
+const LogoutText = styled.h3`
+  font-size: 1.2em;
+  font-weight: 300;
+  margin: 1rem;
+
+  &:hover {
+    color: red;
+    cursor: pointer;
+  }
 `;

@@ -18,7 +18,7 @@ export const getAllPlantsByUserId = createAsyncThunk(
 export const createNewPlant = createAsyncThunk(
   'plants/createNewPlant',
   async (
-    { history, name, species, type, isSunPlant, watering },
+    { history, name, species, type, isSunPlant, watering, growthStage },
     { rejectWithValue, dispatch },
   ) => {
     try {
@@ -28,13 +28,15 @@ export const createNewPlant = createAsyncThunk(
         type,
         isSunPlant,
         watering,
+        growthStage,
       });
 
       dispatch(getAllPlantsByUserId());
 
-      history.push('/');
+      const { plant } = response.data;
+      history.push(`/plants/${plant._id}`);
 
-      return response.data;
+      return plant;
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -54,14 +56,11 @@ export const updatePlant = createAsyncThunk(
   },
 );
 
-export const UpdatePlantAll = createAsyncThunk(
+export const updateAllPlant = createAsyncThunk(
   'plants/UpdatePlantAll',
   async (plant, { rejectWithValue }) => {
     try {
-      const response = await apiController.put(
-        `plants/${plant._id}/all`,
-        plant,
-      );
+      const response = await apiController.put(`plants`, plant);
 
       return response.data;
     } catch (err) {
@@ -72,11 +71,9 @@ export const UpdatePlantAll = createAsyncThunk(
 
 export const deletePlant = createAsyncThunk(
   'plants/deletePlant',
-  async ({ history, plantId }, { rejectWithValue }) => {
+  async (plantId, { rejectWithValue }) => {
     try {
       const response = await apiController.delete(`plants/${plantId}`);
-
-      history.push('/');
 
       return response.data;
     } catch (err) {
@@ -112,7 +109,8 @@ export const slice = createSlice({
     });
 
     builder.addCase(createNewPlant.fulfilled, (state, action) => {
-      const { plant } = action.payload;
+      const plant = action.payload;
+      console.log('plant', plant);
       state.allPlants[plant._id] = plant;
     });
 

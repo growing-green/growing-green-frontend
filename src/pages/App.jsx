@@ -63,13 +63,20 @@ export default function App() {
 }
 
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'GowunBatang-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
   body {
     min-width: 320px;
     min-height: 100vh;
     line-height: 1;
     overflow-x: hidden;
     background: ${({ theme }) => theme.baseTheme.colors.darkGreen};
-    font-family: "Courier New", monospace;
+    font-family: 'GowunBatang-Regular';
   }
 
   #root {

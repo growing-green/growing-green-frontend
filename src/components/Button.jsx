@@ -29,7 +29,7 @@ Button.defaultProps = {
 const StyledButton = styled.button`
   all: unset;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   box-shadow: ${({ variant, color }) =>
@@ -45,14 +45,18 @@ const StyledButton = styled.button`
   font-size: ${({ size }) => buttonSizes[size].fontSize};
   line-height: ${({ size }) => buttonSizes[size].lineHeight};
   font-weight: ${({ size }) => buttonSizes[size].fontWeight};
-  background: ${({ color }) => buttonColors[color].background};
   color: ${({ color }) => buttonColors[color].text};
   border-radius: ${({ variant, size }) =>
     variant === 'rounded' && buttonSizes[size].height};
+  background-color: ${({ color }) => buttonColors[color].background};
 
   &:active {
     box-shadow: none;
     ${({ variant }) =>
       variant === 'outline' ? `transform: translate(-5px)` : 'none'};
+  }
+
+  svg {
+    margin-right: 1.2rem;
   }
 `;

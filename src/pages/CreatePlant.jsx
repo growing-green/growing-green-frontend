@@ -5,9 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
 import { searchPlantInfo } from '../redux/modules/search';
-import Modal from '../components/Modal';
 import { createNewPlant } from '../redux/modules/plants';
+
 import ErrorBox from '../components/ErrorBox';
+import Loading from '../components/Loading';
+import Modal from '../components/Modal';
 
 import cloverPlant from '../assets/images/plants/clover_plant.png';
 import defaultPlant from '../assets/images/plants/default_plant.png';
@@ -23,6 +25,7 @@ export default function CreatePlant() {
   const [selectedData, setSelectedData] = useState({
     nickname: '',
     type: 'defaultPlant',
+    growthStage: '1',
   });
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function CreatePlant() {
   }
 
   if (isLoading === true) {
-    return <p>식물정보를 불러오고 있습니다.</p>;
+    return <Loading size="60px" text="식물 정보를 불러오고 있습니다..." />;
   }
 
   function submitData(e) {
@@ -52,6 +55,7 @@ export default function CreatePlant() {
         type: selectedData.type,
         isSunPlant: plantInfo.isSunPlant,
         watering: plantInfo.watering,
+        growthStage: selectedData.growthStage,
       }),
     );
   }
@@ -71,18 +75,19 @@ export default function CreatePlant() {
                 광도: {plantInfo.isSunPlant === true ? '양지 식물' : '음지식물'}
               </p>
             </InfoBox>
-            <ChairImage src={chair} />
-            <PlantImageWrapper>
+            <ImageWrapper>
               {selectedData.type === 'cloverPlant' && (
-                <img src={cloverPlant} alt="clover plant" />
+                <img className="plant" src={cloverPlant} alt="clover plant" />
               )}
               {selectedData.type === 'defaultPlant' && (
-                <img src={defaultPlant} alt="default plant" />
+                <img className="plant" src={defaultPlant} alt="default plant" />
               )}
               {selectedData.type === 'treePlant' && (
-                <img src={treePlant} alt="alt plant" />
+                <img className="plant" src={treePlant} alt="tree plant" />
               )}
-            </PlantImageWrapper>
+              <img className="chair" src={chair} alt="chair" />
+            </ImageWrapper>
+
             {isModalOpen && (
               <Modal closeModal={() => setIsModalOpen(false)}>
                 <PlantGrowthCanvas
@@ -96,6 +101,7 @@ export default function CreatePlant() {
             <div>
               <input
                 id="nickname"
+                className="nickname"
                 type="text"
                 placeholder="식물의 닉네임을 입력해주세요"
                 value={selectedData.nickname}
@@ -107,25 +113,39 @@ export default function CreatePlant() {
                 }
               />
             </div>
-            <div>
-              <label htmlFor="type">식물의 형태를 선택해주세요</label>
-              <select
-                id="type"
-                onChange={(e) =>
-                  setSelectedData({
-                    ...selectedData,
-                    type: e.currentTarget.value,
-                  })
-                }
-              >
-                <option value="defaultPlant">default</option>
-                <option value="treePlant">tree</option>
-                <option value="cloverPlant">clover</option>
-              </select>
-            </div>
+            <label htmlFor="type">식물의 형태를 선택해주세요</label>
+            <select
+              id="type"
+              className="type"
+              onChange={(e) =>
+                setSelectedData({
+                  ...selectedData,
+                  type: e.currentTarget.value,
+                })
+              }
+            >
+              <option value="defaultPlant">default</option>
+              <option value="treePlant">tree</option>
+              <option value="cloverPlant">clover</option>
+            </select>
             <button type="button" onClick={() => setIsModalOpen(true)}>
               성장 미리보기
             </button>
+            <label htmlFor="type">식물의 성장 단계를 선택해주세요</label>
+            <select
+              id="type"
+              className="type"
+              onChange={(e) =>
+                setSelectedData({
+                  ...selectedData,
+                  growthStage: e.currentTarget.value,
+                })
+              }
+            >
+              <option value="1">1단계</option>
+              <option value="2">2단계</option>
+              <option value="3">3단계</option>
+            </select>
             <button type="submit">추가하기</button>
           </PlantFrom>
         </>
@@ -144,7 +164,7 @@ const PlantInfo = styled.div`
   position: relative;
   flex-direction: column;
   align-items: center;
-  margin-left: 5rem;
+  margin-right: 2rem;
 `;
 
 const InfoBox = styled.div`
@@ -156,6 +176,7 @@ const PlantFrom = styled.form`
   z-index: 10;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   width: 600px;
   height: 400px;
   margin: 1rem auto;
@@ -165,18 +186,44 @@ const PlantFrom = styled.form`
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;
-`;
 
-const PlantImageWrapper = styled.div`
-  img {
-    width: 100px;
+  .nickname {
+    width: 100%;
+    height: 50px;
+    font-size: 1.3em;
+    font-family: 'GowunBatang-Regular';
   }
 `;
 
-const ChairImage = styled.img`
+const SelectTypeBox = styled.div`
+  display: flex;
+  margin: 2rem;
+`;
+
+const ImageWrapper = styled.div`
   position: absolute;
   bottom: -10px;
-  right: 3rem;
-  width: 140px;
-  z-index: -1;
+  left: 10px;
+  display: inline-block;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 10px;
+  width: 200px;
+  height: 310px;
+
+  .chair {
+    position: absolute;
+    margin-bottom: 10px;
+    width: 140px;
+    bottom: 10px;
+    right: 80px;
+    z-index: -1;
+  }
+
+  .plant {
+    position: absolute;
+    width: 100px;
+    top: 40px;
+    right: 100px;
+  }
 `;

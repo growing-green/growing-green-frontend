@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { ThemeConsumer } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { searchPlantNames } from '../redux/modules/search';
 import ErrorBox from '../components/ErrorBox';
+import Loading from '../components/Loading';
 
 export default function SelectPlant({ theme }) {
   const [inputText, setInputText] = useState('');
   const dispatch = useDispatch();
-  const history = useHistory();
   const { plants, isLoading, error } = useSelector((state) => state.search);
 
   if (error) {
     <ErrorBox message={error} />;
   }
 
-  function onSearchButtonClick() {
-    if (inputText.length === 0) {
-      return alert('검색어를 입력해주세요');
-    }
+  function onSearchButtonClick(e) {
+    e.preventDefault();
 
-    dispatch(searchPlantNames(inputText));
+    if (e.keyCode === 13) {
+      if (inputText.length === 0) {
+        return alert('검색어를 입력해주세요');
+      }
+
+      dispatch(searchPlantNames(inputText));
+    }
   }
 
   function renderPlantList() {
@@ -44,7 +48,11 @@ export default function SelectPlant({ theme }) {
   }
 
   function renderLoadResultMessage() {
-    return <p className="info-message">불러오는 중입니다..</p>;
+    return (
+      <>
+        <Loading size="50px" text="불러오는 중입니다.." />
+      </>
+    );
   }
 
   function renderPleaseEnterMessage() {
@@ -55,13 +63,16 @@ export default function SelectPlant({ theme }) {
     <Wrapper theme={theme}>
       <h1>Create new plant</h1>
       <InputBox>
-        <BiSearch size="35" color="gray" />
-        <input
-          value={inputText}
-          onChange={(e) => setInputText(e.currentTarget.value)}
-          placeholder="키우고싶은 식물을 찾아보세요"
-        />
-        <button onClick={onSearchButtonClick}>검색</button>
+        <div className="search-box">
+          <BiSearch size="35" color="#393939" />
+          <input
+            className="search-input"
+            value={inputText}
+            onChange={(e) => setInputText(e.currentTarget.value)}
+            placeholder="키우고싶은 식물을 찾아보세요"
+            onKeyUp={onSearchButtonClick}
+          />
+        </div>
       </InputBox>
       <ResultContainer>
         {isLoading === true
@@ -92,19 +103,33 @@ const InputBox = styled.div`
   align-items: center;
   justify-content: center;
 
-  input {
-    width: 500px;
-    height: 60px;
-    border: none;
-    border-bottom: 1px solid gray;
-    background: none;
-    font-size: 1.5em;
+  .search-box {
+    border-bottom: 2px solid #777777;
+
+    svg {
+      margin-bottom: -10px;
+    }
+
+    .search-input {
+      all: unset;
+      text-align: left;
+      font-family: 'GowunBatang-Regular';
+      font-weight: 500;
+      width: 500px;
+      height: 60px;
+      border: none;
+      background: none;
+      font-size: 1.4em;
+      margin: 0 0 0 10px;
+
+      &:focus {
+        border: none;
+      }
+    }
   }
 `;
 
 const ResultContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 530px;
   margin: 1rem auto;
   padding: 2rem;
@@ -113,15 +138,28 @@ const ResultContainer = styled.div`
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;
-  overflow: scroll;
   max-height: 350px;
+  overflow: auto;
+  text-overflow: ellipsis;
 `;
 
 const Result = styled(Link)`
+  width: 100%;
   display: inline-flex;
   justify-content: space-between;
+  text-decoration: none;
+  color: ${({ theme }) => theme.baseTheme.colors.black};
+  border-bottom: 1px solid #999999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.3rem;
 
-  .h3 {
+  h3 {
     diplay: block;
+  }
+
+  &:hover {
+    background-color: rgba(10, 10, 10, 0.07);
   }
 `;

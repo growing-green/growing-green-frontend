@@ -98,6 +98,7 @@ export default function PlantCanvas() {
       sunGuage,
       waterGuage,
       penaltyPoints,
+      isDead,
     } = plantInfo;
 
     currentWaterGuage = waterGuage.currentGuage;
@@ -107,20 +108,23 @@ export default function PlantCanvas() {
     background = new Background(app, name, species, isBlindUp, _id);
     app.stage.addChild(background.container);
 
-    const plant = new PlantContainer(app, type, growthStage);
+    const plant = new PlantContainer(app, type, growthStage, isDead);
     app.stage.addChild(plant.container);
 
-    watering = new WateringContainer(app);
+    watering = new WateringContainer(app, isDead);
     app.stage.addChild(watering.container);
+
     guage = new GuageContainer(app, sunGuage, waterGuage);
     app.stage.addChild(guage.container);
 
-    app.ticker.add(loop);
+    if (isDead === false) {
+      app.ticker.add(loop);
+    }
   }
 
   function loop(e) {
     const totalGuageWidth = 400;
-    const wateringPeriod = 5;
+    const wateringPeriod = plant.waterGuage.defaultGuage;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
 
     if (watering.wateringCan.isWatering === true) {
@@ -167,7 +171,8 @@ export default function PlantCanvas() {
       } else {
         alert('식물이 죽었습니다.');
 
-        dispatch(deletePlant({ history, plantId: plant._id }));
+        dispatch(deletePlant(plant._id));
+        history.push('/');
       }
     }
   }

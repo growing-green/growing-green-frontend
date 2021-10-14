@@ -7,12 +7,12 @@ const ropeLength = 8000 / 5;
 let points = [];
 let count = 0;
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 7; i++) {
   points.push(new PIXI.Point(i * ropeLength, 0));
 }
 
 export default class Plant extends PIXI.SimpleRope {
-  constructor(app, potHeight, type, growthStage) {
+  constructor(app, potHeight, type, growthStage, isDead) {
     const typeName = plantTypes[type];
     const texture = TextureCache[`${typeName}${growthStage}.png`];
 
@@ -28,12 +28,16 @@ export default class Plant extends PIXI.SimpleRope {
     this.y = plantPositions[type][growthStage].y;
     this.potHeight = potHeight;
 
-    this.isMouseOver = false;
-
-    this.interactive = true;
-    this.on('pointermove', this.onMouseOver);
-
-    this.app.ticker.add(this.defaultLoop);
+    if (isDead === true) {
+      const filter = new PIXI.filters.ColorMatrixFilter();
+      filter.greyscale(0.4);
+      this.filters = [filter];
+    } else {
+      this.isMouseOver = false;
+      this.interactive = true;
+      this.on('pointermove', this.onMouseOver);
+      this.app.ticker.add(this.defaultLoop);
+    }
   }
 
   onMouseOver(e) {
@@ -64,10 +68,10 @@ export default class Plant extends PIXI.SimpleRope {
   }
 
   defaultLoop() {
-    count += 0.05;
+    count += 0.06;
 
     for (let i = 0; i < points.length; i++) {
-      points[i].y = Math.cos(i * 3 + count);
+      points[i].y = Math.cos(i * 10 + count);
     }
   }
 

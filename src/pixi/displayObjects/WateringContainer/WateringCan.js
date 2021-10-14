@@ -13,19 +13,20 @@ let wateringCount = 0;
 let colorOverlayFilter;
 
 export default class WateringCan extends PIXI.Sprite {
-  constructor(app, x = 0, y = 0, plantContainer) {
+  constructor(app, x = 0, y = 0, plantContainer, isDead) {
     const texture = TextureCache['wateringCan'];
     super(texture);
 
     this.app = app;
+    this.plantContainer = plantContainer;
+    this.plant = plantContainer.children[0];
+    this.isDead = isDead;
 
     this.anchor.set(0);
     this.width = 150;
     this.height = 110;
     this.x = x;
     this.y = y;
-    this.plantContainer = plantContainer;
-    this.plant = plantContainer.children[0];
 
     this.isMouseOver = false;
     this.isOnDrag = false;
@@ -66,7 +67,7 @@ export default class WateringCan extends PIXI.Sprite {
         this.plant.y + this.plant.height / 2,
       );
 
-    if (isMouseOverPlant === true) {
+    if (isMouseOverPlant === true && this.isDead === false) {
       this.app.ticker.add(this.watering, this);
     }
 

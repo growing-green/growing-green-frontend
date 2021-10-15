@@ -58,7 +58,6 @@ export const slice = createSlice({
     });
 
     builder.addCase(searchPlantInfo.fulfilled, (state, action) => {
-      console.log('payload', action.payload);
       const { plantData } = action.payload;
       state.plantInfo = plantData;
       state.isLoading = false;

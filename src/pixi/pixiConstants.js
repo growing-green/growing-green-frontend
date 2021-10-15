@@ -9,6 +9,7 @@ export const imagePath = [
   { alias: 'openWindow', path: '../images/furniture/open_window.png' },
   { alias: 'pullSwitch', path: '../images/furniture/pull_switch.png' },
   { alias: 'dayTimeLandscape', path: '../images/landscapes/day.png' },
+  { alias: 'nightTimeLandscape', path: '../images/landscapes/night.png' },
   { alias: 'nail', path: '../images/furniture/nail.png' },
   { alias: 'blind', path: '../images/furniture/blind.json' },
 
@@ -25,7 +26,7 @@ export const plantTypes = {
 export const plantPositions = {
   defaultPlant: {
     1: {
-      x: -5,
+      x: 5,
       y: 350,
       width: 50,
       height: 80,
@@ -68,7 +69,7 @@ export const plantPositions = {
     },
     preview: {
       x: 237,
-      y: 384,
+      y: 385,
     },
   },
   cloverPlant: {
@@ -81,8 +82,8 @@ export const plantPositions = {
     2: {
       x: -5,
       y: 320,
-      width: 175,
-      height: 150,
+      width: 110,
+      height: 125,
     },
     3: {
       x: -5,

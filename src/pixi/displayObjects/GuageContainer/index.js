@@ -32,8 +32,16 @@ export default class GuageContainer {
 
     this.render();
   }
+
   createTexture() {
-    const waterGuageWidth = this.eachWaterGuageWidth * this.currentWaterGuage;
+    let waterGuageWidth;
+
+    if (this.currentWaterGuage === 0) {
+      waterGuageWidth = 1;
+    } else {
+      waterGuageWidth = this.eachWaterGuageWidth * this.currentWaterGuage;
+    }
+
     this.waterTexture = this.app.renderer.generateTexture(
       new PIXI.Graphics()
         .beginFill(0x8bd6f8)

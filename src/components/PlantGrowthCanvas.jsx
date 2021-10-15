@@ -46,8 +46,7 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
 
       canvas.current.appendChild(app.view);
 
-      const type = `${plantType}Plant`;
-      growthPlant = new PlantGrowth(app, type);
+      growthPlant = new PlantGrowth(app, plantType);
       app.stage.addChild(growthPlant.container);
 
       growthPlant.plant.play();
@@ -83,7 +82,7 @@ const Wrapper = styled.div`
 const CloseButton = styled.div`
   position: absolute;
   width: 70px;
-  height: 30px;
+  height: 20px;
   top: 1rem;
   right: 1rem;
   background: black;

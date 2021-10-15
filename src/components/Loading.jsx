@@ -1,57 +1,136 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Loading = () => {
+const Loading = ({ size = '80px', text = '로딩중...' }) => {
   return (
     <Wrapper>
-      <Loader>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </Loader>
+      <LoadingSpinner size={size} />
+      <p>{text}</p>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  z-index: 100;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  span {
-    display: block;
-    position: absolute;
-    top: calc(50% - 10px);
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const LoadingSpinner = styled.div`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  border-radius: 50%;
+  border: 6px solid #999;
+  box-sizing: border-box;
+  -webkit-animation: rsm-sweep 1s linear alternate infinite,
+    rsm-rotate 0.8s linear infinite;
+  animation: rsm-sweep 1s linear alternate infinite,
+    rsm-rotate 0.8s linear infinite;
+
+  @keyframes rsm-rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  span:nth-child(1) {
-    background-color: #ff5460;
-    animation: move 2s infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+  @-webkit-keyframes rsm-rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
   }
-  span:nth-child(2) {
-    background-color: #ff9d84;
-    animation: move 2s 150ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
-  }
-  span:nth-child(3) {
-    background-color: #f0e797;
-    animation: move 2s 300ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
-  }
-  span:nth-child(4) {
-    background-color: #75b08a;
-    animation: move 2s 450ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
-  }
-  @keyframes move {
+  @keyframes rsm-sweep {
     0% {
-      left: 0%;
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 0%,
+        0% 0%,
+        50% 50%,
+        0% 0%,
+        0% 0%,
+        0% 0%
+      );
+      clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 50% 50%, 0% 0%, 0% 0%, 0% 0%);
+    }
+    50% {
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        0% 100%,
+        50% 50%,
+        100% 0%,
+        100% 0%,
+        0% 0%
+      );
+      clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        0% 100%,
+        50% 50%,
+        100% 0%,
+        100% 0%,
+        0% 0%
+      );
     }
     100% {
-      left: 100%;
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        100% 100%,
+        50% 50%,
+        100% 100%,
+        100% 0%,
+        0% 0%
+      );
+      clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        100% 100%,
+        50% 50%,
+        100% 100%,
+        100% 0%,
+        0% 0%
+      );
+    }
+  }
+  @-webkit-keyframes rsm-sweep {
+    0% {
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 0%,
+        0% 0%,
+        50% 50%,
+        0% 0%,
+        0% 0%,
+        0% 0%
+      );
+    }
+    50% {
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        0% 100%,
+        50% 50%,
+        100% 0%,
+        100% 0%,
+        0% 0%
+      );
+    }
+    100% {
+      -webkit-clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        100% 100%,
+        50% 50%,
+        100% 100%,
+        100% 0%,
+        0% 0%
+      );
     }
   }
 `;

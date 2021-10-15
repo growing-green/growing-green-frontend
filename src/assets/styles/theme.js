@@ -86,13 +86,13 @@ const buttonColors = {
     border: baseTheme.colors.black,
   },
   green: {
-    backgound: baseTheme.colors.white,
+    background: baseTheme.colors.ivory,
     text: baseTheme.colors.black,
     shadow: baseTheme.colors.green,
     border: baseTheme.colors.black,
   },
   red: {
-    backgound: baseTheme.colors.white,
+    background: baseTheme.colors.ivory,
     text: baseTheme.colors.black,
     shadow: baseTheme.colors.red,
     border: baseTheme.colors.black,

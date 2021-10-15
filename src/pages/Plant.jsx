@@ -12,6 +12,8 @@ import Loading from '../components/Loading';
 
 import leftArrow from '../assets/arrows/left_arrow.png';
 import rightArrow from '../assets/arrows/right_arrow.png';
+import newPlantIcon from '../assets/images/background/new_plant_icon.png';
+import backButton from '../assets/arrows/back_arrow.png';
 
 export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
@@ -24,15 +26,9 @@ export default function Plant() {
   const prevPlantId = plantIds[currentIndex - 1];
   const nextPlantId = plantIds[currentIndex + 1];
 
-  const [currentPlant, setCurrentPlant] = useState(null);
-
   useEffect(() => {
     dispatch(getAllPlantsByUserId());
   }, [dispatch, plantId]);
-
-  useEffect(() => {
-    setCurrentPlant(allPlants[plantId]);
-  }, [plantId, allPlants]);
 
   function renderError() {
     return <ErrorBox message={error} />;
@@ -46,27 +42,24 @@ export default function Plant() {
     return (
       <>
         <TermometerAndCalendar>
-          <Thermometer height="120" temperature="30" icon />
           <CalendarIcon />
+          <Thermometer height="120" temperature="30" icon />
         </TermometerAndCalendar>
         {prevPlantId && (
           <Link to={prevPlantId}>
             <LeftArrow src={leftArrow} alt="left arrow button" />
           </Link>
         )}
-        <PlantCanvas plant={currentPlant} />
-        {nextPlantId ? (
-          <Link to={nextPlantId}>
-            <RightArrow src={rightArrow} alr="right arrow" />
-          </Link>
-        ) : (
+        <PlantCanvas plant={allPlants.plantId} />
+        {nextPlantId && (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>
         )}
-        <NewPlantButton onClick={() => history.push('/create')}>
-          새로운 식물 추가하기
-        </NewPlantButton>
+        <ButtonWrapper>
+          <NewPlantButton onClick={() => history.push('/create')} />
+        </ButtonWrapper>
+        <BackButton onClick={() => history.push('/')} />
       </>
     );
   }
@@ -110,10 +103,37 @@ const RightArrow = styled.img`
   width: 150px;
 `;
 
-const NewPlantButton = styled.button`
+const ButtonWrapper = styled.div`
   position: absolute;
-  right: 4rem;
-  top: 8rem;
-  width: 100px;
-  height: 100px;
+  right: 4.5rem;
+  top: 6rem;
+  width: 115px;
+  height: 115px;
+  background: #a9cf98;
+  border-radius: 100px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(20, 20, 20, 0.2) 3px -3px 0px inset;
+`;
+
+const NewPlantButton = styled.button`
+  background: url(${newPlantIcon});
+  background-size: cover;
+  position: absolute;
+  right: -14px;
+  top: -14px;
+  width: 150px;
+  height: 170px;
+  border: none;
+`;
+
+const BackButton = styled.button`
+  width: 74px;
+  height: 50px;
+  position: absolute;
+  left: 2.5rem;
+  border: none;
+  bottom: 1rem;
+  background: url(${backButton}) no-repeat;
+  background-size: cover;
 `;

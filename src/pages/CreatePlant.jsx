@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
 import { searchPlantInfo } from '../redux/modules/search';
+import { createNewPlant } from '../redux/modules/plants';
+
+import ErrorBox from '../components/ErrorBox';
+import Loading from '../components/Loading';
 import Modal from '../components/Modal';
 
 import cloverPlant from '../assets/images/plants/clover_plant.png';
@@ -15,20 +19,45 @@ import chair from '../assets/images/furniture/chair.png';
 export default function CreatePlant() {
   const { plantNumber } = useParams();
   const dispatch = useDispatch();
-  const { plantInfo, isLoading } = useSelector((state) => state.search);
+  const history = useHistory();
+  const { plantInfo, isLoading, error } = useSelector((state) => state.search);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState({
     nickname: '',
-    type: 'default',
-    growthStage: '',
+    type: 'defaultPlant',
+    growthStage: '1',
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(searchPlantInfo(plantNumber));
   }, []);
 
+  if (error) {
+    return <ErrorBox message={error} />;
+  }
+
   if (isLoading === true) {
-    return <p>식물정보를 불러오고 있습니다.</p>;
+    return <Loading size="60px" text="식물 정보를 불러오고 있습니다..." />;
+  }
+
+  function submitData(e) {
+    e.preventDefault();
+
+    if (selectedData.nickname.length === 0) {
+      return alert('식물의 이름을 입력해주세요.');
+    }
+
+    dispatch(
+      createNewPlant({
+        history,
+        name: selectedData.nickname,
+        species: plantInfo.name,
+        type: selectedData.type,
+        isSunPlant: plantInfo.isSunPlant,
+        watering: plantInfo.watering,
+        growthStage: selectedData.growthStage,
+      }),
+    );
   }
 
   return (
@@ -42,20 +71,23 @@ export default function CreatePlant() {
               <p>학명: {plantInfo.scientificName}</p>
               <p>과: {plantInfo.species}</p>
               <p>물주기: {plantInfo.watering}일</p>
-              <p>광도: {plantInfo.isSun === true ? '양지 식물' : '음지식물'}</p>
+              <p>
+                광도: {plantInfo.isSunPlant === true ? '양지 식물' : '음지식물'}
+              </p>
             </InfoBox>
-            <ChairImage src={chair} />
-            <PlantImageWrapper>
-              {selectedData.type === 'clover' && (
-                <img src={cloverPlant} alt="clover plant" />
+            <ImageWrapper>
+              {selectedData.type === 'cloverPlant' && (
+                <img className="plant" src={cloverPlant} alt="clover plant" />
               )}
-              {selectedData.type === 'default' && (
-                <img src={defaultPlant} alt="default plant" />
+              {selectedData.type === 'defaultPlant' && (
+                <img className="plant" src={defaultPlant} alt="default plant" />
               )}
-              {selectedData.type === 'tree' && (
-                <img src={treePlant} alt="alt plant" />
+              {selectedData.type === 'treePlant' && (
+                <img className="plant" src={treePlant} alt="tree plant" />
               )}
-            </PlantImageWrapper>
+              <img className="chair" src={chair} alt="chair" />
+            </ImageWrapper>
+
             {isModalOpen && (
               <Modal closeModal={() => setIsModalOpen(false)}>
                 <PlantGrowthCanvas
@@ -65,10 +97,11 @@ export default function CreatePlant() {
               </Modal>
             )}
           </PlantInfo>
-          <PlantFrom>
+          <PlantFrom onSubmit={submitData}>
             <div>
               <input
                 id="nickname"
+                className="nickname"
                 type="text"
                 placeholder="식물의 닉네임을 입력해주세요"
                 value={selectedData.nickname}
@@ -80,25 +113,39 @@ export default function CreatePlant() {
                 }
               />
             </div>
-            <div>
-              <label htmlFor="type">식물의 형태를 선택해주세요</label>
-              <select
-                id="type"
-                onChange={(e) =>
-                  setSelectedData({
-                    ...selectedData,
-                    type: e.currentTarget.value,
-                  })
-                }
-              >
-                <option value="default">default</option>
-                <option value="tree">tree</option>
-                <option value="clover">clover</option>
-              </select>
-            </div>
+            <label htmlFor="type">식물의 형태를 선택해주세요</label>
+            <select
+              id="type"
+              className="type"
+              onChange={(e) =>
+                setSelectedData({
+                  ...selectedData,
+                  type: e.currentTarget.value,
+                })
+              }
+            >
+              <option value="defaultPlant">default</option>
+              <option value="treePlant">tree</option>
+              <option value="cloverPlant">clover</option>
+            </select>
             <button type="button" onClick={() => setIsModalOpen(true)}>
               성장 미리보기
             </button>
+            <label htmlFor="type">식물의 성장 단계를 선택해주세요</label>
+            <select
+              id="type"
+              className="type"
+              onChange={(e) =>
+                setSelectedData({
+                  ...selectedData,
+                  growthStage: e.currentTarget.value,
+                })
+              }
+            >
+              <option value="1">1단계</option>
+              <option value="2">2단계</option>
+              <option value="3">3단계</option>
+            </select>
             <button type="submit">추가하기</button>
           </PlantFrom>
         </>
@@ -117,7 +164,7 @@ const PlantInfo = styled.div`
   position: relative;
   flex-direction: column;
   align-items: center;
-  margin-left: 5rem;
+  margin-right: 2rem;
 `;
 
 const InfoBox = styled.div`
@@ -129,6 +176,7 @@ const PlantFrom = styled.form`
   z-index: 10;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   width: 600px;
   height: 400px;
   margin: 1rem auto;
@@ -138,18 +186,44 @@ const PlantFrom = styled.form`
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;
-`;
 
-const PlantImageWrapper = styled.div`
-  img {
-    width: 100px;
+  .nickname {
+    width: 100%;
+    height: 50px;
+    font-size: 1.3em;
+    font-family: 'GowunBatang-Regular';
   }
 `;
 
-const ChairImage = styled.img`
+const SelectTypeBox = styled.div`
+  display: flex;
+  margin: 2rem;
+`;
+
+const ImageWrapper = styled.div`
   position: absolute;
   bottom: -10px;
-  right: 3rem;
-  width: 140px;
-  z-index: -1;
+  left: 10px;
+  display: inline-block;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 10px;
+  width: 200px;
+  height: 310px;
+
+  .chair {
+    position: absolute;
+    margin-bottom: 10px;
+    width: 140px;
+    bottom: 10px;
+    right: 80px;
+    z-index: -1;
+  }
+
+  .plant {
+    position: absolute;
+    width: 100px;
+    top: 40px;
+    right: 100px;
+  }
 `;

@@ -87,9 +87,9 @@ const MovingPlant1Image = styled.img`
 
 const MovingPlant2Image = styled.img`
   position: absolute;
-  width: 270px;
+  width: 350px;
   top: 80px;
-  left: 50px;
+  left: 20px;
 
   &:hover {
     animation: 700ms infinite both ${smallMove};

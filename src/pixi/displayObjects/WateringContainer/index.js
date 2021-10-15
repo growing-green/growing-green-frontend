@@ -4,13 +4,14 @@ import WateringCan from './WateringCan';
 import Nail from './Nail';
 
 export default class WateringContainer {
-  constructor(app) {
+  constructor(app, isDead) {
     this.app = app;
     this.plantContainer = app.stage.children[1];
 
     this.container = new PIXI.Container();
     this.wateringCan = null;
     this.nail = null;
+    this.isDead = isDead;
 
     this.createSprite();
     this.render();
@@ -22,6 +23,7 @@ export default class WateringContainer {
       this.app.screen.width / 2 + 350,
       380,
       this.plantContainer,
+      this.isDead,
     );
     this.nail = new Nail(this.app.screen.width / 2 + 386, 387);
   }

@@ -58,6 +58,7 @@ export function calculatePlantInfo(plant, weather) {
 
   const wateringCount = wateringDaysAfterUpdate.length;
 
+
   if (wateringCount > 0) {
     updates.waterGuage = 0;
   }
@@ -66,8 +67,9 @@ export function calculatePlantInfo(plant, weather) {
     updates.penaltyPoints = penaltyPoints - wateringCount - 1;
   }
 
-  //비오는 날엔 꽉 채워주기
-  // if ()
+  if (weather === 'rainy') {
+    updates.waterGuage = waterGuage.defaultGuage;
+  }
 
   if (isSunPlant === true) {
     if (isBlindUp === true) {

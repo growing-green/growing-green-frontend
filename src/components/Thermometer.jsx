@@ -8,9 +8,12 @@ import { getCurrentWeather } from '../redux/modules/environments';
 
 export default function Thermometer({ height, theme }) {
   const [currentHeight, setCurrentHeight] = useState(0);
-  const { temperature, isDay, weather } = useSelector(
-    (state) => state.environments,
-  );
+  const {
+    temperature,
+    weather,
+    iconPath,
+    temperature: temp,
+  } = useSelector((state) => state.environments);
 
   const dispatch = useDispatch();
 
@@ -29,17 +32,20 @@ export default function Thermometer({ height, theme }) {
       </BackgroundBar>
       <ScaleWrapper height={height} theme={theme}>
         {TEMPS.map((temp) => {
-          if (temp === 0 || temp === -30 || temp === 50) {
-            return (
-              <div className={`display-temp temp-${temp}`} key={temp}>
-                <p>{temp}</p>
-              </div>
-            );
-          }
+          if (temp === 50) return;
 
-          return <div key={temp} />;
+          return (
+            <div className={`display-temp temp-${temp}`} key={temp}>
+              <p>{temp}</p>
+            </div>
+          );
         })}
       </ScaleWrapper>
+      <Weather>
+        <h1 className="temp">{temp}°C</h1>
+        <h3 className="weather">{weather}</h3>
+        <img src={iconPath} alt="weather icon" />
+      </Weather>
     </Container>
   );
 }
@@ -47,17 +53,16 @@ export default function Thermometer({ height, theme }) {
 const Container = styled.div`
   display: inline-block;
   position: relative;
-  width: 70px;
+  width: 170px;
   height: ${({ height }) => `${height}px`};
   background-color: #d6d6d6;
   border-radius: 13px;
-
   padding: 1.2rem 0.2rem;
-  margin: 6rem 0;
+  margin: 6rem -1.5rem;
 
-  box-shadow: #dedede -10px 0px 25px -30px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(20, 20, 20, 0.2) 3px -3px 0px inset;
 `;
 
 const ScaleWrapper = styled.div`
@@ -75,6 +80,7 @@ const ScaleWrapper = styled.div`
     width: 20px;
     height: ${({ height }) => `${height / 8}px`};
     border-top: 1px solid gray;
+    left: -3rem;
   }
 
   .display-temp {
@@ -82,9 +88,9 @@ const ScaleWrapper = styled.div`
 
     p {
       position: absolute;
-      left: -22px;
-      top: -23px;
-      font-size: 0.9em;
+      left: -1.3rem;
+      top: -15px;
+      font-size: 0.7em;
     }
   }
 
@@ -92,7 +98,7 @@ const ScaleWrapper = styled.div`
     width: 30px;
 
     p {
-      left: -11px;
+      left: -0.8rem;
     }
   }
 
@@ -102,9 +108,10 @@ const ScaleWrapper = styled.div`
     width: 15px;
     border-radius: 10px;
     border: none;
+    left: -3.1rem;
 
     p {
-      left: -27px;
+      left: -1.3rem;
     }
   }
 `;
@@ -128,4 +135,27 @@ const Bar = styled.div`
   border-radius: 10px;
   transition: 1s ease;
   transition-delay: 0.5s;
+`;
+
+const Weather = styled.div`
+  width: 100px;
+  position: absolute;
+  right: 1rem;
+
+  .temp {
+    font-size: 1.7em;
+    margin-top: 0;
+  }
+
+  .weather {
+    font-size: 1.3em;
+    margin: 0;
+    font-weight: 200;
+    margin-top: -0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  img {
+    width: 70px;
+  }
 `;

@@ -7,7 +7,7 @@ const ropeLength = 8000 / 5;
 let points = [];
 let count = 0;
 
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < 5; i++) {
   points.push(new PIXI.Point(i * ropeLength, 0));
 }
 

@@ -33,6 +33,7 @@ const Wrapper = styled.div`
   height: 100px;
   font-family: 'Gill Sans';
   color: #2a1618;
+  margin: 8rem 0 2rem 1rem;
 
   .left-hook {
     position: absolute;
@@ -82,9 +83,8 @@ const Wrapper = styled.div`
     background: white;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
-      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
-      rgba(0, 0, 0, 0.2) 3px -3px 0px inset;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px,
+      rgba(0, 0, 0, 0.3) 0px 7px 3px -3px, rgba(0, 0, 0, 0.2) 3px -3px 0px inset;
 
     .day {
       margin: 0;

@@ -92,10 +92,11 @@ export default class Background {
       this.window.height / 2 + 10,
     );
 
-    this.nameText = new PIXI.Text(`<${this.name}>`, {
-      fontFamily: 'Arial',
-      fontSize: 24,
-      fill: 0x333333,
+    this.nameText = new PIXI.Text(`${this.name}`, {
+      fontFamily: 'GowunBatang-Regular',
+      fontSize: 30,
+      fontWeight: 600,
+      fill: 0x000000,
       align: 'center',
     });
     this.nameText.anchor.set(0.5);
@@ -103,8 +104,8 @@ export default class Background {
     this.nameText.y = 120;
 
     this.speciesText = new PIXI.Text(this.species, {
-      fontFamily: 'Arial',
-      fontSize: 18,
+      fontFamily: 'GowunBatang-Regular',
+      fontSize: 20,
       fill: 0x333333,
       align: 'center',
     });

@@ -82,8 +82,8 @@ export const plantPositions = {
     2: {
       x: -5,
       y: 320,
-      width: 130,
-      height: 130,
+      width: 110,
+      height: 125,
     },
     3: {
       x: -5,

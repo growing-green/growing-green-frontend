@@ -117,16 +117,13 @@ export default function PlantCanvas() {
     guage = new GuageContainer(app, sunGuage, waterGuage);
     app.stage.addChild(guage.container);
 
-    if (isDead === false) {
-      app.ticker.add(loop);
-    }
+    app.ticker.add(loop);
   }
 
   function loop(e) {
     const totalGuageWidth = 400;
     const wateringPeriod = plant.waterGuage.defaultGuage;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
-
     if (watering.wateringCan.isWatering === true) {
       guage.waterGuage.width += eachGuageWidth;
       watering.wateringCan.isWatering = false;

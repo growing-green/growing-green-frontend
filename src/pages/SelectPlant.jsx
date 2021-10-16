@@ -77,7 +77,7 @@ export default function SelectPlant({ theme }) {
       <ResultContainer>
         {isLoading === true
           ? renderLoadResultMessage()
-          : plants.length === 0
+          : plants?.length === 0
           ? renderPleaseEnterMessage()
           : renderPlantList()}
       </ResultContainer>

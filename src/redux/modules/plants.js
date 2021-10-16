@@ -110,7 +110,7 @@ export const slice = createSlice({
 
     builder.addCase(createNewPlant.fulfilled, (state, action) => {
       const plant = action.payload;
-      console.log('plant', plant);
+
       state.allPlants[plant._id] = plant;
     });
 

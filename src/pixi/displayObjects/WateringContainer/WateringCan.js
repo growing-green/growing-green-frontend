@@ -67,7 +67,7 @@ export default class WateringCan extends PIXI.Sprite {
         this.plant.y + this.plant.height / 2,
       );
 
-    if (isMouseOverPlant === true && this.isDead === false) {
+    if (isMouseOverPlant === true) {
       this.app.ticker.add(this.watering, this);
     }
 

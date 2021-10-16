@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
-import styled, { ThemeConsumer } from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -32,7 +32,7 @@ export default function SelectPlant({ theme }) {
   function renderPlantList() {
     return (
       <>
-        {plants.map((plant, index) => {
+        {plants?.map((plant, index) => {
           return (
             <Result
               to={`/create/${plants[index].number}`}

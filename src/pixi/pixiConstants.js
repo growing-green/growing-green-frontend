@@ -1,7 +1,6 @@
 export const imagePath = [
   { alias: 'defaultPlant', path: '../images/plants/default_plant.json' },
   { alias: 'cloverPlant', path: '../images/plants/clover_plant.json' },
-  { alias: 'fernPlant', path: '../images/plants/fern_plant.json' },
   { alias: 'treePlant', path: '../images/plants/tree_plant.json' },
 
   { alias: 'plantPot', path: '../images/plants/pot.png' },

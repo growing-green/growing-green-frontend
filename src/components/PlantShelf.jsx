@@ -8,7 +8,6 @@ import movingPlant2 from '../assets/images/plants/moving_plant2.png';
 import movingPlant3 from '../assets/images/plants/moving_plant3.png';
 import movingPlant4 from '../assets/images/plants/moving_plant4.png';
 import movingPlant5 from '../assets/images/plants/moving_plant5.png';
-
 import wateringCanCusor from '../assets/images/furniture/watering_can_cursor.png';
 
 export default function PlantShelf() {
@@ -57,8 +56,20 @@ const Container = styled.div`
   position: relative;
   display: inline-block;
   margin: 0 3rem 1rem 2rem;
+
   &:hover {
     cursor: url(${wateringCanCusor}) 12 12, auto;
+  }
+
+  &::after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+    content: url(${plantShelf}) url(${logoText}) url(${movingPlant1})
+      url(${movingPlant2}) url(${movingPlant3}) url(${movingPlant4})
+      url(${movingPlant5});
   }
 `;
 

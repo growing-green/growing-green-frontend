@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getAllPlantsByUserId } from '../redux/modules/plants';
 
-import Thermometer from '../components/Thermometer';
-import CalendarIcon from '../components/CalendarIcon';
+import WeatherInfo from '../components/WeatherInfo';
+import Calendar from '../components/Calendar';
 import PlantCanvas from '../components/PlantCanvas';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
@@ -41,10 +41,10 @@ export default function Plant() {
   function renderPage() {
     return (
       <>
-        <TermometerAndCalendar>
-          <CalendarIcon />
-          <Thermometer height="120" temperature="30" icon />
-        </TermometerAndCalendar>
+        <CalendarAndWeather>
+          <Calendar />
+          <WeatherInfo height="120" temperature="30" icon />
+        </CalendarAndWeather>
         {prevPlantId && (
           <Link to={prevPlantId}>
             <LeftArrow src={leftArrow} alt="left arrow button" />
@@ -77,7 +77,7 @@ const Container = styled.div`
   height: 700px;
 `;
 
-const TermometerAndCalendar = styled.div`
+const CalendarAndWeather = styled.div`
   position: absolute;
   align-items: center;
   left: 4rem;

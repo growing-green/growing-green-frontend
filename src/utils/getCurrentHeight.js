@@ -1,6 +1,6 @@
 export const getCurrentHeight = (temp, height) => {
   const borderWidth = 3;
-  const totalTemperature = 80;
+  const totalTemperature = 70;
   const minusTemperature = 30;
 
   return (

@@ -31,7 +31,7 @@ export default function CreatePlant() {
 
   useEffect(() => {
     dispatch(searchPlantInfo(plantNumber));
-  }, []);
+  }, [dispatch, plantNumber]);
 
   if (error) {
     return <ErrorBox message={error} />;
@@ -194,11 +194,6 @@ const PlantFrom = styled.form`
     font-size: 1.3em;
     font-family: 'GowunBatang-Regular';
   }
-`;
-
-const SelectTypeBox = styled.div`
-  display: flex;
-  margin: 2rem;
 `;
 
 const ImageWrapper = styled.div`

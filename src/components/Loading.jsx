@@ -135,11 +135,4 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-const Loader = styled.div`
-  position: relative;
-  width: calc(100vw - 230px);
-  height: 100%;
-  left: 230px;
-`;
-
 export default Loading;

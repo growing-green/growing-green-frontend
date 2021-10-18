@@ -39,7 +39,7 @@ export default function Landing() {
     }
 
     dispatch(updateAllPlant(updatedAllPlants));
-  }, [allPlants]);
+  }, [allPlants, dispatch]);
 
   if (error) {
     return <ErrorBox message={error} />;

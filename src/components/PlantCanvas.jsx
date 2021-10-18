@@ -9,7 +9,7 @@ import GuageContainer from '../pixi/displayObjects/GuageContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { imagePath } from '../pixi/pixiConstants';
+import { imagePath } from '../constants/pixi';
 import { isWaterGuageOver } from '../utils/isWaterGuageOver';
 import { isPlantAlive } from '../utils/isPlantAlive';
 

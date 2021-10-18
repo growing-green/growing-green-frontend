@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import * as PIXI from 'pixi.js';
-import { imagePath } from '../pixi/pixiConstants';
+import { imagePath } from '../constants/pixi';
 
 import PlantGrowth from '../pixi/displayObjects/PlantGrowth';
-import Modal from './Modal';
 import background from '../assets/images/background/day.png';
 
 const loader = PIXI.Loader.shared;
 
 export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
   const canvas = useRef(null);
-  let growthPlant;
-  let app;
+  const growthPlant = useRef();
+  const app = useRef();
 
   function loadImage() {
     return new Promise((resolve) => {
@@ -32,10 +31,10 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
   }
 
   useEffect(() => {
-    (async (app) => {
+    (async () => {
       await loadImage();
 
-      app = new PIXI.Application({
+      app.current = new PIXI.Application({
         backgroundAlpha: 0,
         width: 500,
         height: 500,
@@ -44,15 +43,15 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
         antialias: true,
       });
 
-      canvas.current.appendChild(app.view);
+      canvas.current.appendChild(app.current.view);
 
-      growthPlant = new PlantGrowth(app, plantType);
-      app.stage.addChild(growthPlant.container);
+      growthPlant.current = new PlantGrowth(app.current, plantType);
+      app.current.stage.addChild(growthPlant.current.container);
 
-      growthPlant.plant.play();
+      growthPlant.current.plant.play();
 
-      app.start();
-    })(app);
+      app.current.start();
+    })();
 
     return () => {
       canvas.current = null;

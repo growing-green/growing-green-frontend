@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { imagePath } from './pixiConstants';
+import { imagePath } from '../constants/pixi';
 
 const loader = PIXI.Loader.shared;
 

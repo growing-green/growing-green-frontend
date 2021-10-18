@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import plantShelf from '../assets/images/furniture/plant_shelf.png';
-import logoText from '../assets/images/furniture/logo_text.png';
+import logoText from '../assets/images/background/logo_text.png';
 import movingPlant1 from '../assets/images/plants/moving_plant1.png';
 import movingPlant2 from '../assets/images/plants/moving_plant2.png';
 import movingPlant3 from '../assets/images/plants/moving_plant3.png';

@@ -15,6 +15,7 @@ import cloverPlant from '../assets/images/plants/clover_plant.png';
 import defaultPlant from '../assets/images/plants/default_plant.png';
 import treePlant from '../assets/images/plants/tree_plant.png';
 import chair from '../assets/images/furniture/chair.png';
+import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function CreatePlant() {
   const { plantNumber } = useParams();
@@ -87,7 +88,6 @@ export default function CreatePlant() {
               )}
               <img className="chair" src={chair} alt="chair" />
             </ImageWrapper>
-
             {isModalOpen && (
               <Modal closeModal={() => setIsModalOpen(false)}>
                 <PlantGrowthCanvas
@@ -150,6 +150,7 @@ export default function CreatePlant() {
           </PlantFrom>
         </>
       )}
+      <BackButton onClick={() => history.push('/')} />
     </Container>
   );
 }
@@ -226,4 +227,15 @@ const ImageWrapper = styled.div`
     top: 40px;
     right: 100px;
   }
+`;
+
+const BackButton = styled.button`
+  position: absolute;
+  width: 76px;
+  height: 52px;
+  left: 2.5rem;
+  border: none;
+  bottom: 1rem;
+  background: url(${backButton}) no-repeat;
+  background-size: cover;
 `;

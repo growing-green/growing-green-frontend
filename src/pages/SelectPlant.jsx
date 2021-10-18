@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { searchPlantNames } from '../redux/modules/search';
+import { searchPlantNames, clearPlantList } from '../redux/modules/search';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
+import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function SelectPlant({ theme }) {
   const [inputText, setInputText] = useState('');
   const dispatch = useDispatch();
-  const { plants, isLoading, error } = useSelector((state) => state.search);
+  const history = useHistory();
+  const { plantList, isLoading, error } = useSelector((state) => state.search);
 
   if (error) {
     <ErrorBox message={error} />;
+  }
+
+  if (!inputText.length) {
+    dispatch(clearPlantList());
   }
 
   function onSearchButtonClick(e) {
@@ -32,10 +38,10 @@ export default function SelectPlant({ theme }) {
   function renderPlantList() {
     return (
       <>
-        {plants?.map((plant, index) => {
+        {plantList?.map((plant, index) => {
           return (
             <Result
-              to={`/create/${plants[index].number}`}
+              to={`/create/${plantList[index].number}`}
               className="result"
               key={plant.name}
             >
@@ -77,10 +83,11 @@ export default function SelectPlant({ theme }) {
       <ResultContainer>
         {isLoading === true
           ? renderLoadResultMessage()
-          : plants?.length === 0
+          : plantList.length === 0
           ? renderPleaseEnterMessage()
           : renderPlantList()}
       </ResultContainer>
+      <BackButton onClick={() => history.push('/plant/create')} />
     </Wrapper>
   );
 }
@@ -162,4 +169,15 @@ const Result = styled(Link)`
   &:hover {
     background-color: rgba(10, 10, 10, 0.07);
   }
+`;
+
+const BackButton = styled.button`
+  position: absolute;
+  width: 76px;
+  height: 52px;
+  left: 2.5rem;
+  border: none;
+  bottom: 1rem;
+  background: url(${backButton}) no-repeat;
+  background-size: cover;
 `;

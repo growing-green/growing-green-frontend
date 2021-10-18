@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useHistory } from 'react-router-dom';
@@ -10,10 +10,10 @@ import PlantCanvas from '../components/PlantCanvas';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 
-import leftArrow from '../assets/arrows/left_arrow.png';
-import rightArrow from '../assets/arrows/right_arrow.png';
+import leftArrow from '../assets/images/arrows/left_arrow.png';
+import rightArrow from '../assets/images/arrows/right_arrow.png';
 import newPlantIcon from '../assets/images/background/new_plant_icon.png';
-import backButton from '../assets/arrows/back_arrow.png';
+import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);

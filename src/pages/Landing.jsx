@@ -72,11 +72,11 @@ export default function Landing() {
     history.push('/create');
   }
 
-  const logout = () => {
+  function logout() {
     return dispatch(logoutSuccess());
-  };
+  }
 
-  const renderLoginButton = () => {
+  function renderLoginButton() {
     return (
       <Button
         onClick={loginWithGoogle}
@@ -87,9 +87,9 @@ export default function Landing() {
         icon={FcGoogle}
       />
     );
-  };
+  }
 
-  const renderStartButton = () => {
+  function renderStartButton() {
     return (
       <>
         <Button
@@ -102,7 +102,7 @@ export default function Landing() {
         <LogoutText onClick={logout}>logout</LogoutText>
       </>
     );
-  };
+  }
 
   return (
     <Container>

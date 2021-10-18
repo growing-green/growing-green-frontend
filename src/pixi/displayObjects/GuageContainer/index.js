@@ -17,6 +17,7 @@ export default class GuageContainer {
     this.sunGuage = null;
     this.waterGuageLine = null;
     this.sunGuageLine = null;
+    console.log(sunGuage, waterGuage);
 
     this.defaultWaterGuage = waterGuage.defaultGuage;
     this.currentWaterGuage = waterGuage.currentGuage;

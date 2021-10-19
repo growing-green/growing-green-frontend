@@ -31,7 +31,7 @@ const Dimmed = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.darkNavy}85;
+  background: ${({ theme }) => theme.baseTheme.colors.lightBlack};
 `;
 
 const StyledModal = styled.div`
@@ -41,5 +41,5 @@ const StyledModal = styled.div`
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
-  box-shadow: ${({ theme }) => theme.whiteShadow};
+  box-shadow: ${({ theme }) => theme.baseTheme.colors.black};
 `;

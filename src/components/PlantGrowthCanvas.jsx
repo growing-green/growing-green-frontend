@@ -48,14 +48,12 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
 
 const Wrapper = styled.div`
   position: relative;
-
   background: url(${background});
   background-size: cover;
   width: 600px;
   height: 500px;
   padding: 2rem;
   border-radius: 25px;
-  border: ;
 `;
 
 const CloseButton = styled.div`

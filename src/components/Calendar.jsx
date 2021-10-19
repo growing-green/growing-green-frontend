@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getDate } from '../utils/getDate';
 
-export default function CalendarIcon({ theme }) {
+export default function Calendar({ theme }) {
   const [date, setDate] = useState({
     year: null,
     month: null,

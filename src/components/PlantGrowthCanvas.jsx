@@ -1,61 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
 
-import * as PIXI from 'pixi.js';
-import { imagePath } from '../pixi/pixiConstants';
-
 import PlantGrowth from '../pixi/displayObjects/PlantGrowth';
-import Modal from './Modal';
 import background from '../assets/images/background/day.png';
-
-const loader = PIXI.Loader.shared;
 
 export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
   const canvas = useRef(null);
-  let growthPlant;
-  let app;
-
-  function loadImage() {
-    return new Promise((resolve) => {
-      loader.reset();
-      PIXI.utils.clearTextureCache();
-      imagePath.forEach(({ alias, path }) => {
-        loader.add(alias, path);
-      });
-
-      loader.load();
-
-      loader.onComplete.add(() => {
-        resolve();
-      });
-    });
-  }
+  const { isDone } = useSelector((state) => state.images);
+  const growthPlant = useRef();
+  const app = useRef();
 
   useEffect(() => {
-    (async (app) => {
-      await loadImage();
+    if (!isDone) return;
 
-      app = new PIXI.Application({
-        backgroundAlpha: 0,
-        width: 500,
-        height: 500,
-        resolution: window.devicePixelRatio,
-        autoDensity: true,
-        antialias: true,
-      });
+    app.current = new PIXI.Application({
+      backgroundAlpha: 0,
+      width: 500,
+      height: 500,
+      resolution: window.devicePixelRatio,
+      autoDensity: true,
+      antialias: true,
+    });
 
-      canvas.current.appendChild(app.view);
+    canvas.current.appendChild(app.current.view);
 
-      growthPlant = new PlantGrowth(app, plantType);
-      app.stage.addChild(growthPlant.container);
+    growthPlant.current = new PlantGrowth(app.current, plantType);
+    app.current.stage.addChild(growthPlant.current.container);
 
-      growthPlant.plant.play();
-
-      app.start();
-    })(app);
+    growthPlant.current.plant.play();
 
     return () => {
       canvas.current = null;
+      app.current.ticker.remove(growthPlant.current.filterEffect);
+      app.current.destroy();
     };
   }, []);
 
@@ -69,14 +48,12 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
 
 const Wrapper = styled.div`
   position: relative;
-
   background: url(${background});
   background-size: cover;
   width: 600px;
   height: 500px;
   padding: 2rem;
   border-radius: 25px;
-  border: ;
 `;
 
 const CloseButton = styled.div`

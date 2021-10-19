@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getAllPlantsByUserId } from '../redux/modules/plants';
 
-import Thermometer from '../components/Thermometer';
-import CalendarIcon from '../components/CalendarIcon';
+import WeatherInfo from '../components/WeatherInfo';
+import Calendar from '../components/Calendar';
 import PlantCanvas from '../components/PlantCanvas';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 
-import leftArrow from '../assets/arrows/left_arrow.png';
-import rightArrow from '../assets/arrows/right_arrow.png';
+import leftArrow from '../assets/images/arrows/left_arrow.png';
+import rightArrow from '../assets/images/arrows/right_arrow.png';
 import newPlantIcon from '../assets/images/background/new_plant_icon.png';
-import backButton from '../assets/arrows/back_arrow.png';
+import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
@@ -35,22 +35,22 @@ export default function Plant() {
   }
 
   function renderLoading() {
-    return <Loading />;
+    return <Loading text="식물정보 불러오는중..." />;
   }
 
   function renderPage() {
     return (
       <>
-        <TermometerAndCalendar>
-          <CalendarIcon />
-          <Thermometer height="120" temperature="30" icon />
-        </TermometerAndCalendar>
+        <CalendarAndWeather>
+          <Calendar />
+          <WeatherInfo height="120" temperature="30" icon />
+        </CalendarAndWeather>
         {prevPlantId && (
           <Link to={prevPlantId}>
             <LeftArrow src={leftArrow} alt="left arrow button" />
           </Link>
         )}
-        <PlantCanvas plant={allPlants.plantId} />
+        <PlantCanvas plantInfo={allPlants[plantId]} />
         {nextPlantId && (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />
@@ -77,7 +77,7 @@ const Container = styled.div`
   height: 700px;
 `;
 
-const TermometerAndCalendar = styled.div`
+const CalendarAndWeather = styled.div`
   position: absolute;
   align-items: center;
   left: 4rem;

@@ -1,30 +1,52 @@
 import React, { useEffect } from 'react';
-import { createGlobalStyle } from 'styled-components';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as PIXI from 'pixi.js';
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import Landing from './Landing';
 import Plant from './Plant';
 import SelectPlant from './SelectPlant';
-import Calendar from './Calendar';
 import CreatePlant from './CreatePlant';
 import ErrorBox from '../components/ErrorBox';
 import ErrorBoundary from '../components/ErrorBoundary';
 
+import { isImageLoadDone } from '../redux/modules/images';
+
 import theme from '../assets/styles/theme';
 import wall from '../assets/images/furniture/wall.jpg';
+import { imagePath } from '../constants/pixi';
+
+const loader = PIXI.Loader.shared;
 
 export default function App() {
+  const dispatch = useDispatch();
   const { isLogin } = useSelector((state) => state.user);
+  const { isDone } = useSelector((state) => state.images);
 
-  const privateRoute = (Component) => {
+  useEffect(() => {
+    if (isDone) return;
+
+    loader.reset();
+    PIXI.utils.clearTextureCache();
+    imagePath.forEach(({ alias, path }) => {
+      loader.add(alias, path);
+    });
+
+    loader.load();
+
+    loader.onComplete.add(() => {
+      dispatch(isImageLoadDone());
+    });
+  }, []);
+
+  function privateRoute(Component) {
     return isLogin ? <Component /> : <Redirect to={{ pathname: '/' }} />;
-  };
+  }
 
-  const notFoundErrorComponent = () => {
+  function notFoundErrorComponent() {
     return <ErrorBox message="페이지를 찾을 수 없습니다." />;
-  };
+  }
 
   return (
     <>
@@ -48,10 +70,6 @@ export default function App() {
                 exact
                 path="/create/:plantNumber"
                 component={() => privateRoute(CreatePlant)}
-              />
-              <Route
-                path="/calendar"
-                component={() => privateRoute(Calendar)}
               />
             </ErrorBoundary>
             <Route component={notFoundErrorComponent} />

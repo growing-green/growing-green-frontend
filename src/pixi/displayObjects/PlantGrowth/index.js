@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 
-import { plantTypes } from '../../pixiConstants';
+import { plantTypes } from '../../../constants/pixi';
 import { AdvancedBloomFilter } from 'pixi-filters';
 import Pot from '../PlantContainer/Pot';
-import { plantPositions } from '../../../pixi/pixiConstants';
+import { plantPositions } from '../../../constants/pixi';
 
 const TextureCache = PIXI.utils.TextureCache;
 let count = 0;
@@ -12,7 +12,6 @@ export default class PlantGrowth {
   constructor(app, type = 'defaultPlant') {
     this.app = app;
     this.type = 'defaultPlant';
-
     this.container = new PIXI.Container();
     this.type = plantTypes[type];
     this.plantX = plantPositions[type].preview.x;
@@ -62,7 +61,6 @@ export default class PlantGrowth {
       this.filter.brightness = 1.09;
       this.plant.stop();
       this.isGrowing = false;
-      this.app.ticker.remove(this.filterEffect, this);
     }, 4800);
   }
 

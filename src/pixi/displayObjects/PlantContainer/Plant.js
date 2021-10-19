@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { isMouseXOver, isMouseYOver } from '../../../utils/isMouseOver';
-import { plantTypes, plantPositions } from '../../pixiConstants';
+import { plantTypes, plantPositions } from '../../../constants/pixi';
 
 const TextureCache = PIXI.utils.TextureCache;
 const ropeLength = 8000 / 5;

@@ -1,19 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isLoading: false,
+  isDone: false,
 };
 
 export const slice = createSlice({
-  name: 'loading',
+  name: 'images',
   initialState,
   reducers: {
-    loadingStateChange: (state, action) => {
-      state.isLoading = action.payload;
+    isImageLoadDone: (state) => {
+      state.isDone = true;
     },
   },
 });
 
 export default slice.reducer;
 
-export const { loadingStateChange } = slice.actions;
+export const { isImageLoadDone } = slice.actions;

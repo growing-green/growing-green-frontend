@@ -31,12 +31,16 @@ export const searchPlantInfo = createAsyncThunk(
 export const slice = createSlice({
   name: 'search',
   initialState: {
-    plants: [],
+    plantList: [],
     plantInfo: null,
     error: null,
     isLoading: false,
   },
-  reducers: {},
+  reducers: {
+    clearPlantList: (state) => {
+      state.plantList = '';
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(searchPlantNames.pending, (state) => {
       state.isLoading = true;
@@ -44,7 +48,7 @@ export const slice = createSlice({
 
     builder.addCase(searchPlantNames.fulfilled, (state, action) => {
       const { data } = action.payload;
-      state.plants = data;
+      state.plantList = data;
       state.isLoading = false;
     });
 
@@ -71,3 +75,5 @@ export const slice = createSlice({
 });
 
 export default slice.reducer;
+
+export const { clearPlantList } = slice.actions;

@@ -8,8 +8,8 @@ import { loginSuccess, logoutSuccess } from '../redux/modules/user';
 import { getAllPlantsByUserId, updateAllPlant } from '../redux/modules/plants';
 import { calculatePlantInfo } from '../utils/calcuatePlantInfo';
 
-import DesciptionText from '../components/DescrptionText';
-import Button from '../components/Button';
+import AnimationText from '../components/AnimationText';
+import TextButton from '../components/TextButton';
 import PlantShelf from '../components/PlantShelf';
 import ErrorBox from '../components/ErrorBox';
 
@@ -39,7 +39,7 @@ export default function Landing() {
     }
 
     dispatch(updateAllPlant(updatedAllPlants));
-  }, [allPlants]);
+  }, [allPlants, dispatch]);
 
   if (error) {
     return <ErrorBox message={error} />;
@@ -72,13 +72,13 @@ export default function Landing() {
     history.push('/create');
   }
 
-  const logout = () => {
+  function logout() {
     return dispatch(logoutSuccess());
-  };
+  }
 
-  const renderLoginButton = () => {
+  function renderLoginButton() {
     return (
-      <Button
+      <TextButton
         onClick={loginWithGoogle}
         variant="outline"
         size="large"
@@ -87,12 +87,12 @@ export default function Landing() {
         icon={FcGoogle}
       />
     );
-  };
+  }
 
-  const renderStartButton = () => {
+  function renderStartButton() {
     return (
       <>
-        <Button
+        <TextButton
           variant="outline"
           color="green"
           size="large"
@@ -102,12 +102,12 @@ export default function Landing() {
         <LogoutText onClick={logout}>logout</LogoutText>
       </>
     );
-  };
+  }
 
   return (
     <Container>
       <PlantShelf />
-      <DesciptionText>Touch the plant!</DesciptionText>
+      <AnimationText>Touch the plant!</AnimationText>
       <ButtonWrapper>
         {isLogin ? renderStartButton() : renderLoginButton()}
       </ButtonWrapper>

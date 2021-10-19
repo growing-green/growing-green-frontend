@@ -2,7 +2,6 @@ export const imagePath = [
   { alias: 'defaultPlant', path: '../images/plants/default_plant.json' },
   { alias: 'cloverPlant', path: '../images/plants/clover_plant.json' },
   { alias: 'treePlant', path: '../images/plants/tree_plant.json' },
-
   { alias: 'plantPot', path: '../images/plants/pot.png' },
   { alias: 'wateringCan', path: '../images/furniture/watering_can.png' },
   { alias: 'openWindow', path: '../images/furniture/open_window.png' },
@@ -11,7 +10,6 @@ export const imagePath = [
   { alias: 'nightTimeLandscape', path: '../images/landscapes/night.png' },
   { alias: 'nail', path: '../images/furniture/nail.png' },
   { alias: 'blind', path: '../images/furniture/blind.json' },
-
   { alias: 'leftArrow', path: '../images/arrows/left_arrow.png' },
   { alias: 'rihgtArrow', path: '../images/arrows/right_arrow.png' },
 ];

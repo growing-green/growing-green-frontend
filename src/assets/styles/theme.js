@@ -7,12 +7,14 @@ const baseTheme = {
     white: '#fcfcfc',
     darkGreen: '#457f51',
     green: '#9cbd93',
-    lightGreen: '#9cbd93',
+    lightGreen: 'rgba(178, 219, 177, 0.49)',
     black: '#111',
     gray: '#444',
+    lightGray: 'rgba(208, 208, 208, 0.3)',
     red: '#b12f35',
     darkRed: '#892429',
     ivory: '#fbfbf9',
+    lightBlack: 'rgba(0, 0, 0, 0.35)',
   },
 };
 
@@ -65,16 +67,14 @@ const buttonSizes = {
     fontWeight: '600',
     lineHeight: '20px',
     padding: '10px 15px',
-    borderRadius: '25px',
   },
   short: {
     width: '180px',
-    height: '13px',
+    height: '26px',
     fontSize: baseTheme.fontSizes[2],
     fontWeight: '600',
     lineHeight: '20px',
     padding: '8px 15px',
-    borderRadius: '25px',
   },
 };
 
@@ -99,12 +99,12 @@ const buttonColors = {
   },
   translucentGreen: {
     background: 'rgb(88, 126, 78, 0.5)',
-    text: baseTheme.colors.darkGreen,
+    text: baseTheme.colors.black,
     border: baseTheme.colors.green,
   },
   translucentRed: {
     background: 'rgb(204, 0, 0, 0.5)',
-    text: baseTheme.colors.darkRed,
+    text: baseTheme.colors.black,
     border: baseTheme.colors.red,
   },
 };

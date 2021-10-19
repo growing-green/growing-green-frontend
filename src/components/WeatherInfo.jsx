@@ -6,7 +6,7 @@ import { TEMPS } from '../constants';
 import { getCurrentHeight } from '../utils/getCurrentHeight';
 import { getCurrentWeather } from '../redux/modules/environments';
 
-export default function Thermometer({ height, theme }) {
+export default function WeatherInfo({ height, theme }) {
   const [currentHeight, setCurrentHeight] = useState(0);
   const {
     temperature,
@@ -32,8 +32,6 @@ export default function Thermometer({ height, theme }) {
       </BackgroundBar>
       <ScaleWrapper height={height} theme={theme}>
         {TEMPS.map((temp) => {
-          if (temp === 50) return;
-
           return (
             <div className={`display-temp temp-${temp}`} key={temp}>
               <p>{temp}</p>
@@ -132,7 +130,7 @@ const Bar = styled.div`
   width: 10px;
   height: ${({ currentHeight }) => `${currentHeight}px`};
   background-color: ${({ theme }) => theme.baseTheme.colors.red};
-  border-radius: 10px;
+  border-radius: 5px;
   transition: 1s ease;
   transition-delay: 0.5s;
 `;

@@ -1,33 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
+
+import { updatePlant, deletePlant } from '../redux/modules/plants';
 
 import PlantContainer from '../pixi/displayObjects/PlantContainer';
 import Background from '../pixi/displayObjects/Background';
 import WateringContainer from '../pixi/displayObjects/WateringContainer';
 import GuageContainer from '../pixi/displayObjects/GuageContainer';
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
 
-import { imagePath } from '../pixi/pixiConstants';
 import { isWaterGuageOver } from '../utils/isWaterGuageOver';
 import { isPlantAlive } from '../utils/isPlantAlive';
-
-import { updatePlant } from '../redux/modules/plants';
-import { deletePlant } from '../redux/modules/plants';
-
-const loader = PIXI.Loader.shared;
 
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
   window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
 
-export default function PlantCanvas() {
-  const { allPlants } = useSelector((state) => state.plants);
-  const { plantId } = useParams();
+export default function PlantCanvas({ plantInfo }) {
+  const { isDone } = useSelector((state) => state.images);
   const dispatch = useDispatch();
   const history = useHistory();
   const canvas = useRef(null);
-  const [plant, setPlant] = useState(null);
+  const plant = useRef(plantInfo);
 
   let app;
   let watering;
@@ -38,45 +33,17 @@ export default function PlantCanvas() {
   let currentPenaltyPoint;
 
   useEffect(() => {
-    setPlant(allPlants[plantId]);
+    if (!isDone) return;
 
-    if (!plant) return;
-
-    (async (plant) => {
-      const myCanvas = canvas.current;
-      if (!canvas.current) return;
-
-      setup(myCanvas, plant);
-    })(plant);
+    setup(canvas.current, plant.current);
 
     return () => {
-      app?.ticker.remove(loop);
-      canvas.current = null;
-      app?.destroy();
+      app.ticker.remove(loop);
+      app.destroy();
     };
-  }, [plant, plantId]);
+  }, []);
 
-  function loadImage() {
-    return new Promise((resolve) => {
-      loader.reset();
-      PIXI.utils.clearTextureCache();
-      imagePath.forEach(({ alias, path }) => {
-        loader.add(alias, path);
-      });
-
-      loader.load();
-
-      loader.onComplete.add(() => {
-        resolve();
-      });
-    });
-  }
-
-  async function setup(myCanvas, plantInfo) {
-    if (!plantInfo) return;
-
-    await loadImage();
-
+  function setup(canvas, plant) {
     app = new PIXI.Application({
       backgroundAlpha: 0,
       width: 1200,
@@ -86,7 +53,7 @@ export default function PlantCanvas() {
       antialias: true,
     });
 
-    myCanvas.appendChild(app.view);
+    canvas.appendChild(app.view);
 
     const {
       _id,
@@ -99,7 +66,7 @@ export default function PlantCanvas() {
       waterGuage,
       penaltyPoints,
       isDead,
-    } = plantInfo;
+    } = plant;
 
     currentWaterGuage = waterGuage.currentGuage;
     defaultWaterGuage = waterGuage.defaultGuage;
@@ -108,8 +75,8 @@ export default function PlantCanvas() {
     background = new Background(app, name, species, isBlindUp, _id);
     app.stage.addChild(background.container);
 
-    const plant = new PlantContainer(app, type, growthStage, isDead);
-    app.stage.addChild(plant.container);
+    const plantBox = new PlantContainer(app, type, growthStage, isDead);
+    app.stage.addChild(plantBox.container);
 
     watering = new WateringContainer(app, isDead);
     app.stage.addChild(watering.container);
@@ -122,13 +89,13 @@ export default function PlantCanvas() {
 
   function loop(e) {
     const totalGuageWidth = 400;
-    const wateringPeriod = plant.waterGuage.defaultGuage;
+    const wateringPeriod = plant.current.waterGuage.defaultGuage;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
     if (watering.wateringCan.isWatering === true) {
       guage.waterGuage.width += eachGuageWidth;
       watering.wateringCan.isWatering = false;
 
-      increaseWaterGuage(plant);
+      increaseWaterGuage(plant.current);
     }
   }
 

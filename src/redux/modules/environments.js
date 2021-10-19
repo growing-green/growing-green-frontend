@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { MESSAGES } from '../../constants';
 import axios from 'axios';
 import { convertKelvinToCelsius } from '../../utils/convertKelvinToCelsius';
-import getHours from 'date-fns/getHours';
-import { isDay } from '../../utils/isDay';
 
 export const getCurrentWeather = createAsyncThunk(
   'environments/getCurrentWeather',
@@ -24,7 +22,6 @@ export const slice = createSlice({
   initialState: {
     weather: '',
     temperature: '',
-    isDay: isDay(getHours(new Date())),
     iconPath: '',
     error: null,
   },

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Button from './Button';
+import TextButton from './TextButton';
 
 export default function ErrorBox({ message }) {
   const history = useHistory();
@@ -17,7 +17,7 @@ export default function ErrorBox({ message }) {
     <Wrapper>
       <h1>Error!</h1>
       <h3>{message}</h3>
-      <Button
+      <TextButton
         onClick={goHome}
         label="Back"
         variant="outline"
@@ -27,6 +27,10 @@ export default function ErrorBox({ message }) {
     </Wrapper>
   );
 }
+
+ErrorBox.propTypes = {
+  message: PropTypes.string.isRequired,
+};
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,8 +46,3 @@ const Wrapper = styled.div`
     font-weight: 400;
   }
 `;
-
-ErrorBox.propTypes = {
-  message: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-};

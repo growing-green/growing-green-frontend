@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-
-import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
 import { searchPlantInfo } from '../redux/modules/search';
 import { createNewPlant } from '../redux/modules/plants';
+import styled from 'styled-components';
 
+import PlantGrowthCanvas from '../components/PlantGrowthCanvas';
+import PlantInfo from '../components/PlantInfo';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 import Modal from '../components/Modal';
@@ -65,17 +65,8 @@ export default function CreatePlant() {
     <Container>
       {plantInfo && (
         <>
-          <PlantInfo>
-            <InfoBox>
-              <h3>식물 정보</h3>
-              <p>이름: {plantInfo.name}</p>
-              <p>학명: {plantInfo.scientificName}</p>
-              <p>과: {plantInfo.species}</p>
-              <p>물주기: {plantInfo.watering}일</p>
-              <p>
-                광도: {plantInfo.isSunPlant === true ? '양지 식물' : '음지식물'}
-              </p>
-            </InfoBox>
+          <Aside>
+            <PlantInfo plant={plantInfo} />
             <ImageWrapper>
               {selectedData.type === 'cloverPlant' && (
                 <img className="plant" src={cloverPlant} alt="clover plant" />
@@ -88,15 +79,7 @@ export default function CreatePlant() {
               )}
               <img className="chair" src={chair} alt="chair" />
             </ImageWrapper>
-            {isModalOpen && (
-              <Modal closeModal={() => setIsModalOpen(false)}>
-                <PlantGrowthCanvas
-                  plantType={selectedData.type}
-                  onGrowthEnd={() => setIsModalOpen(false)}
-                />
-              </Modal>
-            )}
-          </PlantInfo>
+          </Aside>
           <PlantFrom onSubmit={submitData}>
             <div>
               <input
@@ -148,9 +131,17 @@ export default function CreatePlant() {
             </select>
             <button type="submit">추가하기</button>
           </PlantFrom>
+          {isModalOpen && (
+            <Modal closeModal={() => setIsModalOpen(false)}>
+              <PlantGrowthCanvas
+                plantType={selectedData.type}
+                onGrowthEnd={() => setIsModalOpen(false)}
+              />
+            </Modal>
+          )}
         </>
       )}
-      <BackButton onClick={() => history.push('/')} />
+      <BackButton onClick={() => history.push('/create')} />
     </Container>
   );
 }
@@ -160,17 +151,12 @@ const Container = styled.div`
   justify-content: space-evenly;
 `;
 
-const PlantInfo = styled.div`
+const Aside = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
   align-items: center;
   margin-right: 2rem;
-`;
-
-const InfoBox = styled.div`
-  width: 240px;
-  text-align: left;
 `;
 
 const PlantFrom = styled.form`

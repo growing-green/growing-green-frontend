@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
-import { useSelector, useDispatch } from 'react-redux';
-
 import { searchPlantNames, clearPlantList } from '../redux/modules/search';
+
+import PlantRecommendation from '../components/PlantRecommendation';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
+import TextButton from '../components/TextButton';
+import Modal from '../components/Modal';
+
 import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function SelectPlant({ theme }) {
@@ -14,6 +18,7 @@ export default function SelectPlant({ theme }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { plantList, isLoading, error } = useSelector((state) => state.search);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (error) {
     <ErrorBox message={error} />;
@@ -54,11 +59,7 @@ export default function SelectPlant({ theme }) {
   }
 
   function renderLoadResultMessage() {
-    return (
-      <>
-        <Loading size="50px" text="불러오는 중입니다.." />
-      </>
-    );
+    return <Loading size="50px" text="불러오는 중입니다.." />;
   }
 
   function renderPleaseEnterMessage() {
@@ -66,29 +67,50 @@ export default function SelectPlant({ theme }) {
   }
 
   return (
-    <Wrapper theme={theme}>
-      <h1>Create new plant</h1>
-      <InputBox>
-        <div className="search-box">
-          <BiSearch size="35" color="#393939" />
-          <input
-            className="search-input"
-            value={inputText}
-            onChange={(e) => setInputText(e.currentTarget.value)}
-            placeholder="키우고싶은 식물을 찾아보세요"
-            onKeyUp={onSearchButtonClick}
+    <>
+      {isModalOpen ? (
+        <Modal closeModal={() => setIsModalOpen(false)}>
+          <PlantRecommendation
+            onCloseButtonClick={() => setIsModalOpen(false)}
           />
-        </div>
-      </InputBox>
-      <ResultContainer>
-        {isLoading === true
-          ? renderLoadResultMessage()
-          : plantList.length === 0
-          ? renderPleaseEnterMessage()
-          : renderPlantList()}
-      </ResultContainer>
-      <BackButton onClick={() => history.push('/')} />
-    </Wrapper>
+        </Modal>
+      ) : (
+        <Wrapper theme={theme}>
+          <h1>Create new plant</h1>
+          <InputBox>
+            <div className="search-box">
+              <BiSearch size="35" color="#393939" />
+              <input
+                className="search-input"
+                value={inputText}
+                onChange={(e) => setInputText(e.currentTarget.value)}
+                placeholder="키우고싶은 식물을 찾아보세요"
+                onKeyUp={onSearchButtonClick}
+              />
+            </div>
+          </InputBox>
+          <ResultContainer>
+            {isLoading === true
+              ? renderLoadResultMessage()
+              : plantList.length === 0
+              ? renderPleaseEnterMessage()
+              : renderPlantList()}
+          </ResultContainer>
+          <ButtonWrapper>
+            <TextButton
+              type="button"
+              className="recommend-button"
+              onClick={() => setIsModalOpen(true)}
+              variant="rounded"
+              size="short"
+              color="translucentGreen"
+              label="추천 식물 보기"
+            />
+          </ButtonWrapper>
+          <BackButton onClick={() => history.push('/')} />
+        </Wrapper>
+      )}
+    </>
   );
 }
 
@@ -97,6 +119,9 @@ const Wrapper = styled.div`
   width: 1200px;
   height: 700px;
   border: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h1 {
     margin: 3rem;
@@ -180,4 +205,8 @@ const BackButton = styled.button`
   bottom: 1rem;
   background: url(${backButton}) no-repeat;
   background-size: cover;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-top: 15rem;
 `;

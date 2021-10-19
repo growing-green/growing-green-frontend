@@ -87,7 +87,7 @@ export default function SelectPlant({ theme }) {
           ? renderPleaseEnterMessage()
           : renderPlantList()}
       </ResultContainer>
-      <BackButton onClick={() => history.push('/plant/create')} />
+      <BackButton onClick={() => history.push('/')} />
     </Wrapper>
   );
 }

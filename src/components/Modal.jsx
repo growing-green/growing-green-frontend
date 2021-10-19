@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export default function Modal({ children, closeModal }) {
   return (
     <Wrapper>
-      <Dimmed data-testid="dimmed" onClick={closeModal} />
+      <Dimmed onClick={closeModal} />
       <StyledModal>{children}</StyledModal>
     </Wrapper>
   );

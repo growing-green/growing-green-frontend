@@ -61,7 +61,6 @@ export default class PlantGrowth {
       this.filter.brightness = 1.09;
       this.plant.stop();
       this.isGrowing = false;
-      this.app.ticker.remove(this.filterEffect, this);
     }, 4800);
   }
 

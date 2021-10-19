@@ -35,7 +35,7 @@ export default function Plant() {
   }
 
   function renderLoading() {
-    return <Loading />;
+    return <Loading text="식물정보 불러오는중..." />;
   }
 
   function renderPage() {
@@ -50,7 +50,7 @@ export default function Plant() {
             <LeftArrow src={leftArrow} alt="left arrow button" />
           </Link>
         )}
-        <PlantCanvas plant={allPlants.plantId} />
+        <PlantCanvas plantInfo={allPlants[plantId]} />
         {nextPlantId && (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />

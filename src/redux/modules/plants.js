@@ -1,15 +1,32 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  isRejectedWithValue,
+} from '@reduxjs/toolkit';
 import apiController from '../../configs/apiController';
 import { MESSAGES } from '../../constants';
 
 export const getAllPlantsByUserId = createAsyncThunk(
-  'plants/fetchAllPlants',
+  'plants/getAllPlantsByUserId',
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiController.get('plants');
 
       return response.data;
     } catch (err) {
+      return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
+    }
+  },
+);
+
+export const getMostPopularPlants = createAsyncThunk(
+  'plants/getMostPopularPlants',
+  async (_, { rejectWithValue }) => {
+    try {
+      const responese = await apiController.get('plants/popular');
+
+      return responese.data;
+    } catch {
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
     }
   },
@@ -86,6 +103,7 @@ export const slice = createSlice({
   name: 'plants',
   initialState: {
     allPlants: {},
+    popularPlants: [],
     error: null,
     isLoading: false,
   },
@@ -104,6 +122,20 @@ export const slice = createSlice({
     });
 
     builder.addCase(getAllPlantsByUserId.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(getMostPopularPlants.pending, (state) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getMostPopularPlants.fulfilled, (state, action) => {
+      state.popularPlants = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(getMostPopularPlants.rejected, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
     });

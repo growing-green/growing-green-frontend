@@ -1,60 +1,40 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-
+import { useSelector } from 'react-redux';
 import * as PIXI from 'pixi.js';
-import { imagePath } from '../constants/pixi';
+import styled from 'styled-components';
 
 import PlantGrowth from '../pixi/displayObjects/PlantGrowth';
 import background from '../assets/images/background/day.png';
 
-const loader = PIXI.Loader.shared;
-
 export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
   const canvas = useRef(null);
+  const { isDone } = useSelector((state) => state.images);
   const growthPlant = useRef();
   const app = useRef();
 
-  function loadImage() {
-    return new Promise((resolve) => {
-      loader.reset();
-      PIXI.utils.clearTextureCache();
-      imagePath.forEach(({ alias, path }) => {
-        loader.add(alias, path);
-      });
-
-      loader.load();
-
-      loader.onComplete.add(() => {
-        resolve();
-      });
-    });
-  }
-
   useEffect(() => {
-    (async () => {
-      await loadImage();
+    if (!isDone) return;
 
-      app.current = new PIXI.Application({
-        backgroundAlpha: 0,
-        width: 500,
-        height: 500,
-        resolution: window.devicePixelRatio,
-        autoDensity: true,
-        antialias: true,
-      });
+    app.current = new PIXI.Application({
+      backgroundAlpha: 0,
+      width: 500,
+      height: 500,
+      resolution: window.devicePixelRatio,
+      autoDensity: true,
+      antialias: true,
+    });
 
-      canvas.current.appendChild(app.current.view);
+    canvas.current.appendChild(app.current.view);
 
-      growthPlant.current = new PlantGrowth(app.current, plantType);
-      app.current.stage.addChild(growthPlant.current.container);
+    growthPlant.current = new PlantGrowth(app.current, plantType);
+    app.current.stage.addChild(growthPlant.current.container);
 
-      growthPlant.current.plant.play();
-
-      app.current.start();
-    })();
+    growthPlant.current.plant.play();
 
     return () => {
       canvas.current = null;
+      app.current.ticker.remove(growthPlant.current.filterEffect);
+      app.current.destroy();
     };
   }, []);
 

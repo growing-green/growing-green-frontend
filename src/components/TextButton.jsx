@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { buttons, buttonSizes, buttonColors } from '../assets/styles/theme';
 
-export default function Button({ ...props }) {
+export default function TextButton({ ...props }) {
   return (
     <StyledButton {...props}>
       {props.icon && <props.icon size="24" />}
@@ -12,7 +12,7 @@ export default function Button({ ...props }) {
   );
 }
 
-Button.propTypes = {
+TextButton.propTypes = {
   onClick: PropTypes.func,
   color: PropTypes.string,
   icon: PropTypes.func,
@@ -20,7 +20,7 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
 };
 
-Button.defaultProps = {
+TextButton.defaultProps = {
   type: 'button',
   size: 'large',
   color: 'white',

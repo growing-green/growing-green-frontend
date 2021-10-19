@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
-export default function DesciptionText({ children: text }) {
+export default function AnimationText({ children: text }) {
   const textList = text.split('');
 
   return (
@@ -13,7 +14,11 @@ export default function DesciptionText({ children: text }) {
   );
 }
 
-const delayChildernAnimation = (text) => {
+AnimationText.propTypes = {
+  children: PropTypes.string.isRequired,
+};
+
+function delayChildernAnimation(text) {
   return text.map((_, index) => {
     const interval = 0.1;
     const childNumber = index + 1;
@@ -21,7 +26,7 @@ const delayChildernAnimation = (text) => {
 
     return `span:nth-child(${childNumber}) { animation-delay: ${delayTime}s;}`;
   });
-};
+}
 
 const bounce = keyframes`{
   100% {

@@ -8,8 +8,8 @@ import { loginSuccess, logoutSuccess } from '../redux/modules/user';
 import { getAllPlantsByUserId, updateAllPlant } from '../redux/modules/plants';
 import { calculatePlantInfo } from '../utils/calcuatePlantInfo';
 
-import DesciptionText from '../components/DescrptionText';
-import Button from '../components/Button';
+import AnimationText from '../components/AnimationText';
+import TextButton from '../components/TextButton';
 import PlantShelf from '../components/PlantShelf';
 import ErrorBox from '../components/ErrorBox';
 
@@ -78,7 +78,7 @@ export default function Landing() {
 
   function renderLoginButton() {
     return (
-      <Button
+      <TextButton
         onClick={loginWithGoogle}
         variant="outline"
         size="large"
@@ -92,7 +92,7 @@ export default function Landing() {
   function renderStartButton() {
     return (
       <>
-        <Button
+        <TextButton
           variant="outline"
           color="green"
           size="large"
@@ -107,7 +107,7 @@ export default function Landing() {
   return (
     <Container>
       <PlantShelf />
-      <DesciptionText>Touch the plant!</DesciptionText>
+      <AnimationText>Touch the plant!</AnimationText>
       <ButtonWrapper>
         {isLogin ? renderStartButton() : renderLoginButton()}
       </ButtonWrapper>

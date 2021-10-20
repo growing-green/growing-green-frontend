@@ -56,9 +56,9 @@ export default function Plant() {
             <RightArrow src={rightArrow} alr="right arrow" />
           </Link>
         )}
-        <ButtonWrapper>
+        <NewPlantButtonWrapper>
           <NewPlantButton onClick={() => history.push('/create')} />
-        </ButtonWrapper>
+        </NewPlantButtonWrapper>
         <BackButton onClick={() => history.push('/')} />
       </>
     );
@@ -103,7 +103,7 @@ const RightArrow = styled.img`
   width: 150px;
 `;
 
-const ButtonWrapper = styled.div`
+const NewPlantButtonWrapper = styled.div`
   position: absolute;
   right: 4.5rem;
   top: 6rem;

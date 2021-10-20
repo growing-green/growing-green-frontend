@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { searchPlantNames, clearPlantList } from '../redux/modules/search';
+import { getMostPopularPlants } from '../redux/modules/plants';
 
 import PlantRecommendation from '../components/PlantRecommendation';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
-import TextButton from '../components/TextButton';
-import Modal from '../components/Modal';
 
 import backButton from '../assets/images/arrows/back_arrow.png';
 
@@ -18,7 +17,11 @@ export default function SelectPlant({ theme }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { plantList, isLoading, error } = useSelector((state) => state.search);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { popularPlants } = useSelector((state) => state.plants);
+
+  useEffect(() => {
+    dispatch(getMostPopularPlants());
+  }, []);
 
   if (error) {
     <ErrorBox message={error} />;
@@ -68,48 +71,30 @@ export default function SelectPlant({ theme }) {
 
   return (
     <>
-      {isModalOpen ? (
-        <Modal closeModal={() => setIsModalOpen(false)}>
-          <PlantRecommendation
-            onCloseButtonClick={() => setIsModalOpen(false)}
-          />
-        </Modal>
-      ) : (
-        <Wrapper theme={theme}>
-          <h1>Create new plant</h1>
-          <InputBox>
-            <div className="search-box">
-              <BiSearch size="35" color="#393939" />
-              <input
-                className="search-input"
-                value={inputText}
-                onChange={(e) => setInputText(e.currentTarget.value)}
-                placeholder="키우고싶은 식물을 찾아보세요"
-                onKeyUp={onSearchButtonClick}
-              />
-            </div>
-          </InputBox>
-          <ResultContainer>
-            {isLoading === true
-              ? renderLoadResultMessage()
-              : plantList.length === 0
-              ? renderPleaseEnterMessage()
-              : renderPlantList()}
-          </ResultContainer>
-          <ButtonWrapper>
-            <TextButton
-              type="button"
-              className="recommend-button"
-              onClick={() => setIsModalOpen(true)}
-              variant="rounded"
-              size="short"
-              color="translucentGreen"
-              label="추천 식물 보기"
+      <Wrapper theme={theme}>
+        <h1 className="title">Create new plant</h1>
+        <InputBox>
+          <div className="search-box">
+            <BiSearch size="35" color="#393939" />
+            <input
+              className="search-input"
+              value={inputText}
+              onChange={(e) => setInputText(e.currentTarget.value)}
+              placeholder="키우고싶은 식물을 찾아보세요"
+              onKeyUp={onSearchButtonClick}
             />
-          </ButtonWrapper>
-          <BackButton onClick={() => history.push('/')} />
-        </Wrapper>
-      )}
+          </div>
+        </InputBox>
+        <ResultContainer>
+          {isLoading === true
+            ? renderLoadResultMessage()
+            : plantList.length === 0
+            ? renderPleaseEnterMessage()
+            : renderPlantList()}
+        </ResultContainer>
+        <PlantRecommendation plantsNames={popularPlants} />
+        <BackButton onClick={() => history.push('/')} />
+      </Wrapper>
     </>
   );
 }
@@ -123,7 +108,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 
-  h1 {
+  .title {
     margin: 3rem;
     font-size: 2.5em;
     color: #223f28;
@@ -164,9 +149,9 @@ const InputBox = styled.div`
 const ResultContainer = styled.div`
   width: 530px;
   margin: 1rem auto;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 0.5rem;
-  min-height: 50px;
+  min-height: 30px;
   box-shadow: 0px 10px 20px 3px rgba(162, 162, 162, 0.4);
   background: ${({ theme }) => theme.baseTheme.colors.ivory};
   text-align: left;

@@ -103,8 +103,8 @@ const buttonColors = {
     border: baseTheme.colors.green,
   },
   translucentRed: {
-    background: 'rgb(204, 0, 0, 0.5)',
-    text: baseTheme.colors.black,
+    background: 'rgb(204, 0, 0, 0.3)',
+    text: baseTheme.colors.red,
     border: baseTheme.colors.red,
   },
 };

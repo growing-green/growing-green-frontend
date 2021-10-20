@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  isRejectedWithValue,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiController from '../../configs/apiController';
 import { MESSAGES } from '../../constants';
 
@@ -24,7 +20,7 @@ export const getMostPopularPlants = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const responese = await apiController.get('plants/popular');
-
+      console.log(responese.data);
       return responese.data;
     } catch {
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);

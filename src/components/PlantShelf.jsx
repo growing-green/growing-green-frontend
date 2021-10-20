@@ -89,6 +89,8 @@ const MovingPlant1Image = styled.img`
   width: 130px;
   top: -15px;
   right: 170px;
+  user-drag: none;
+  user-select: none;
 
   &:hover {
     animation: 700ms infinite both ${bigMove};
@@ -101,6 +103,8 @@ const MovingPlant2Image = styled.img`
   width: 350px;
   top: 80px;
   left: 20px;
+  user-drag: none;
+  user-select: none;
 
   &:hover {
     animation: 700ms infinite both ${smallMove};
@@ -113,6 +117,8 @@ const MovingPlant3Image = styled.img`
   width: 160px;
   bottom: 30px;
   left: 130px;
+  user-drag: none;
+  user-select: none;
 
   &:hover {
     animation: 700ms infinite both ${bigMove};
@@ -125,6 +131,8 @@ const MovingPlant4Image = styled.img`
   width: 150px;
   bottom: 10px;
   left: 45px;
+  user-drag: none;
+  user-select: none;
 
   &:hover {
     animation: 700ms infinite both ${bigMove};
@@ -137,6 +145,8 @@ const MovingPlant5Image = styled.img`
   width: 150px;
   bottom: 75px;
   right: -5px;
+  user-drag: none;
+  user-select: none;
 
   &:hover {
     animation: 700ms infinite both ${smallMove};

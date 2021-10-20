@@ -87,7 +87,7 @@ const ScaleWrapper = styled.div`
     p {
       position: absolute;
       left: -1.3rem;
-      top: -15px;
+      top: -18px;
       font-size: 0.7em;
     }
   }
@@ -102,7 +102,7 @@ const ScaleWrapper = styled.div`
 
   .temp--30 {
     background: ${({ theme }) => theme.baseTheme.colors.red};
-    height: 20px;
+    height: 15px;
     width: 15px;
     border-radius: 10px;
     border: none;
@@ -130,7 +130,7 @@ const Bar = styled.div`
   width: 10px;
   height: ${({ currentHeight }) => `${currentHeight}px`};
   background-color: ${({ theme }) => theme.baseTheme.colors.red};
-  border-radius: 5px;
+  border-radius: 3.5px;
   transition: 1s ease;
   transition-delay: 0.5s;
 `;

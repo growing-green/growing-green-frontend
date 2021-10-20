@@ -5,6 +5,7 @@ import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
 
 import { updatePlant, deletePlant } from '../redux/modules/plants';
+import TextButton from '../components/TextButton';
 
 import PlantContainer from '../pixi/displayObjects/PlantContainer';
 import Background from '../pixi/displayObjects/Background';
@@ -135,23 +136,56 @@ export default function PlantCanvas({ plantInfo }) {
       } else {
         alert('식물이 죽었습니다.');
 
-        dispatch(deletePlant(plant._id));
+        dispatch(
+          updatePlant({
+            plantId: plant._id,
+            data: {
+              state: 'dead',
+            },
+          }),
+        );
+
         history.push('/');
       }
     }
   }
 
+  function onDeleteButtonClick() {
+    dispatch(deletePlant(plantInfo._id));
+    history.push('/');
+    window.location.reload();
+  }
+
   return (
     <Wrapper>
+      {plantInfo?.isDead === true && (
+        <ButtonWrapper>
+          <TextButton
+            onClick={onDeleteButtonClick}
+            variant="rounded"
+            size="short"
+            color="translucentRed"
+            label="식물 삭제하기"
+          />
+        </ButtonWrapper>
+      )}
       <div ref={canvas} />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  position: relative;
   background-attachment: fixed;
   width: 1200px;
   height: 700px;
   border-radius: 1.5rem;
   padding-top: 20px;
+`;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(100px, -130px);
 `;

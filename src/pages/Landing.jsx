@@ -18,6 +18,7 @@ export default function Landing() {
   const dispatch = useDispatch();
   const { isLogin, error } = useSelector((state) => state.user);
   const { allPlants } = useSelector((state) => state.plants);
+  const { weather } = useSelector((state) => state.environments);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -32,7 +33,7 @@ export default function Landing() {
 
     if (Object.keys(allPlants).length) {
       for (const id in allPlants) {
-        const updatedPlant = calculatePlantInfo(allPlants[id]);
+        const updatedPlant = calculatePlantInfo(allPlants[id], weather);
 
         updatedAllPlants.push(updatedPlant);
       }

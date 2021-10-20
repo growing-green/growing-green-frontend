@@ -10,14 +10,14 @@ export function calculatePlantInfo(plant, weather) {
     isSunPlant,
     sunGuage,
     penaltyPoints,
-    growthState,
+    growthStage,
   } = plant;
 
   const updates = {
     sunGuage: sunGuage.currentGuage,
     waterGuage: waterGuage.currentGuage,
     penaltyPoints,
-    growthState,
+    growthStage,
   };
 
   const createdDate = new Date(createdAt);
@@ -25,27 +25,20 @@ export function calculatePlantInfo(plant, weather) {
   const today = new Date();
 
   const watering = waterGuage.defaultGuage;
-  const elapsedDate = differenceInDays(today, createdDate);
+  const NumberOfElapsedDate = differenceInDays(today, createdDate);
 
   const passedDays = [];
+  const wateringDays = [];
 
-  for (let i = 0; i < elapsedDate; i++) {
+  for (let i = 0; i < NumberOfElapsedDate; i++) {
     const passedDay = addHours(createdDate, 24 * (i + 1));
 
     passedDays.push(passedDay);
   }
 
-  if (passedDays.length > 7) {
-    updates.growthState = growthState + 1 < 3 ? 3 : growthState + 1;
-  } else if (passedDays.length > 14) {
-    updates.growthState = growthState + 1 < 3 ? 3 : growthState + 1;
-  } else {
-    updates.growthState = 3;
-  }
+  updates.growthStage = calculateGrowth(passedDays.length, growthStage);
 
-  const wateringDays = [];
-
-  for (let i = 0; i < elapsedDate / 5; i++) {
+  for (let i = 0; i < NumberOfElapsedDate / watering; i++) {
     const wateringDay = addHours(createdDate, 24 * ((i + 1) * watering));
 
     wateringDays.push(wateringDay);
@@ -57,8 +50,6 @@ export function calculatePlantInfo(plant, weather) {
   );
 
   const wateringCount = wateringDaysAfterUpdate.length;
-
-
   if (wateringCount > 0) {
     updates.waterGuage = 0;
   }
@@ -114,15 +105,29 @@ export function calculatePlantInfo(plant, weather) {
 
   const updatedPlant = {
     ...plant,
-    sunGauge: {
+    sunGuage: {
+      ...plant.sunGuage,
       currentGuage: updates.sunGuage,
     },
-    waterGauge: {
+    waterGuage: {
+      ...plant.waterGuage,
       currentGuage: updates.waterGuage,
     },
     penaltyPoints: updates.penaltyPoints,
-    growthState: updates.growthState,
+    growthStage: updates.growthState,
   };
 
   return updatedPlant;
+}
+
+function calculateGrowth(passedDays, current) {
+  const ADULT_STAGE = 3;
+
+  if (passedDays >= 14) {
+    return ADULT_STAGE;
+  } else if (passedDays >= 7) {
+    return current + 1 >= ADULT_STAGE ? ADULT_STAGE : current + 1;
+  } else {
+    return current;
+  }
 }

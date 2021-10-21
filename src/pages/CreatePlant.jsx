@@ -244,6 +244,7 @@ export default function CreatePlant({ theme }) {
 const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
+  position: absolute;
 `;
 
 const PlantFrom = styled.form`
@@ -402,9 +403,9 @@ const BackButton = styled.button`
   position: absolute;
   width: 76px;
   height: 52px;
-  left: 2.5rem;
+  left: -100px;
   border: none;
-  bottom: 1rem;
+  bottom: -10px;
   background: url(${backButton}) no-repeat;
   background-size: cover;
 `;

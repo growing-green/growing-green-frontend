@@ -23,7 +23,7 @@ export default function Plant() {
 
   const plantIds = Object.keys(allPlants);
   const currentIndex = plantIds.indexOf(plantId);
-  const prevPlantId = plantIds[currentIndex - 1];
+  const prevPlantId = currentIndex - 1 >= 0 ? plantIds[currentIndex - 1] : null;
   const nextPlantId = plantIds[currentIndex + 1];
 
   useEffect(() => {
@@ -45,12 +45,12 @@ export default function Plant() {
           <Calendar />
           <WeatherInfo height="120" temperature="30" icon />
         </CalendarAndWeather>
+        <PlantCanvas plantInfo={allPlants[plantId]} />
         {prevPlantId && (
           <Link to={prevPlantId}>
             <LeftArrow src={leftArrow} alt="left arrow button" />
           </Link>
         )}
-        <PlantCanvas plantInfo={allPlants[plantId]} />
         {nextPlantId && (
           <Link to={nextPlantId}>
             <RightArrow src={rightArrow} alr="right arrow" />

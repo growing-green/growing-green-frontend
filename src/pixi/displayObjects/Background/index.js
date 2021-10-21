@@ -3,13 +3,14 @@ import Blind from './Blind';
 import PullSwitch from './PullSwitch';
 import Window from './Window';
 import Landscape from './LandScape';
+import Heart from './Heart';
 
 import apiController from '../../../configs/apiController';
 
 const TextureCache = PIXI.utils.TextureCache;
 
 export default class Background {
-  constructor(app, name, species, isBlindUp = true, plantId) {
+  constructor(app, name, species, isBlindUp = true, plantId, penaltyPoints) {
     this.app = app;
 
     this.isBlindUp = isBlindUp;
@@ -20,6 +21,8 @@ export default class Background {
     this.pullSwitch = null;
     this.window = null;
     this.landscape = null;
+    this.penaltyPointsCircle = null;
+    this.penaltyPoints = `-${penaltyPoints}`;
     this.name = name;
     this.species = species;
 
@@ -112,6 +115,17 @@ export default class Background {
     this.speciesText.anchor.set(0.5);
     this.speciesText.x = this.app.screen.width / 2;
     this.speciesText.y = 160;
+
+    this.heart = new Heart(775, 105);
+    this.pointText = new PIXI.Text(this.penaltyPoints, {
+      fontFamily: 'GowunBatang-Regular',
+      fontSize: 28,
+      fill: 0xffffff,
+      align: 'center',
+      fontWeight: 700,
+    });
+    this.pointText.x = this.heart.x - this.pointText.width / 2;
+    this.pointText.y = this.heart.y - this.pointText.height / 2;
   }
 
   render() {
@@ -122,6 +136,8 @@ export default class Background {
       this.pullSwitch,
       this.nameText,
       this.speciesText,
+      this.heart,
+      this.pointText,
     );
   }
 }

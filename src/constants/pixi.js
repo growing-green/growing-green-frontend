@@ -8,6 +8,7 @@ export const imagePath = [
   { alias: 'pullSwitch', path: '../images/furniture/pull_switch.png' },
   { alias: 'dayTimeLandscape', path: '../images/landscapes/day.png' },
   { alias: 'nightTimeLandscape', path: '../images/landscapes/night.png' },
+  { alias: 'heart', path: '../images/shapes/heart.png' },
   { alias: 'nail', path: '../images/furniture/nail.png' },
   { alias: 'blind', path: '../images/furniture/blind.json' },
 ];
@@ -82,9 +83,9 @@ export const plantPositions = {
     },
     3: {
       x: -5,
-      y: 320,
-      width: 185,
-      height: 160,
+      y: 300,
+      width: 170,
+      height: 200,
     },
     preview: {
       x: 240,

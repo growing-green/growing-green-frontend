@@ -73,7 +73,14 @@ export default function PlantCanvas({ plantInfo }) {
     defaultWaterGuage = waterGuage.defaultGuage;
     currentPenaltyPoint = penaltyPoints;
 
-    background = new Background(app, name, species, isBlindUp, _id);
+    background = new Background(
+      app,
+      name,
+      species,
+      isBlindUp,
+      _id,
+      currentPenaltyPoint,
+    );
     app.stage.addChild(background.container);
 
     const plantBox = new PlantContainer(app, type, growthStage, isDead);
@@ -103,24 +110,24 @@ export default function PlantCanvas({ plantInfo }) {
   function increaseWaterGuage(plant) {
     const isOver = isWaterGuageOver(currentWaterGuage, defaultWaterGuage);
 
+    dispatch(
+      updatePlant({
+        plantId: plant._id,
+        data: {
+          state: 'water',
+          isIncrease: true,
+        },
+      }),
+    );
+
     if (isOver === true) {
       currentWaterGuage += 1;
-
-      dispatch(
-        updatePlant({
-          plantId: plant._id,
-          data: {
-            state: 'water',
-            isIncrease: true,
-          },
-        }),
-      );
     } else {
       const isAlive = isPlantAlive(currentPenaltyPoint);
 
       if (isAlive === true) {
         currentPenaltyPoint += 1;
-
+        background.pointText.text = `-${currentPenaltyPoint}`;
         alert(
           `-1점 감점되었습니다. (현재 패널티 점수 ${currentPenaltyPoint}점)`,
         );
@@ -144,8 +151,6 @@ export default function PlantCanvas({ plantInfo }) {
             },
           }),
         );
-
-        history.push('/');
       }
     }
   }

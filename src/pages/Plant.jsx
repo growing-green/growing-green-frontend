@@ -7,8 +7,10 @@ import { getAllPlantsByUserId } from '../redux/modules/plants';
 import WeatherInfo from '../components/WeatherInfo';
 import Calendar from '../components/Calendar';
 import PlantCanvas from '../components/PlantCanvas';
+import TimeTravelCanvas from '../components/TimeTravelCanvas';
 import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
+import TimeTravelMode from '../components/TimeTravelMode';
 
 import leftArrow from '../assets/images/arrows/left_arrow.png';
 import rightArrow from '../assets/images/arrows/right_arrow.png';
@@ -17,6 +19,10 @@ import backButton from '../assets/images/arrows/back_arrow.png';
 
 export default function Plant() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
+  const { isTimeTravelMode, plantsInWeek, weekNumber } = useSelector(
+    (state) => state.timeTravel,
+  );
+
   const { plantId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,25 +47,38 @@ export default function Plant() {
   function renderPage() {
     return (
       <>
-        <CalendarAndWeather>
-          <Calendar />
-          <WeatherInfo height="120" temperature="30" icon />
-        </CalendarAndWeather>
-        <PlantCanvas plantInfo={allPlants[plantId]} />
-        {prevPlantId && (
-          <Link to={prevPlantId}>
-            <LeftArrow src={leftArrow} alt="left arrow button" />
-          </Link>
+        <TimeTravelMode />
+        {isTimeTravelMode === true ? (
+          <TimeTravelCanvas
+            plantsInWeek={plantsInWeek}
+            isTimeTravelMode={isTimeTravelMode}
+          />
+        ) : (
+          <>
+            <CalendarAndWeather>
+              <Calendar />
+              <WeatherInfo height="120" temperature="30" icon />
+            </CalendarAndWeather>
+            <PlantCanvas
+              plantInfo={allPlants[plantId]}
+              isTimeTravelMode={isTimeTravelMode}
+            />
+            {prevPlantId && (
+              <Link to={prevPlantId}>
+                <LeftArrow src={leftArrow} alt="left arrow button" />
+              </Link>
+            )}
+            {nextPlantId && (
+              <Link to={nextPlantId}>
+                <RightArrow src={rightArrow} alr="right arrow" />
+              </Link>
+            )}
+            <NewPlantButtonWrapper>
+              <NewPlantButton onClick={() => history.push('/create')} />
+            </NewPlantButtonWrapper>
+            <BackButton onClick={() => history.push('/')} />
+          </>
         )}
-        {nextPlantId && (
-          <Link to={nextPlantId}>
-            <RightArrow src={rightArrow} alr="right arrow" />
-          </Link>
-        )}
-        <NewPlantButtonWrapper>
-          <NewPlantButton onClick={() => history.push('/create')} />
-        </NewPlantButtonWrapper>
-        <BackButton onClick={() => history.push('/')} />
       </>
     );
   }

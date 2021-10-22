@@ -4,7 +4,7 @@ import WateringCan from './WateringCan';
 import Nail from './Nail';
 
 export default class WateringContainer {
-  constructor(app, isDead) {
+  constructor(app, isDead, isTimeTravelMode) {
     this.app = app;
     this.plantContainer = app.stage.children[1];
 
@@ -12,6 +12,7 @@ export default class WateringContainer {
     this.wateringCan = null;
     this.nail = null;
     this.isDead = isDead;
+    this.isTimeTravelMode = isTimeTravelMode;
 
     this.createSprite();
     this.render();
@@ -29,6 +30,8 @@ export default class WateringContainer {
   }
 
   render() {
-    this.container.addChild(this.wateringCan, this.nail);
+    if (!this.isTimeTravelMode) {
+      this.container.addChild(this.wateringCan, this.nail);
+    }
   }
 }

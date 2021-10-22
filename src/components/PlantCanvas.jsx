@@ -32,6 +32,7 @@ export default function PlantCanvas({ plantInfo }) {
   let currentWaterGuage;
   let defaultWaterGuage;
   let currentPenaltyPoint;
+  let plantBox;
 
   useEffect(() => {
     if (!isDone) return;
@@ -83,7 +84,7 @@ export default function PlantCanvas({ plantInfo }) {
     );
     app.stage.addChild(background.container);
 
-    const plantBox = new PlantContainer(app, type, growthStage, isDead);
+    plantBox = new PlantContainer(app, type, growthStage, isDead);
     app.stage.addChild(plantBox.container);
 
     watering = new WateringContainer(app, isDead);
@@ -95,10 +96,11 @@ export default function PlantCanvas({ plantInfo }) {
     app.ticker.add(loop);
   }
 
-  function loop(e) {
+  function loop() {
     const totalGuageWidth = 400;
     const wateringPeriod = plant.current.waterGuage.defaultGuage;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
+
     if (watering.wateringCan.isWatering === true) {
       guage.waterGuage.width += eachGuageWidth;
       watering.wateringCan.isWatering = false;
@@ -123,13 +125,15 @@ export default function PlantCanvas({ plantInfo }) {
     if (isOver === true) {
       currentWaterGuage += 1;
     } else {
-      const isAlive = isPlantAlive(currentPenaltyPoint);
+      const isAlive = isPlantAlive(currentWaterGuage);
 
       if (isAlive === true) {
         currentPenaltyPoint += 1;
-        background.pointText.text = `-${currentPenaltyPoint}`;
+        background.pointText.text = `${10 - currentPenaltyPoint}`;
         alert(
-          `-1점 감점되었습니다. (현재 패널티 점수 ${currentPenaltyPoint}점)`,
+          `-1점 감점되었습니다. (현재 패널티 점수 ${
+            10 - currentPenaltyPoint
+          }점)`,
         );
         dispatch(
           updatePlant({
@@ -151,6 +155,8 @@ export default function PlantCanvas({ plantInfo }) {
             },
           }),
         );
+
+        window.location.reload();
       }
     }
   }
@@ -185,7 +191,7 @@ const Wrapper = styled.div`
   width: 1200px;
   height: 700px;
   border-radius: 1.5rem;
-  padding-top: 20px;
+  padding-top: 40px;
 `;
 
 const ButtonWrapper = styled.div`

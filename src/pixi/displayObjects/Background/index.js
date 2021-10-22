@@ -22,7 +22,7 @@ export default class Background {
     this.window = null;
     this.landscape = null;
     this.penaltyPointsCircle = null;
-    this.penaltyPoints = `-${penaltyPoints}`;
+    this.lifePoints = `${10 - penaltyPoints}`;
     this.name = name;
     this.species = species;
 
@@ -117,7 +117,7 @@ export default class Background {
     this.speciesText.y = 160;
 
     this.heart = new Heart(775, 105);
-    this.pointText = new PIXI.Text(this.penaltyPoints, {
+    this.pointText = new PIXI.Text(this.lifePoints, {
       fontFamily: 'GowunBatang-Regular',
       fontSize: 28,
       fill: 0xffffff,

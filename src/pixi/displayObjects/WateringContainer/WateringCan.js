@@ -19,7 +19,7 @@ export default class WateringCan extends PIXI.Sprite {
 
     this.app = app;
     this.plantContainer = plantContainer;
-    this.plant = plantContainer.children[0];
+    this.plant = plantContainer?.children[0];
     this.isDead = isDead;
 
     this.anchor.set(0);

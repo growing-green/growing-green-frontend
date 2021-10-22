@@ -19,7 +19,7 @@ export default class WateringCan extends PIXI.Sprite {
 
     this.app = app;
     this.plantContainer = plantContainer;
-    this.plant = plantContainer.children[0];
+    this.plant = plantContainer?.children[0];
     this.isDead = isDead;
 
     this.anchor.set(0);
@@ -60,10 +60,14 @@ export default class WateringCan extends PIXI.Sprite {
 
     const position = e.data.global;
     const isMouseOverPlant =
-      isMouseXOver(position.x, this.plant.x, this.plant.x + this.plant.width) &&
+      isMouseXOver(
+        position.x,
+        this.plant.x - this.width,
+        this.plant.x + this.plant.width,
+      ) &&
       isMouseYOver(
         position.y,
-        this.plant.y - this.plant.height / 2,
+        this.plant.y - this.plant.height / 2 - this.height,
         this.plant.y + this.plant.height / 2,
       );
 
@@ -109,7 +113,6 @@ export default class WateringCan extends PIXI.Sprite {
   }
 
   sizeUpAndRotate(e) {
-    if (e.data === undefined) return;
     const position = e.data.global;
     const isMouseOverWateringCan =
       isMouseXOver(position.x, this.x, this.x + this.width) &&

@@ -1,7 +1,7 @@
 export function isPlantAlive(point) {
-  if (point === 10) {
-    return false;
+  if (point <= 10) {
+    return true;
   }
 
-  return true;
+  return false;
 }

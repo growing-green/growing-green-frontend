@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   height: 100px;
   font-family: 'Gill Sans';
   color: #2a1618;
-  margin: 8rem 0 2rem 1rem;
+  margin: 9rem 0 2rem 1rem;
 
   .left-hook {
     position: absolute;

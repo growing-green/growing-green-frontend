@@ -47,7 +47,6 @@ export default function PlantGrowthCanvas({ plantType, onGrowthEnd, theme }) {
 }
 
 const Wrapper = styled.div`
-  position: relative;
   background: url(${background});
   background-size: cover;
   width: 600px;

@@ -8,8 +8,8 @@ export default class GuageContainer {
 
     this.container = new PIXI.Container();
 
-    const Watering = app.stage.children[2];
-    this.wateringCan = Watering.children[0];
+    const Watering = app.stage?.children[2];
+    this.wateringCan = Watering?.children[0];
 
     this.waterTexture = null;
     this.waterGuage = null;
@@ -61,6 +61,7 @@ export default class GuageContainer {
       550,
       0x8bd6f8,
     );
+    this.waterGuage.mask.x = this.waterGuage.mask.x + 100;
 
     this.sunGuage = new Guage(
       this.sunTexture,

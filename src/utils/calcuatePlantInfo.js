@@ -1,7 +1,7 @@
 import differenceInDays from 'date-fns/differenceInDays';
 import addHours from 'date-fns/addHours';
 
-export function calculatePlantInfo(plant, weather) {
+export function calculatePlantInfo(plant, weather = 'Clear', currentDate) {
   const {
     createdAt,
     updatedAt,
@@ -16,13 +16,13 @@ export function calculatePlantInfo(plant, weather) {
   const updates = {
     sunGuage: sunGuage.currentGuage,
     waterGuage: waterGuage.currentGuage,
-    penaltyPoints,
+    penaltyPoints: penaltyPoints,
     growthStage,
   };
 
   const createdDate = new Date(createdAt);
   const lastLoginDate = new Date(updatedAt);
-  const today = new Date();
+  const today = new Date(currentDate);
 
   const watering = waterGuage.defaultGuage;
   const NumberOfElapsedDate = differenceInDays(today, createdDate);
@@ -50,12 +50,10 @@ export function calculatePlantInfo(plant, weather) {
   );
 
   const wateringCount = wateringDaysAfterUpdate.length;
-  if (wateringCount > 0) {
-    updates.waterGuage = 0;
-  }
 
-  if (wateringCount > 1) {
-    updates.penaltyPoints = penaltyPoints - wateringCount - 1;
+  if (wateringCount >= 1) {
+    updates.waterGuage = 0;
+    updates.penaltyPoints += wateringCount;
   }
 
   if (weather === 'rainy') {
@@ -114,7 +112,7 @@ export function calculatePlantInfo(plant, weather) {
       currentGuage: updates.waterGuage,
     },
     penaltyPoints: updates.penaltyPoints,
-    growthStage: updates.growthState,
+    growthStage: updates.growthStage,
   };
 
   return updatedPlant;
@@ -126,7 +124,7 @@ function calculateGrowth(passedDays, current) {
   if (passedDays >= 14) {
     return ADULT_STAGE;
   } else if (passedDays >= 7) {
-    return current + 1 >= ADULT_STAGE ? ADULT_STAGE : current + 1;
+    return current + 1 >= 3 ? 3 : current + 1;
   } else {
     return current;
   }

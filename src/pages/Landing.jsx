@@ -30,10 +30,11 @@ export default function Landing() {
 
   useEffect(() => {
     const updatedAllPlants = [];
+    const today = new Date();
 
     if (Object.keys(allPlants).length) {
       for (const id in allPlants) {
-        const updatedPlant = calculatePlantInfo(allPlants[id], weather);
+        const updatedPlant = calculatePlantInfo(allPlants[id], weather, today);
 
         updatedAllPlants.push(updatedPlant);
       }

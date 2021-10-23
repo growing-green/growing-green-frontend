@@ -20,7 +20,10 @@ export default function TimeTravelMode() {
     (state) => state.timeTravel,
   );
   const { allPlants } = useSelector((state) => state.plants);
-  const today = new Date();
+  const curr = new Date();
+  const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  const today = new Date(utc + KR_TIME_DIFF);
 
   function onStartButtonClick() {
     dispatch(startTimeTravel(allPlants[plantId]));
@@ -45,9 +48,9 @@ export default function TimeTravelMode() {
       passedDays.push(passedDay);
     }
 
-    if (passedDays.length === 14) {
+    if (passedDays.length + 1 === 14) {
       text += '- 식물의 성장날짜입니다(2단계->3단계)';
-    } else if (passedDays.length === 7) {
+    } else if (passedDays.length + 1 === 7) {
       text += '- 식물의 성장날짜입니다(1단계->2단계)';
     }
 

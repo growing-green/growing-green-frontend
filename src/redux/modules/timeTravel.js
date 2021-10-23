@@ -28,7 +28,6 @@ export const slice = createSlice({
 
         plantsInWeek.push(updatedPlant);
       }
-      console.log(plantsInWeek);
 
       state.isTimeTravelMode = true;
       state.currentPlant = plant;

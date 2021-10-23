@@ -126,14 +126,11 @@ export default function PlantCanvas({ plantInfo }) {
       currentWaterGuage += 1;
     } else {
       const isAlive = isPlantAlive(currentWaterGuage);
-
       if (isAlive === true) {
         currentPenaltyPoint += 1;
         background.pointText.text = `${10 - currentPenaltyPoint}`;
         alert(
-          `-1점 감점되었습니다. (현재 패널티 점수 ${
-            10 - currentPenaltyPoint
-          }점)`,
+          `-1점 감점되었습니다. (남은 생명 수 ${10 - currentPenaltyPoint}점)`,
         );
         dispatch(
           updatePlant({
@@ -156,7 +153,7 @@ export default function PlantCanvas({ plantInfo }) {
           }),
         );
 
-        window.location.reload();
+        history.push('/');
       }
     }
   }
@@ -164,7 +161,6 @@ export default function PlantCanvas({ plantInfo }) {
   function onDeleteButtonClick() {
     dispatch(deletePlant(plantInfo._id));
     history.push('/');
-    window.location.reload();
   }
 
   return (

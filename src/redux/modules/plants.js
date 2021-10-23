@@ -20,7 +20,6 @@ export const getMostPopularPlants = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const responese = await apiController.get('plants/popular');
-      console.log(responese.data);
       return responese.data;
     } catch {
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);

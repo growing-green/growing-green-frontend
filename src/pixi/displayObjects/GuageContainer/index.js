@@ -69,6 +69,30 @@ export default class GuageContainer {
       550,
       0xffc438,
     );
+
+    this.waterText = new PIXI.Text('WATER GUAGE', {
+      fontFamily: 'sans-serif',
+      fontSize: 30,
+      fontWeight: 700,
+      fill: 0xaaaaaa,
+      align: 'left',
+    });
+    this.waterText.alpha = 0.6;
+    this.waterText.anchor.set(0);
+    this.waterText.x = this.app.screen.width / 2 - 300;
+    this.waterText.y = 560;
+
+    this.sunText = new PIXI.Text('WATER GUAGE', {
+      fontFamily: 'sans-serif',
+      fontSize: 30,
+      fontWeight: 700,
+      fill: 0xaaaaaa,
+      align: 'left',
+    });
+    this.sunText.alpha = 0.6;
+    this.sunText.anchor.set(0);
+    this.sunText.x = this.app.screen.width / 2 + 120;
+    this.sunText.y = 560;
   }
 
   createLine() {
@@ -89,8 +113,10 @@ export default class GuageContainer {
     this.container.addChild(
       this.waterGuageLine,
       this.waterGuage,
+      this.waterText,
       this.sunGuageLine,
       this.sunGuage,
+      this.sunText,
     );
   }
 }

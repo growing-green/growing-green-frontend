@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Loading = ({ size = '80px', text = '로딩중...' }) => {
   return (
     <Wrapper>
-      <LoadingSpinner size={size} />
+      <LoadingSpinner size={size} data-testid="loading-spinner" />
       <p>{text}</p>
     </Wrapper>
   );
@@ -44,14 +44,7 @@ const LoadingSpinner = styled.div`
       transform: rotate(360deg);
     }
   }
-  @-webkit-keyframes rsm-rotate {
-    from {
-      -webkit-transform: rotate(0deg);
-    }
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  }
+
   @keyframes rsm-sweep {
     0% {
       -webkit-clip-path: polygon(
@@ -66,15 +59,6 @@ const LoadingSpinner = styled.div`
       clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 50% 50%, 0% 0%, 0% 0%, 0% 0%);
     }
     50% {
-      -webkit-clip-path: polygon(
-        0% 0%,
-        0% 100%,
-        0% 100%,
-        50% 50%,
-        100% 0%,
-        100% 0%,
-        0% 0%
-      );
       clip-path: polygon(
         0% 0%,
         0% 100%,
@@ -86,51 +70,7 @@ const LoadingSpinner = styled.div`
       );
     }
     100% {
-      -webkit-clip-path: polygon(
-        0% 0%,
-        0% 100%,
-        100% 100%,
-        50% 50%,
-        100% 100%,
-        100% 0%,
-        0% 0%
-      );
       clip-path: polygon(
-        0% 0%,
-        0% 100%,
-        100% 100%,
-        50% 50%,
-        100% 100%,
-        100% 0%,
-        0% 0%
-      );
-    }
-  }
-  @-webkit-keyframes rsm-sweep {
-    0% {
-      -webkit-clip-path: polygon(
-        0% 0%,
-        0% 0%,
-        0% 0%,
-        50% 50%,
-        0% 0%,
-        0% 0%,
-        0% 0%
-      );
-    }
-    50% {
-      -webkit-clip-path: polygon(
-        0% 0%,
-        0% 100%,
-        0% 100%,
-        50% 50%,
-        100% 0%,
-        100% 0%,
-        0% 0%
-      );
-    }
-    100% {
-      -webkit-clip-path: polygon(
         0% 0%,
         0% 100%,
         100% 100%,

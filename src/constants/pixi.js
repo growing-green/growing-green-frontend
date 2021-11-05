@@ -8,6 +8,8 @@ export const imagePath = [
   { alias: 'pullSwitch', path: '../images/furniture/pull_switch.png' },
   { alias: 'dayTimeLandscape', path: '../images/landscapes/day.png' },
   { alias: 'nightTimeLandscape', path: '../images/landscapes/night.png' },
+  { alias: 'leftArrow', path: '../images/arrows/left_arrow.png' },
+  { alias: 'rightArrow', path: '../images/arrows/right_arrow.png' },
   { alias: 'heart', path: '../images/shapes/heart.png' },
   { alias: 'nail', path: '../images/furniture/nail.png' },
   { alias: 'blind', path: '../images/furniture/blind.json' },

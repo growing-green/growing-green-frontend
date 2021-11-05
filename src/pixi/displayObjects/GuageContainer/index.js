@@ -82,7 +82,7 @@ export default class GuageContainer {
     this.waterText.x = this.app.screen.width / 2 - 300;
     this.waterText.y = 560;
 
-    this.sunText = new PIXI.Text('WATER GUAGE', {
+    this.sunText = new PIXI.Text('SUN GUAGE', {
       fontFamily: 'sans-serif',
       fontSize: 30,
       fontWeight: 700,
@@ -91,7 +91,7 @@ export default class GuageContainer {
     });
     this.sunText.alpha = 0.6;
     this.sunText.anchor.set(0);
-    this.sunText.x = this.app.screen.width / 2 + 120;
+    this.sunText.x = this.app.screen.width / 2 + 140;
     this.sunText.y = 560;
   }
 

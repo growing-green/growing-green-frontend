@@ -13,7 +13,7 @@ import TextButton from '../components/TextButton';
 import PlantShelf from '../components/PlantShelf';
 import ErrorBox from '../components/ErrorBox';
 
-export default function Landing() {
+export default function LandingPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isLogin, error } = useSelector((state) => state.user);

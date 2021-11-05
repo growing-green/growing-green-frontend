@@ -12,7 +12,7 @@ import Loading from '../components/Loading';
 
 import backButton from '../assets/images/arrows/back_arrow.png';
 
-export default function SelectPlant({ theme }) {
+export default function SelectPlantPage() {
   const [inputText, setInputText] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
@@ -71,7 +71,7 @@ export default function SelectPlant({ theme }) {
 
   return (
     <>
-      <Wrapper theme={theme}>
+      <Wrapper>
         <h1 className="title">Create new plant</h1>
         <InputBox>
           <div className="search-box">
@@ -85,7 +85,7 @@ export default function SelectPlant({ theme }) {
             />
           </div>
         </InputBox>
-        <ResultContainer>
+        <ResultContainer data-testid='result-container'>
           {isLoading === true
             ? renderLoadResultMessage()
             : plantList.length === 0

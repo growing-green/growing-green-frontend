@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { getAllPlantsByUserId } from '../redux/modules/plants';
 
 import WeatherInfo from '../components/WeatherInfo';
@@ -12,14 +12,12 @@ import ErrorBox from '../components/ErrorBox';
 import Loading from '../components/Loading';
 import TimeTravelMode from '../components/TimeTravelMode';
 
-import leftArrow from '../assets/images/arrows/left_arrow.png';
-import rightArrow from '../assets/images/arrows/right_arrow.png';
 import newPlantIcon from '../assets/images/background/new_plant_icon.png';
 import backButton from '../assets/images/arrows/back_arrow.png';
 
-export default function Plant() {
+export default function PlantPage() {
   const { allPlants, isLoading, error } = useSelector((state) => state.plants);
-  const { isTimeTravelMode, plantsInWeek, weekNumber } = useSelector(
+  const { isTimeTravelMode, plantsInWeek } = useSelector(
     (state) => state.timeTravel,
   );
 
@@ -29,8 +27,7 @@ export default function Plant() {
 
   const plantIds = Object.keys(allPlants);
   const currentIndex = plantIds.indexOf(plantId);
-  const prevPlantId = currentIndex - 1 >= 0 ? plantIds[currentIndex - 1] : null;
-  const nextPlantId = plantIds[currentIndex + 1];
+  const plants = Object.values(allPlants);
 
   useEffect(() => {
     dispatch(getAllPlantsByUserId());
@@ -59,20 +56,7 @@ export default function Plant() {
               <Calendar />
               <WeatherInfo height="120" temperature="30" icon />
             </CalendarAndWeather>
-            <PlantCanvas
-              plantInfo={allPlants[plantId]}
-              isTimeTravelMode={isTimeTravelMode}
-            />
-            {prevPlantId && (
-              <Link to={prevPlantId}>
-                <LeftArrow src={leftArrow} alt="left arrow button" />
-              </Link>
-            )}
-            {nextPlantId && (
-              <Link to={nextPlantId}>
-                <RightArrow src={rightArrow} alr="right arrow" />
-              </Link>
-            )}
+            <PlantCanvas plants={plants} isTimeTravelMode={isTimeTravelMode} />
             <NewPlantButtonWrapper>
               <NewPlantButton onClick={() => history.push('/create')} />
             </NewPlantButtonWrapper>

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
-export const getDate = () => {
-  const dateString = format(new Date(), 'yyyy MMM EEEE dd');
+export const getFormatedDate = (date) => {
+  const dateString = format(date, 'yyyy MMM EEEE dd');
   const dateList = dateString.split(' ');
 
   return {

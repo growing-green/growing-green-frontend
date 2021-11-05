@@ -5,13 +5,13 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import './configs/firebase';
 
-import App from './pages/App';
+import AppPage from './pages/AppPage';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <App />
+        <AppPage />
       </Router>
     </Provider>
   </React.StrictMode>,

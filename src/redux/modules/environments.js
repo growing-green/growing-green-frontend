@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { MESSAGES } from '../../constants';
 import axios from 'axios';
+
+import { weatherURL } from '../../configs';
+import { MESSAGES } from '../../constants';
 import { convertKelvinToCelsius } from '../../utils/convertKelvinToCelsius';
 
 export const getCurrentWeather = createAsyncThunk(
   'environments/getCurrentWeather',
   async (_, { rejectWithValue }) => {
     try {
-      const apiURL = process.env.REACT_APP_WEATHER_API_URL;
-      const response = await axios.get(apiURL);
+      const response = await axios.get(weatherURL);
 
       return response.data;
     } catch (err) {

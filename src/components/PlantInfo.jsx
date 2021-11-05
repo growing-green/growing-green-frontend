@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function PlantInfo({ plant, theme }) {
+export default function PlantInfo({ plant }) {
   return (
-    <Container theme={theme}>
+    <Container>
       <h3 className="info-item">식물 정보</h3>
       <p className="info-item">이름: {plant.name}</p>
       <p className="info-item">학명: {plant.scientificName}</p>

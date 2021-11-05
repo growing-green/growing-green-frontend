@@ -4,13 +4,18 @@ import { useHistory } from 'react-router-dom';
 import * as PIXI from 'pixi.js';
 import styled from 'styled-components';
 
-import { updatePlant, deletePlant } from '../redux/modules/plants';
+import {
+  updatePlant,
+  deletePlant,
+  changeCurrentPlant,
+} from '../redux/modules/plants';
 import TextButton from '../components/TextButton';
 
 import PlantContainer from '../pixi/displayObjects/PlantContainer';
 import Background from '../pixi/displayObjects/Background';
 import WateringContainer from '../pixi/displayObjects/WateringContainer';
 import GuageContainer from '../pixi/displayObjects/GuageContainer';
+import Arrows from '../pixi/displayObjects/Arrows';
 
 import { isWaterGuageOver } from '../utils/isWaterGuageOver';
 import { isPlantAlive } from '../utils/isPlantAlive';
@@ -18,21 +23,25 @@ import { isPlantAlive } from '../utils/isPlantAlive';
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
   window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
 
-export default function PlantCanvas({ plantInfo }) {
+export default function PlantCanvas({ plants }) {
   const { isDone } = useSelector((state) => state.images);
+  const { currentPlant } = useSelector((state) => state.plants);
   const dispatch = useDispatch();
   const history = useHistory();
   const canvas = useRef(null);
-  const plant = useRef(plantInfo);
+  const plant = useRef(currentPlant);
 
   let app;
-  let watering;
-  let guage;
+  let arrows;
+  let plantBox;
   let background;
   let currentWaterGuage;
   let defaultWaterGuage;
   let currentPenaltyPoint;
-  let plantBox;
+  let guageList = [];
+  let wateringList = [];
+  let plantContainers = [];
+  let currentPlantIndex = plants.indexOf(currentPlant);
 
   useEffect(() => {
     if (!isDone) return;
@@ -57,55 +66,104 @@ export default function PlantCanvas({ plantInfo }) {
 
     canvas.appendChild(app.view);
 
-    const {
-      _id,
-      growthStage,
-      isBlindUp,
-      type,
-      name,
-      species,
-      sunGuage,
-      waterGuage,
-      penaltyPoints,
-      isDead,
-    } = plant;
+    for (let i = 0; i < plants.length; i++) {
+      const plantContainer = new PIXI.Container();
+      const {
+        _id,
+        growthStage,
+        isBlindUp,
+        type,
+        name,
+        species,
+        sunGuage,
+        waterGuage,
+        penaltyPoints,
+        isDead,
+      } = plants[i];
 
-    currentWaterGuage = waterGuage.currentGuage;
-    defaultWaterGuage = waterGuage.defaultGuage;
-    currentPenaltyPoint = penaltyPoints;
+      currentWaterGuage = waterGuage.currentGuage;
+      defaultWaterGuage = waterGuage.defaultGuage;
+      currentPenaltyPoint = penaltyPoints;
 
-    background = new Background(
-      app,
-      name,
-      species,
-      isBlindUp,
-      _id,
-      currentPenaltyPoint,
-    );
-    app.stage.addChild(background.container);
+      background = new Background(
+        app,
+        name,
+        species,
+        isBlindUp,
+        _id,
+        currentPenaltyPoint,
+      );
+      plantContainer.addChild(background.container);
 
-    plantBox = new PlantContainer(app, type, growthStage, isDead);
-    app.stage.addChild(plantBox.container);
+      plantBox = new PlantContainer(app, type, growthStage, isDead);
+      plantContainer.addChild(plantBox.container);
 
-    watering = new WateringContainer(app, isDead);
-    app.stage.addChild(watering.container);
+      const watering = new WateringContainer(
+        app,
+        isDead,
+        false,
+        plantBox.container,
+      );
+      plantContainer.addChild(watering.container);
+      wateringList.push(watering);
 
-    guage = new GuageContainer(app, sunGuage, waterGuage);
-    app.stage.addChild(guage.container);
+      const guage = new GuageContainer(app, sunGuage, waterGuage);
+      plantContainer.addChild(guage.container);
+      guageList.push(guage);
+
+      plantContainers.push(plantContainer);
+    }
+
+    arrows = new Arrows(app);
+
+    app.stage.addChild(arrows.container, plantContainers[currentPlantIndex]);
+
+    arrows.leftArrow.on('pointerdown', renderPreviousPlant);
+    arrows.rightArrow.on('pointerdown', renderNextPlant);
 
     app.ticker.add(loop);
   }
 
+  function renderPreviousPlant() {
+    app.stage.removeChild(plantContainers[currentPlantIndex]);
+    currentPlantIndex -= 1;
+    app.stage.addChild(plantContainers[currentPlantIndex]);
+    plant.current = plants[currentPlantIndex];
+    dispatch(changeCurrentPlant(plant.current));
+  }
+
+  function renderNextPlant() {
+    app.stage.removeChild(plantContainers[currentPlantIndex]);
+    currentPlantIndex += 1;
+    app.stage.addChild(plantContainers[currentPlantIndex]);
+    plant.current = plants[currentPlantIndex];
+    dispatch(changeCurrentPlant(plant.current));
+  }
+
   function loop() {
+    if (currentPlantIndex === 0) {
+      arrows.leftArrow.visible = false;
+    } else {
+      arrows.leftArrow.visible = true;
+    }
+
+    if (currentPlantIndex === plants.length - 1) {
+      arrows.rightArrow.visible = false;
+    } else {
+      arrows.rightArrow.visible = true;
+    }
+
     const totalGuageWidth = 400;
     const wateringPeriod = plant.current.waterGuage.defaultGuage;
     const eachGuageWidth = totalGuageWidth / wateringPeriod;
 
-    if (watering.wateringCan.isWatering === true) {
-      guage.waterGuage.width += eachGuageWidth;
-      watering.wateringCan.isWatering = false;
+    for (let i = 0; i < plants.length; i++) {
+      if (wateringList[i].wateringCan.isWatering === true) {
+        guageList[i].waterGuage.width += eachGuageWidth;
+        wateringList[i].wateringCan.isWatering = false;
 
-      increaseWaterGuage(plant.current);
+        increaseWaterGuage(plant.current);
+      }
     }
   }
 
@@ -159,13 +217,13 @@ export default function PlantCanvas({ plantInfo }) {
   }
 
   function onDeleteButtonClick() {
-    dispatch(deletePlant(plantInfo._id));
+    dispatch(deletePlant(plant._id));
     history.push('/');
   }
 
   return (
     <Wrapper>
-      {plantInfo?.isDead === true && (
+      {plant?.isDead === true && (
         <ButtonWrapper>
           <TextButton
             onClick={onDeleteButtonClick}
@@ -176,7 +234,7 @@ export default function PlantCanvas({ plantInfo }) {
           />
         </ButtonWrapper>
       )}
-      <div ref={canvas} />
+      <div ref={canvas} data-testid="canvas"/>
     </Wrapper>
   );
 }

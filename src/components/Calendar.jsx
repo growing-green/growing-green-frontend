@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getDate } from '../utils/getDate';
+import { getFormatedDate } from '../utils/getFormatedDate';
 
-export default function Calendar({ theme }) {
+export default function Calendar() {
   const [date, setDate] = useState({
     year: null,
     month: null,
@@ -10,10 +10,10 @@ export default function Calendar({ theme }) {
     day: null,
   });
 
-  useEffect(() => setDate(getDate()), []);
+  useEffect(() => setDate(getFormatedDate(new Date())), []);
 
   return (
-    <Wrapper theme={theme}>
+    <Wrapper>
       <div className="left-hook"></div>
       <div className="right-hook"></div>
       <div className="month-wrapper">

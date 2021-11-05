@@ -6,7 +6,7 @@ import { TEMPS } from '../constants';
 import { getCurrentHeight } from '../utils/getCurrentHeight';
 import { getCurrentWeather } from '../redux/modules/environments';
 
-export default function WeatherInfo({ height, theme }) {
+export default function WeatherInfo({ height }) {
   const [currentHeight, setCurrentHeight] = useState(0);
   const {
     temperature,
@@ -30,7 +30,7 @@ export default function WeatherInfo({ height, theme }) {
       <BackgroundBar height={height}>
         <Bar currentHeight={currentHeight}></Bar>
       </BackgroundBar>
-      <ScaleWrapper height={height} theme={theme}>
+      <ScaleWrapper height={height}>
         {TEMPS.map((temp) => {
           return (
             <div className={`display-temp temp-${temp}`} key={temp}>

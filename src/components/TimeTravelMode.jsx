@@ -6,7 +6,6 @@ import {
   stopTimeTravel,
   selectWeekNumber,
 } from '../redux/modules/timeTravel';
-import { useParams } from 'react-router-dom';
 import addDays from 'date-fns/addDays';
 import format from 'date-fns/format';
 import addHours from 'date-fns/addHours';
@@ -14,19 +13,17 @@ import differenceInDays from 'date-fns/differenceInDays';
 
 export default function TimeTravelMode() {
   const dispatch = useDispatch();
-  const { plantId } = useParams();
-
+  const { currentPlant } = useSelector((state) => state.plants);
   const { isTimeTravelMode, plantsInWeek } = useSelector(
     (state) => state.timeTravel,
   );
-  const { allPlants } = useSelector((state) => state.plants);
   const curr = new Date();
   const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const today = new Date(utc + KR_TIME_DIFF);
 
   function onStartButtonClick() {
-    dispatch(startTimeTravel(allPlants[plantId]));
+    dispatch(startTimeTravel(currentPlant));
   }
 
   function onStopButtonClick() {

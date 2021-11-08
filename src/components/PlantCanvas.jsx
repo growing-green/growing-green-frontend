@@ -35,12 +35,12 @@ export default function PlantCanvas({ plants }) {
   let arrows;
   let plantBox;
   let background;
-  let currentWaterGuage;
-  let defaultWaterGuage;
-  let currentPenaltyPoint;
   let guageList = [];
   let wateringList = [];
   let plantContainers = [];
+  let currentWaterGuages = [];
+  let defaultWaterGuages = [];
+  let currentPenaltyPoints = [];
   let currentPlantIndex = plants.indexOf(currentPlant);
 
   useEffect(() => {
@@ -81,9 +81,13 @@ export default function PlantCanvas({ plants }) {
         isDead,
       } = plants[i];
 
-      currentWaterGuage = waterGuage.currentGuage;
-      defaultWaterGuage = waterGuage.defaultGuage;
-      currentPenaltyPoint = penaltyPoints;
+      const currentWaterGuage = waterGuage.currentGuage;
+      currentWaterGuages.push(currentWaterGuage);
+      const defaultWaterGuage = waterGuage.defaultGuage;
+      defaultWaterGuages.push(defaultWaterGuage);
+
+      const currentPenaltyPoint = penaltyPoints;
+      currentPenaltyPoints.push(currentPenaltyPoint);
 
       background = new Background(
         app,
@@ -168,7 +172,10 @@ export default function PlantCanvas({ plants }) {
   }
 
   function increaseWaterGuage(plant) {
-    const isOver = isWaterGuageOver(currentWaterGuage, defaultWaterGuage);
+    const isOver = isWaterGuageOver(
+      currentWaterGuages[currentPlantIndex],
+      defaultWaterGuages[currentPlantIndex],
+    );
 
     dispatch(
       updatePlant({
@@ -179,16 +186,24 @@ export default function PlantCanvas({ plants }) {
         },
       }),
     );
-
+    console.log(
+      isOver,
+      currentWaterGuages[currentPlantIndex],
+      currentWaterGuages,
+    );
     if (isOver === true) {
-      currentWaterGuage += 1;
+      currentWaterGuages[currentPlantIndex] += 1;
     } else {
-      const isAlive = isPlantAlive(currentWaterGuage);
+      const isAlive = isPlantAlive(currentWaterGuages[currentPlantIndex]);
       if (isAlive === true) {
-        currentPenaltyPoint += 1;
-        background.pointText.text = `${10 - currentPenaltyPoint}`;
+        currentPenaltyPoints[currentPlantIndex] += 1;
+        background.pointText.text = `${
+          10 - currentPenaltyPoints[currentPlantIndex]
+        }`;
         alert(
-          `-1점 감점되었습니다. (남은 생명 수 ${10 - currentPenaltyPoint}점)`,
+          `-1점 감점되었습니다. (남은 생명 수 ${
+            10 - currentPenaltyPoints[currentPlantIndex]
+          }점)`,
         );
         dispatch(
           updatePlant({
@@ -234,7 +249,7 @@ export default function PlantCanvas({ plants }) {
           />
         </ButtonWrapper>
       )}
-      <div ref={canvas} data-testid="canvas"/>
+      <div ref={canvas} data-testid="canvas" />
     </Wrapper>
   );
 }

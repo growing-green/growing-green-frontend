@@ -27,7 +27,7 @@ export default function SelectPlantPage() {
     <ErrorBox message={error} />;
   }
 
-  if (!inputText.length) {
+  if (plantList.length && !inputText.length) {
     dispatch(clearPlantList());
   }
 
@@ -85,7 +85,7 @@ export default function SelectPlantPage() {
             />
           </div>
         </InputBox>
-        <ResultContainer data-testid='result-container'>
+        <ResultContainer data-testid="result-container">
           {isLoading === true
             ? renderLoadResultMessage()
             : plantList.length === 0

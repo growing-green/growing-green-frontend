@@ -8,7 +8,7 @@ describe('<Loading>', () => {
     const { container } = render(<Loading />);
     expect(container).toMatchSnapshot();
   });
-
+  
   it('should have given style elements', () => {
     const sampleSize = '100px';
     const sampleText = 'sample';

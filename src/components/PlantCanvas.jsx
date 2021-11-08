@@ -34,7 +34,7 @@ export default function PlantCanvas({ plants }) {
   let app;
   let arrows;
   let plantBox;
-  let background;
+  let backgrounds = [];
   let guageList = [];
   let wateringList = [];
   let plantContainers = [];
@@ -89,7 +89,7 @@ export default function PlantCanvas({ plants }) {
       const currentPenaltyPoint = penaltyPoints;
       currentPenaltyPoints.push(currentPenaltyPoint);
 
-      background = new Background(
+      const background = new Background(
         app,
         name,
         species,
@@ -98,6 +98,7 @@ export default function PlantCanvas({ plants }) {
         currentPenaltyPoint,
       );
       plantContainer.addChild(background.container);
+      backgrounds.push(background);
 
       plantBox = new PlantContainer(app, type, growthStage, isDead);
       plantContainer.addChild(plantBox.container);
@@ -179,25 +180,21 @@ export default function PlantCanvas({ plants }) {
 
     dispatch(
       updatePlant({
-        plantId: plant._id,
+        plantId: plant.current._id,
         data: {
           state: 'water',
           isIncrease: true,
         },
       }),
     );
-    console.log(
-      isOver,
-      currentWaterGuages[currentPlantIndex],
-      currentWaterGuages,
-    );
+
     if (isOver === true) {
       currentWaterGuages[currentPlantIndex] += 1;
     } else {
       const isAlive = isPlantAlive(currentWaterGuages[currentPlantIndex]);
       if (isAlive === true) {
         currentPenaltyPoints[currentPlantIndex] += 1;
-        background.pointText.text = `${
+        backgrounds[currentPlantIndex].pointText.text = `${
           10 - currentPenaltyPoints[currentPlantIndex]
         }`;
         alert(
@@ -207,7 +204,7 @@ export default function PlantCanvas({ plants }) {
         );
         dispatch(
           updatePlant({
-            plantId: plant._id,
+            plantId: plant.current._id,
             data: {
               state: 'penalty',
               isIncrease: true,
@@ -219,7 +216,7 @@ export default function PlantCanvas({ plants }) {
 
         dispatch(
           updatePlant({
-            plantId: plant._id,
+            plantId: plant.current._id,
             data: {
               state: 'dead',
             },
@@ -232,13 +229,13 @@ export default function PlantCanvas({ plants }) {
   }
 
   function onDeleteButtonClick() {
-    dispatch(deletePlant(plant._id));
+    dispatch(deletePlant(plant.current._id));
     history.push('/');
   }
 
   return (
     <Wrapper>
-      {plant?.isDead === true && (
+      {plant.current?.isDead === true && (
         <ButtonWrapper>
           <TextButton
             onClick={onDeleteButtonClick}

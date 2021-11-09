@@ -1,9 +1,8 @@
 # **Growing Green 🪴**
-온라인상에서 가상의 반려 식물을 키울 수 있는 *식물 키우기 시뮬레이션 게임*입니다.
+온라인상에서 가상의 반려 식물을 키울 수 있는 **식물 키우기 시뮬레이션 게임**입니다.
 
 <img width="970" alt="landing-page" src="https://user-images.githubusercontent.com/43979066/140797763-f979fa1e-a6d1-4a43-818b-9cf7d5369307.gif">
 
-<br>
 <br>
 
 # **🗂 CONTENTS**
@@ -13,7 +12,7 @@
 - [🕋 STACK](#-STACK)
 - [🕹 USAGE](#-USAGE)
 - [🌵 DEPLOY](#-DEPLOY)
-- [🌳 PROJECT LOG](#-PROJECT-LOG)
+- [🌳 TECHNICAL LOG](#-TECHNICAL-LOG)
 - [💡 THINGS TO DO](#-THINGS-TO-DO)
 
 <br>
@@ -47,7 +46,7 @@
 
 <br>
 
-# **🛠FEATURES**
+# **🛠 FEATURES**
 
 - Firebase 소셜 로그인 및 JSON Web Token을 이용한 사용자 인증
 - 로그인 상태별 관리를 위한 Private Route 구현
@@ -107,8 +106,9 @@
 - Error Handling
   - React: React Error Boundary를 이용한 에러 핸들링 
   - Express: Custom Error Class를 이용한 에러 핸들링
+  
 - Test Case
-  - FrontEnd: Unit | Reducer | Integration Test 작성
+  - FrontEnd: Unit | Reducer Test 작성
   - BackEnd: Unit Test 작성
 
 <br>
@@ -125,7 +125,11 @@
   - Styled-component
   - React Testing Library
   - Jest
-  - MSW
+  - <details>
+      <summary>MSW</summary>
+      Redux Thunk를 이용한 백엔드 서버로의 http요청을 검증하기 위해 MSW(Mock Service Worker)를 사용하였습니다. <br>
+      MSW는 Mock 서버를 구축하지 않아도 API를 네트워크 수준에서 Mocking 할 수 있도록 해주는 라이브러리로 Redux Thunk에서 발생한 HTTP 요청을 가로채 코드의 서비스 로직을 변경하지 않고도 실제 API요청을 핸들링할 수 있습니다. 
+    </details>
 
 - **Backend**
   - JavaScript ES2015+
@@ -202,7 +206,7 @@ Root 디렉토리에 `.env` 파일을 생성하고, 다음 환경변수를 입�
 
 <br>
 
-# **🌳 PROJECT LOG**
+# **🌳 TECHNICAL LOG**
 
   >PIXI를 선택한 이유
   >- ❌ `Canvas API`: 짧은 시간 안에 많은 양의 코드를 작성해야 했기때문에 라이브러리의 도움을 받기로 선택했습니다. 
@@ -235,7 +239,7 @@ Root 디렉토리에 `.env` 파일을 생성하고, 다음 환경변수를 입�
 
 Firebase를 이용한 구글 로그인 구현중 Firebase라이브러리에서 임포트한 firebase 객체가 `undefined`로 출력되었습니다. 로직 상의 문제라고 생각해 firebase가 `undefined`로 나오는 경우에 대한 구글링을 열심히 해봤지만 해결방법을 찾지 못했습니다. 바로 전 프로젝트 때 구글 로그인을 구현하는 데 까지 성공했기 때문에 그때 코드를 그대로 가져오고, firebase에서 프로젝트도 여러 번 다시 만들어 보며 문제점을 찾으려 했지만 꽤 오랜 시간동안 찾지 못했습니다.
 
-꽤 많은 시간을 허비하고나서 알고보니 Firebase 라이브러리 버전의 문제였고 낮은 버전으로 다시 설치하여 문제를 바로 해결할 수 있었습니다. Firebase의 Release Note를 살펴보니 불과 얼마 전 `8.x.x`에서 `9.x.x`으로 major한 업데이트가 있었고 firebase 객체를 임포트하는 로직에도 변화가 있었습니다. 
+꽤 많은 시간을 허비하고나서 알고보니 Firebase 라이브러리 버전 업데이트로 인한 문제였습니다. Firebase의 Release Note를 살펴보니 불과 얼마 전 `8.x.x`에서 `9.x.x`으로 major한 업데이트가 있었고 firebase 객체를 임포트하는 로직에도 변화가 있었습니다. 업데이트된 버전에 맞추어 로직을 수정함으써 문제를 해결할 수 있었습니다.  
 
 앞으로 라이브러리를 사용하기 전에 꼭 Github Issue페이지와 버전 업데이트 내역에 대해서도 꼼꼼히 살펴본 후 사용해야겠다는 다짐을 하게 되었습니다.
 
@@ -250,6 +254,11 @@ Firebase를 이용한 구글 로그인 구현중 Firebase라이브러리에서 �
 - **Puppeteer 검색 로딩 시간 최적화하기**
   
   한 번 이상 검색된 식물은 DB에 저장하기
+
+- **통합 테스트 작성하기**
+  
+  - 상위 컴포넌트 단에서 Integration 테스트작성하기
+  - 브라우저 환경에서 어플리케이션의 전체 동작을 테스트하는 E2E 테스트 작성하기
   
 - **외부 사이트에 대한 의존도 줄이기**
 

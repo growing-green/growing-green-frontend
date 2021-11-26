@@ -70,32 +70,30 @@ export default function SelectPlantPage() {
   }
 
   return (
-    <>
-      <Wrapper>
-        <h1 className="title">Create new plant</h1>
-        <InputBox>
-          <div className="search-box">
-            <BiSearch size="35" color="#393939" />
-            <input
-              className="search-input"
-              value={inputText}
-              onChange={(e) => setInputText(e.currentTarget.value)}
-              placeholder="키우고싶은 식물을 찾아보세요"
-              onKeyUp={onSearchButtonClick}
-            />
-          </div>
-        </InputBox>
-        <ResultContainer data-testid="result-container">
-          {isLoading === true
-            ? renderLoadResultMessage()
-            : plantList.length === 0
-            ? renderPleaseEnterMessage()
-            : renderPlantList()}
-        </ResultContainer>
-        <PlantRecommendation plantsNames={popularPlants} />
-        <BackButton onClick={() => history.push('/')} />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <h1 className="title">Create new plant</h1>
+      <InputBox>
+        <div className="search-box">
+          <BiSearch size="35" color="#393939" />
+          <input
+            className="search-input"
+            value={inputText}
+            onChange={(e) => setInputText(e.currentTarget.value)}
+            placeholder="키우고싶은 식물을 찾아보세요"
+            onKeyUp={onSearchButtonClick}
+          />
+        </div>
+      </InputBox>
+      <ResultContainer data-testid="result-container">
+        {isLoading === true
+          ? renderLoadResultMessage()
+          : plantList.length === 0
+          ? renderPleaseEnterMessage()
+          : renderPlantList()}
+      </ResultContainer>
+      <PlantRecommendation plantsNames={popularPlants} />
+      <BackButton onClick={() => history.push('/')} />
+    </Wrapper>
   );
 }
 

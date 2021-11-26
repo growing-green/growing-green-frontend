@@ -26,12 +26,12 @@ exports[`<Calendar> matches snapshot 1`] = `
       <h1
         class="day"
       >
-        05
+        24
       </h1>
       <h3
         class="week-name"
       >
-        Friday
+        Wednesday
       </h3>
     </div>
   </div>

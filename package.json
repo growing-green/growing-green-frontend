@@ -26,7 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "react-scripts lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "e2e-test": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -51,9 +52,11 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "babel-eslint": "^10.1.0",
+    "cypress": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.0.0",

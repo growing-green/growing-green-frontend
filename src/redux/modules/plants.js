@@ -19,8 +19,9 @@ export const getMostPopularPlants = createAsyncThunk(
   'plants/getMostPopularPlants',
   async (_, { rejectWithValue }) => {
     try {
-      const responese = await apiController.get('plants/popular');
-      return responese.data;
+      const response = await apiController.get('plants/popular');
+      
+      return response.data;
     } catch {
       return rejectWithValue(MESSAGES.UNKNOWN_ERROR);
     }
@@ -101,18 +102,25 @@ export const slice = createSlice({
     popularPlants: [],
     error: null,
     isLoading: false,
+    currentPlant: null,
   },
-  reducers: {},
+  reducers: {
+    changeCurrentPlant: (state, action) => {
+      state.currentPlant = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllPlantsByUserId.pending, (state) => {
       state.isLoading = true;
     });
 
     builder.addCase(getAllPlantsByUserId.fulfilled, (state, action) => {
-      action.payload.forEach((plant) => {
+      const plants = action.payload;
+
+      plants.forEach((plant) => {
         state.allPlants[plant._id] = plant;
       });
-
+      state.currentPlant = plants[0];
       state.isLoading = false;
     });
 
@@ -158,3 +166,5 @@ export const slice = createSlice({
 });
 
 export default slice.reducer;
+
+export const { changeCurrentPlant } = slice.actions;

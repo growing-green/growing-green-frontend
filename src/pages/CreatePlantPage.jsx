@@ -21,7 +21,7 @@ import adultTreePlant from '../assets/images/plants/tree_plant3.png';
 import adultCloverPlant from '../assets/images/plants/clover_plant3.png';
 import chair from '../assets/images/furniture/chair.png';
 
-export default function CreatePlant({ theme }) {
+export default function CreatePlantPage({ theme }) {
   const { plantNumber } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();

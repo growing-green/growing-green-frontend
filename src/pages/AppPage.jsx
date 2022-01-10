@@ -4,10 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as PIXI from 'pixi.js';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-import Landing from './Landing';
-import Plant from './Plant';
-import SelectPlant from './SelectPlant';
-import CreatePlant from './CreatePlant';
+import Landing from './LandingPage';
+import Plant from './PlantPage';
+import SelectPlant from './SelectPlantPage';
+import CreatePlant from './CreatePlantPage';
 import ErrorBox from '../components/ErrorBox';
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -19,7 +19,7 @@ import { imagePath } from '../constants/pixi';
 
 const loader = PIXI.Loader.shared;
 
-export default function App() {
+export default function AppPage() {
   const dispatch = useDispatch();
   const { isLogin } = useSelector((state) => state.user);
   const { isDone } = useSelector((state) => state.images);
@@ -51,7 +51,7 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GlobalStyle theme={theme} />
+        <GlobalStyle />
         <Wrapper>
           <Switch>
             <ErrorBoundary>

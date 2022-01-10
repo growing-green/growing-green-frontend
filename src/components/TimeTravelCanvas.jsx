@@ -144,7 +144,7 @@ export default function TimeTravelCanvas() {
 
   return (
     <Wrapper>
-      <div ref={travelCanvas} />
+      <div ref={travelCanvas} data-testid="travelCanvas" />
     </Wrapper>
   );
 }

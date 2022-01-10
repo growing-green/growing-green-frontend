@@ -4,6 +4,7 @@ import PullSwitch from './PullSwitch';
 import Window from './Window';
 import Landscape from './LandScape';
 import Heart from './Heart';
+import Arrow from '../Arrows/Arrow';
 
 import apiController from '../../../configs/apiController';
 
@@ -22,6 +23,8 @@ export default class Background {
     this.window = null;
     this.landscape = null;
     this.penaltyPointsCircle = null;
+    this.leftArrow = null;
+    this.rightArrow = null;
     this.lifePoints = `${10 - penaltyPoints}`;
     this.name = name;
     this.species = species;
@@ -126,6 +129,9 @@ export default class Background {
     });
     this.pointText.x = this.heart.x - this.pointText.width / 2;
     this.pointText.y = this.heart.y - this.pointText.height / 2;
+
+    this.leftArrow = new Arrow(200, 260, 'leftArrow');
+    this.rightArrow = new Arrow(1000, 260, 'rightArrow');
   }
 
   render() {

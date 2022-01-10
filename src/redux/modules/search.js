@@ -38,7 +38,7 @@ export const slice = createSlice({
   },
   reducers: {
     clearPlantList: (state) => {
-      state.plantList = '';
+      state.plantList = [];
     },
   },
   extraReducers: (builder) => {

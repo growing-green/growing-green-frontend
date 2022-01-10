@@ -12,7 +12,7 @@ import Loading from '../components/Loading';
 
 import backButton from '../assets/images/arrows/back_arrow.png';
 
-export default function SelectPlant({ theme }) {
+export default function SelectPlantPage() {
   const [inputText, setInputText] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
@@ -27,7 +27,7 @@ export default function SelectPlant({ theme }) {
     <ErrorBox message={error} />;
   }
 
-  if (!inputText.length) {
+  if (plantList.length && !inputText.length) {
     dispatch(clearPlantList());
   }
 
@@ -70,32 +70,30 @@ export default function SelectPlant({ theme }) {
   }
 
   return (
-    <>
-      <Wrapper theme={theme}>
-        <h1 className="title">Create new plant</h1>
-        <InputBox>
-          <div className="search-box">
-            <BiSearch size="35" color="#393939" />
-            <input
-              className="search-input"
-              value={inputText}
-              onChange={(e) => setInputText(e.currentTarget.value)}
-              placeholder="키우고싶은 식물을 찾아보세요"
-              onKeyUp={onSearchButtonClick}
-            />
-          </div>
-        </InputBox>
-        <ResultContainer>
-          {isLoading === true
-            ? renderLoadResultMessage()
-            : plantList.length === 0
-            ? renderPleaseEnterMessage()
-            : renderPlantList()}
-        </ResultContainer>
-        <PlantRecommendation plantsNames={popularPlants} />
-        <BackButton onClick={() => history.push('/')} />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <h1 className="title">Create new plant</h1>
+      <InputBox>
+        <div className="search-box">
+          <BiSearch size="35" color="#393939" />
+          <input
+            className="search-input"
+            value={inputText}
+            onChange={(e) => setInputText(e.currentTarget.value)}
+            placeholder="키우고싶은 식물을 찾아보세요"
+            onKeyUp={onSearchButtonClick}
+          />
+        </div>
+      </InputBox>
+      <ResultContainer data-testid="result-container">
+        {isLoading === true
+          ? renderLoadResultMessage()
+          : plantList.length === 0
+          ? renderPleaseEnterMessage()
+          : renderPlantList()}
+      </ResultContainer>
+      <PlantRecommendation plantsNames={popularPlants} />
+      <BackButton onClick={() => history.push('/')} />
+    </Wrapper>
   );
 }
 

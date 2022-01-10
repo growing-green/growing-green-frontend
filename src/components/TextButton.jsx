@@ -49,11 +49,10 @@ const StyledButton = styled.button`
   border-radius: ${({ variant, size }) =>
     variant === 'rounded' && buttonSizes[size].height};
   background-color: ${({ color }) => buttonColors[color].background};
-
   &:active {
     box-shadow: none;
     ${({ variant }) =>
-      variant === 'outline' ? `transform: translate(-5px)` : 'none'};
+      variant === 'outline' ? `transform: translate(-5px)` : 'transform: none'};
   }
 
   svg {

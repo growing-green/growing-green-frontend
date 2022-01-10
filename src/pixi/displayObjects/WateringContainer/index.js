@@ -4,10 +4,9 @@ import WateringCan from './WateringCan';
 import Nail from './Nail';
 
 export default class WateringContainer {
-  constructor(app, isDead, isTimeTravelMode) {
+  constructor(app, isDead, isTimeTravelMode, plantContainer) {
     this.app = app;
-    this.plantContainer = app.stage.children[1];
-
+    this.plantContainer = plantContainer;
     this.container = new PIXI.Container();
     this.wateringCan = null;
     this.nail = null;
